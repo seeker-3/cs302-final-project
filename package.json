@@ -1,0 +1,49 @@
+{
+  "name": "cs302-final-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "BROWSER=false react-scripts start"
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.27",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-router-dom": "^5.3.1",
+    "eslint-config-react-app": "^6.0.0",
+    "react-scripts": "^4.0.3",
+    "sass": "^1.42.1",
+    "tslib": "^2.0.0",
+    "typescript": "^4.0.0"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-hook-form": "^7.17.1",
+    "react-query": "^3.25.1",
+    "react-router-dom": "^5.3.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "peerDependencies": {
+    "react-is": "*"
+  }
+}
