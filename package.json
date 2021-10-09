@@ -1,5 +1,5 @@
 {
-  "name": "dot-hum",
+  "name": "dothum",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
@@ -11,7 +11,9 @@
     "start": "cross-env BROWSER=false react-app-rewired start",
     "build": "cross-env BUILD_PATH=dothum/ react-app-rewired build",
     "clean": "rm -rf dothum/",
-    "serve": "serve -n"
+    "serve": "serve -n",
+    "build:wasm": "cd packages/wasm && wasm-pack build -s dothum",
+    "clean:wasm": "rm -rf packages/wasm/pkg"
   },
   "devDependencies": {
     "@craco/craco": "^6.3.0",
