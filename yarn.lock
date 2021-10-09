@@ -23,7 +23,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.10.4, @babel/code-frame@npm:^7.14.5, @babel/code-frame@npm:^7.15.8, @babel/code-frame@npm:^7.5.5":
+"@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.0.0-beta.36, @babel/code-frame@npm:^7.10.4, @babel/code-frame@npm:^7.14.5, @babel/code-frame@npm:^7.15.8, @babel/code-frame@npm:^7.5.5":
   version: 7.15.8
   resolution: "@babel/code-frame@npm:7.15.8"
   dependencies:
@@ -63,7 +63,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.15.8, @babel/core@npm:^7.1.0, @babel/core@npm:^7.12.3, @babel/core@npm:^7.7.5, @babel/core@npm:^7.8.4":
+"@babel/core@npm:7.15.8, @babel/core@npm:^7.0.0-beta.39, @babel/core@npm:^7.1.0, @babel/core@npm:^7.12.3, @babel/core@npm:^7.7.5, @babel/core@npm:^7.8.4":
   version: 7.15.8
   resolution: "@babel/core@npm:7.15.8"
   dependencies:
@@ -1620,7 +1620,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.1.0, @babel/traverse@npm:^7.12.1, @babel/traverse@npm:^7.13.0, @babel/traverse@npm:^7.15.4, @babel/traverse@npm:^7.7.0":
+"@babel/traverse@npm:^7.0.0-beta.39, @babel/traverse@npm:^7.1.0, @babel/traverse@npm:^7.12.1, @babel/traverse@npm:^7.13.0, @babel/traverse@npm:^7.15.4, @babel/traverse@npm:^7.7.0":
   version: 7.15.4
   resolution: "@babel/traverse@npm:7.15.4"
   dependencies:
@@ -1637,7 +1637,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.0.0, @babel/types@npm:^7.12.1, @babel/types@npm:^7.12.6, @babel/types@npm:^7.14.9, @babel/types@npm:^7.15.4, @babel/types@npm:^7.15.6, @babel/types@npm:^7.3.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.4.4, @babel/types@npm:^7.7.0, @babel/types@npm:^7.8.3":
+"@babel/types@npm:^7.0.0, @babel/types@npm:^7.0.0-beta.39, @babel/types@npm:^7.12.1, @babel/types@npm:^7.12.6, @babel/types@npm:^7.14.9, @babel/types@npm:^7.15.4, @babel/types@npm:^7.15.6, @babel/types@npm:^7.3.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.4.4, @babel/types@npm:^7.7.0, @babel/types@npm:^7.8.3":
   version: 7.15.6
   resolution: "@babel/types@npm:7.15.6"
   dependencies:
@@ -1666,6 +1666,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@craco/craco@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "@craco/craco@npm:6.3.0"
+  dependencies:
+    cross-spawn: ^7.0.0
+    lodash: ^4.17.15
+    semver: ^7.3.2
+    webpack-merge: ^4.2.2
+  peerDependencies:
+    react-scripts: ^4.0.0
+  bin:
+    craco: bin/craco.js
+  checksum: 0cc2de18e8bd9f0b79134850691cdc93037ea0aa4ec9d087ccf29e5146e3cba95256535653cdb32103cbd24d86ad2f75932f32d852445631404f5e0989c1cd2e
+  languageName: node
+  linkType: hard
+
 "@csstools/convert-colors@npm:^1.4.0":
   version: 1.4.0
   resolution: "@csstools/convert-colors@npm:1.4.0"
@@ -1679,6 +1695,12 @@ __metadata:
   checksum: c0adedd58e16b73b6588377ca505bfbc3f6273ab1ba1b55dd343aa5e4c0bf81bd74f051a1317a0d383bdcd59af665ba34db00b0c51c7dbc176c1a536175c2b03
   languageName: node
   linkType: hard
+
+"@dothum/wasm@workspace:*, @dothum/wasm@workspace:packages/wasm/pkg":
+  version: 0.0.0-use.local
+  resolution: "@dothum/wasm@workspace:packages/wasm/pkg"
+  languageName: unknown
+  linkType: soft
 
 "@emotion/babel-plugin@npm:^11.3.0":
   version: 11.3.0
@@ -4027,6 +4049,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babylon@npm:^7.0.0-beta.39":
+  version: 7.0.0-beta.47
+  resolution: "babylon@npm:7.0.0-beta.47"
+  bin:
+    babylon: ./bin/babylon.js
+  checksum: f6ce13f2549d4770fe6de9a5e5bb86744600f45db59fc8d206758474933ed8294d55bfb237148180dd1c62c9a3f21054a52ffb5fc74a3b45b906b676dbc899b5
+  languageName: node
+  linkType: hard
+
 "balanced-match@npm:^1.0.0":
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
@@ -5246,7 +5277,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:7.0.3, cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2":
+"cross-env@npm:^7.0.3":
+  version: 7.0.3
+  resolution: "cross-env@npm:7.0.3"
+  dependencies:
+    cross-spawn: ^7.0.1
+  bin:
+    cross-env: src/bin/cross-env.js
+    cross-env-shell: src/bin/cross-env-shell.js
+  checksum: 26f2f3ea2ab32617f57effb70d329c2070d2f5630adc800985d8b30b56e8bf7f5f439dd3a0358b79cee6f930afc23cf8e23515f17ccfb30092c6b62c6b630a79
+  languageName: node
+  linkType: hard
+
+"cross-spawn@npm:7.0.3, cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.1, cross-spawn@npm:^7.0.2":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
   dependencies:
@@ -6064,6 +6107,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dot-hum@workspace:."
   dependencies:
+    "@craco/craco": ^6.3.0
+    "@dothum/wasm": "workspace:*"
     "@emotion/react": ^11.4.1
     "@emotion/styled": ^11.3.0
     "@testing-library/jest-dom": ^5.11.4
@@ -6075,9 +6120,11 @@ __metadata:
     "@types/react-dom": ^17.0.9
     "@types/react-router-dom": ^5.3.1
     babel-eslint: ^10.1.0
+    cross-env: ^7.0.3
     eslint-config-react-app: ^6.0.0
     gh-pages: ^3.2.3
     react: ^17.0.2
+    react-app-rewired: ^2.1.8
     react-dom: ^17.0.2
     react-hook-form: ^7.17.1
     react-query: ^3.25.1
@@ -6087,6 +6134,7 @@ __metadata:
     serve: ^12.0.1
     tslib: ^2.0.0
     typescript: ^4.4.3
+    wasm-loader: ^1.3.0
     web-vitals: ^2.1.1
     workbox-background-sync: ^5.1.3
     workbox-broadcast-update: ^5.1.3
@@ -9963,6 +10011,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"long@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "long@npm:3.2.0"
+  checksum: bc27bdeab42cb2f25d0a0faf5fbf77b657bd59236ae0ed649c44f91f35e632230ebd0c62d208bb4e9c69ca558a45e9c9c0810e6b5c0380a1754b8f3b5b7b62d7
+  languageName: node
+  linkType: hard
+
 "loose-envify@npm:^1.1.0, loose-envify@npm:^1.2.0, loose-envify@npm:^1.3.1, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
@@ -12778,6 +12833,19 @@ fsevents@^1.2.7:
     regenerator-runtime: ^0.13.7
     whatwg-fetch: ^3.4.1
   checksum: 99e52a6b2229c7ca730cfd44ac95640f955be71d144225bd6c24fa47922a742658a371d0a2f0876d732533f1055b7cd7e9d534c89c29f8ca889ecd1b8d15f065
+  languageName: node
+  linkType: hard
+
+"react-app-rewired@npm:^2.1.8":
+  version: 2.1.8
+  resolution: "react-app-rewired@npm:2.1.8"
+  dependencies:
+    semver: ^5.6.0
+  peerDependencies:
+    react-scripts: ">=2.1.3"
+  bin:
+    react-app-rewired: bin/index.js
+  checksum: eb4a3003b8a5950a8cad73f459b3dc944be9569291cb9374ba61b837f89329301eff68cf3d42b7d7b2f6e583c6e9229440d98d2aac002e1e31a6c549a1574d7a
   languageName: node
   linkType: hard
 
@@ -15645,6 +15713,31 @@ typescript@^4.4.3:
   languageName: node
   linkType: hard
 
+"wasm-dce@npm:^1.0.0":
+  version: 1.0.2
+  resolution: "wasm-dce@npm:1.0.2"
+  dependencies:
+    "@babel/core": ^7.0.0-beta.39
+    "@babel/traverse": ^7.0.0-beta.39
+    "@babel/types": ^7.0.0-beta.39
+    babylon: ^7.0.0-beta.39
+    webassembly-interpreter: 0.0.30
+  checksum: be9049f4a459cf8cfe26cef0909fea9e6174172cf9c95aaba835185ef6b0686d4f9d3f96eb524e82b3e2a817a8881674910fe83a7b8da8291c86771b55df9311
+  languageName: node
+  linkType: hard
+
+"wasm-loader@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "wasm-loader@npm:1.3.0"
+  dependencies:
+    loader-utils: ^1.1.0
+    wasm-dce: ^1.0.0
+  peerDependencies:
+    wasm-dce: 1.x
+  checksum: c5c1bbcd99f1daec5475121bc5ef0d6eb05641758b16cdb0dcf21c196dc97beda800192f73a9bd0551bb872ea3d1036543a95f44c91da742fddb19d216714e1c
+  languageName: node
+  linkType: hard
+
 "watchpack-chokidar2@npm:^2.0.1":
   version: 2.0.1
   resolution: "watchpack-chokidar2@npm:2.0.1"
@@ -15684,6 +15777,31 @@ typescript@^4.4.3:
   version: 2.1.1
   resolution: "web-vitals@npm:2.1.1"
   checksum: 1bc9ec8574ae1c8d2f92d18acc940942818e64593f0bb438266b84ae5b50cde445ca8688ee609e3dff7e83165d1bd16d98ba842fb30d79e548510eabc54b5e6a
+  languageName: node
+  linkType: hard
+
+"webassembly-floating-point-hex-parser@npm:0.1.2":
+  version: 0.1.2
+  resolution: "webassembly-floating-point-hex-parser@npm:0.1.2"
+  checksum: 96ac236eacb749ea4a6e7e8241a95745cafcdf8d929d0544dc74830e3bf81e5e83fc5793b52155a2681335ae68dcafe7b843361480e913e985057eb59e16948e
+  languageName: node
+  linkType: hard
+
+"webassembly-interpreter@npm:0.0.30":
+  version: 0.0.30
+  resolution: "webassembly-interpreter@npm:0.0.30"
+  dependencies:
+    "@babel/code-frame": ^7.0.0-beta.36
+    long: ^3.2.0
+    webassembly-floating-point-hex-parser: 0.1.2
+  bin:
+    wasm: ./lib/bin/repl.js
+    wasm2wast: ./lib/bin/wasm2wast.js
+    wasmast: ./lib/bin/wasmast.js
+    wasmdump: ./lib/bin/wasmdump.js
+    wasmrun: ./lib/bin/wasmrun.js
+    wastast: ./lib/bin/wastast.js
+  checksum: a6834dc8e91a56826e4991e2d5cc9b8c0488901e03045b0e6fa76423927ea332144d779c4feccb240f91fc6c848de440d47e0f36d66b900b0671b9a43a6eaac9
   languageName: node
   linkType: hard
 
@@ -15785,6 +15903,15 @@ typescript@^4.4.3:
   peerDependencies:
     webpack: 2 || 3 || 4
   checksum: ed1387774031a59bc1bd5f79150e7a49dcf5048a6d5e9652672637bed7f93df6220cbd88b2e371e7c8c8e7640b3a8ed6895f771c6b05a8bb90b721f82001ac25
+  languageName: node
+  linkType: hard
+
+"webpack-merge@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "webpack-merge@npm:4.2.2"
+  dependencies:
+    lodash: ^4.17.15
+  checksum: ce58bc8ab53a3dd5d9a0df65684571349eef53372bf8f224521072110485391335b26ab097c5f07829b88d0c146056944149566e5a953f05997b0fe2cbaf8dd6
   languageName: node
   linkType: hard
 
