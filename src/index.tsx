@@ -1,7 +1,9 @@
 import styled from '@emotion/styled'
-import { FC, useState } from 'react'
+import { FC, StrictMode, useState } from 'react'
 import { render } from 'react-dom'
+import reportWebVitals from './reportWebVitals'
 import './scss/presets.scss'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 const StyledP = styled.p`
   margin-top: 8rem;
@@ -26,4 +28,12 @@ const App: FC = () => {
   return <StyledP>you can {button} on me</StyledP>
 }
 
-render(<App />, document.getElementById('root'))
+render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+  document.getElementById('root'),
+)
+
+serviceWorkerRegistration.register()
+reportWebVitals()

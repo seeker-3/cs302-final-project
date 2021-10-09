@@ -1,5 +1,4 @@
 /node_modules/
-/public/build/
 
 .yarn/*
 !.yarn/patches
@@ -17,6 +16,7 @@
 
 # production
 /build
+/cs302-final-project/
 
 # misc
 .DS_Store

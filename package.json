@@ -1,20 +1,46 @@
 {
-  "name": "cs302-final-project",
-  "version": "1.0.0",
+  "name": "dot-hum",
+  "version": "0.0.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "start": "BROWSER=false react-scripts start"
+    "publish": "yarn build && gh-pages -d cs302-final-project/",
+    "start": "BROWSER=false react-scripts start",
+    "build": "BUILD_PATH=cs302-final-project/ react-scripts build",
+    "clean": "rm -rf cs302-final-project/",
+    "serve": "serve -n"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.27",
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.3.1",
+    "babel-eslint": "^10.1.0",
     "eslint-config-react-app": "^6.0.0",
+    "gh-pages": "^3.2.3",
     "react-scripts": "^4.0.3",
     "sass": "^1.42.1",
+    "serve": "^12.0.1",
     "tslib": "^2.0.0",
-    "typescript": "^4.0.0"
+    "typescript": "^4.4.3",
+    "workbox-background-sync": "^5.1.3",
+    "workbox-broadcast-update": "^5.1.3",
+    "workbox-cacheable-response": "^5.1.3",
+    "workbox-core": "^5.1.3",
+    "workbox-expiration": "^5.1.3",
+    "workbox-google-analytics": "^5.1.3",
+    "workbox-navigation-preload": "^5.1.3",
+    "workbox-precaching": "^5.1.3",
+    "workbox-range-requests": "^5.1.3",
+    "workbox-routing": "^5.1.3",
+    "workbox-strategies": "^5.1.3",
+    "workbox-streams": "^5.1.3"
   },
   "dependencies": {
     "@emotion/react": "^11.4.1",
@@ -23,7 +49,21 @@
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.17.1",
     "react-query": "^3.25.1",
-    "react-router-dom": "^5.3.0"
+    "react-router-dom": "^5.3.0",
+    "web-vitals": "^2.1.1"
+  },
+  "peerDependencies": {
+    "@testing-library/dom": "*",
+    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/parser": "*",
+    "eslint": "^7.32.0",
+    "eslint-plugin-flowtype": "*",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "react-is": "*",
+    "webpack": "4"
   },
   "eslintConfig": {
     "extends": [
@@ -43,7 +83,9 @@
       "last 1 safari version"
     ]
   },
-  "peerDependencies": {
-    "react-is": "*"
-  }
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/seeker-3/cs302-final-project.git/"
+  },
+  "homepage": "https://seeker-3.github.io/cs302-final-project/"
 }

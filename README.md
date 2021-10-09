@@ -1,6 +1,8 @@
-# to install
+# .hum
 
-## make sure you have the latest version of node installed
+## To install
+
+### make sure you have the latest version of node installed
 
 check verion:
 
@@ -11,7 +13,7 @@ I recommend using a package manager to install node:
 - [chocolatey](https://chocolatey.org/) for window
 - [homebrew](https://brew.sh/) for mac
 
-## install yarn
+### install yarn
 
 globally install corepack:
 
@@ -21,7 +23,7 @@ enable yarn:
 
 `corepack enable yarn`
 
-## install the project
+### install the project
 
 install:
 
@@ -30,3 +32,17 @@ install:
 start the app:
 
 `yarn start`
+
+## Publish
+
+### to build
+
+`yarn build`
+
+### to publish
+
+`yarn gh-pages -d cs302-final-project/`
+
+### to build and publish
+
+`yarn publish`

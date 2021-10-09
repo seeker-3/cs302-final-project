@@ -27,7 +27,8 @@ $globals: (
 );
 
 html,
-body {
+body,
+main {
   font-size: 100%;
   font-family: 'Segoe UI', list.nth($sans-serif-fonts, 4);
   color: list.nth($gray-scale, 4);
@@ -36,7 +37,7 @@ body {
   margin: 0 auto;
 }
 
-body * {
+main * {
   box-sizing: border-box;
 
   // display: block;
@@ -64,6 +65,11 @@ body * {
     margin-right: 0.1rem;
     border: 0.1rem solid white;
   }
+}
+
+script,
+noscript {
+  display: none;
 }
 
 h1,

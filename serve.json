@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/", "destination": "/cs302-final-project/index.html" }
+  ]
+}
