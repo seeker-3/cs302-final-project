@@ -13,13 +13,12 @@ const StyledDiv = styled.div`
     text-align: center;
   }
   button {
+    color: #874ffe;
     margin: 0;
     padding: 0;
     display: inline-block;
-    color: inherit;
     background-color: inherit;
     outline: none;
-    text-decoration: underline;
   }
 `
 
@@ -28,16 +27,12 @@ export default (function App() {
   const counter = useMemo(() => Counter.new(), [Counter])
   const [count, setCount] = useState(counter.get_count())
 
-  const button = (
-    <button
-      onClick={() => {
-        counter.increment()
-        setCount(counter.get_count())
-      }}
-    >
-      count
-    </button>
-  )
+  const increment = () => {
+    counter.increment()
+    setCount(counter.get_count())
+  }
+
+  const button = <button onClick={increment}>count</button>
 
   return (
     <StyledDiv>

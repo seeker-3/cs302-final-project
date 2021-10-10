@@ -32,7 +32,7 @@ main {
   font-size: 100%;
   font-family: 'Segoe UI', list.nth($sans-serif-fonts, 4);
   color: list.nth($gray-scale, 4);
-  background: #111;
+  background: #080808;
   max-width: 80ch;
   margin: 0 auto;
 }
@@ -130,6 +130,14 @@ button {
 a {
   @include hover;
   color: map.get($colors, blue);
+}
+
+.hover {
+  @include hover;
+}
+
+.focus {
+  @include hover;
 }
 
 .input-group {
