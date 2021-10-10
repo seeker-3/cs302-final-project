@@ -26,8 +26,10 @@ impl Counter {
     pub fn new() -> Self {
         Counter { count: 0 }
     }
-    pub fn increment(&mut self) -> u8 {
+    pub fn increment(&mut self) {
         self.count += 1;
-        self.count
+    }
+    pub fn get_count(&self) -> u8 {
+        return self.count;
     }
 }

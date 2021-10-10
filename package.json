@@ -1,6 +1,11 @@
 {
   "name": "dothum",
   "version": "0.0.0",
+  "homepage": "https://seeker-3.github.io/dothum/",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/seeker-3/dothum.git/"
+  },
   "private": true,
   "workspaces": [
     "packages/*",
@@ -90,10 +95,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "repository": {
-    "type": "github",
-    "url": "https://github.com/seeker-3/dothum.git/"
-  },
-  "homepage": "https://seeker-3.github.io/dothum/"
+  }
 }
