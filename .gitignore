@@ -15,8 +15,7 @@
 /coverage
 
 # production
-/build
-/dothum/
+/build/
 
 # misc
 .DS_Store

@@ -1,7 +1,7 @@
 {
   "name": "dothum",
   "version": "0.0.0",
-  "homepage": "https://seeker-3.github.io/dothum/",
+  "homepage": "https://dothum.app/",
   "repository": {
     "type": "github",
     "url": "https://github.com/seeker-3/dothum.git/"
@@ -12,11 +12,11 @@
     "packages/wasm/pkg"
   ],
   "scripts": {
-    "publish": "yarn build && gh-pages -d dothum/",
+    "publish": "yarn build && gh-pages -d build",
     "start": "cross-env BROWSER=false react-app-rewired start",
-    "build": "cross-env BUILD_PATH=dothum/ react-app-rewired build",
-    "clean": "rm -rf dothum/",
-    "serve": "serve -n",
+    "build": "cross-env react-app-rewired build",
+    "clean": "rm -rf build",
+    "serve": "serve build -n -s",
     "build:wasm": "cd packages/wasm && wasm-pack build -s dothum",
     "clean:wasm": "rm -rf packages/wasm/pkg"
   },
