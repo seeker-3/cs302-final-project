@@ -1,4 +1,6 @@
-# .hum
+# source code for .hum
+
+[open app](https://dothum.app/)
 
 ## To install
 
@@ -23,13 +25,31 @@ enable yarn:
 
 `corepack enable yarn`
 
-### install the project
+### install rust
+
+install rustup:
+
+`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+
+install rust stable:
+
+`rustup toolchain add stable`
+
+add the wasm target:
+
+`rustup target add wasm32-unknown-unknown`
+
+### set up the project
 
 install:
 
 `yarn`
 
-start the app:
+build the rust packages:
+
+`yarn build:wasm`
+
+start the app in development mode:
 
 `yarn start`
 
