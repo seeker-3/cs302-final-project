@@ -37,6 +37,10 @@ main {
   margin: 0 auto;
 }
 
+main {
+  margin: 1rem;
+}
+
 main * {
   box-sizing: border-box;
 
@@ -105,6 +109,13 @@ li {
   }
 }
 
+@mixin disabled {
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
 @mixin input {
   border-radius: map.get($globals, border-radius);
   padding: 0.3rem 0.5rem;
@@ -122,6 +133,7 @@ button {
   @include input;
   @include focus;
   @include hover;
+  @include disabled;
   background: list.nth($gray-scale, 3);
   color: list.nth($gray-scale, 5);
   cursor: pointer;
@@ -165,4 +177,8 @@ a {
   .bg-#{'' + $name} {
     background: $color;
   }
+}
+
+.row {
+  flex-direction: row;
 }
