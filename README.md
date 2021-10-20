@@ -2,6 +2,15 @@
 
 [open app](https://dothum.app/)
 
+## Rubric
+- 5 points: Record audio
+- 5 pinots: Analyze notes and gives complimentary chords
+- 5 points: Creates a tempo
+- 15 points: Play, Stop, and chord buttons work
+- 5 points: Chords can lengthened and deleted
+- 5 points: Audio can be exported
+
+
 ## To install
 
 ### make sure you have the latest version of node installed
