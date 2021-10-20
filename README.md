@@ -39,15 +39,23 @@ add the wasm target:
 
 `rustup target add wasm32-unknown-unknown`
 
+install wasm-pack:
+
+`curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh`
+
 ### set up the project
+
+build the rust packages:
+
+`cd packages/wasm`
+
+`wasm-pack build -s dothum`
+
+cd back to the root
 
 install:
 
 `yarn`
-
-build the rust packages:
-
-`yarn build:wasm`
 
 start the app in development mode:
 
