@@ -10,6 +10,7 @@
 - 5 points: Chords can lengthened and deleted
 - 5 points: Audio can be exported
 
+## DotHum Visualized
 
 
 
