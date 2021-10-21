@@ -13,7 +13,6 @@
 ## DotHum Visualized
 
 ![Idea:](/.humVisulaized.png)
-Format: ![Alt Text](url)
 
 ## Installation for Beginners
 
