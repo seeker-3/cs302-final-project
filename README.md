@@ -1,6 +1,6 @@
 # DotHum Website:
 
-[DotHum.app](https://dothum.app/)
+### [DotHum.app](https://dothum.app/)
 
 ## Rubric
 - 5 points: Record audio
