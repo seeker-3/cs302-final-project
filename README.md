@@ -1,8 +1,8 @@
-# source code for .hum
+# DotHum Website:
 
-[open app](https://dothum.app/)
+[DotHum.app](https://dothum.app/)
 
-# Rubric
+## Rubric
 - 5 points: Record audio
 - 5 pinots: Analyze notes and gives complimentary chords
 - 5 points: Creates a tempo
@@ -11,7 +11,9 @@
 - 5 points: Audio can be exported
 
 
-## To install
+
+
+## Installation for Beginners
 
 ### make sure you have the latest version of node installed
 
