@@ -1,0 +1,9 @@
+Rubric
+-	+5 create project repo and initial build so group members can begin building the app
+-	+5 app is running, accessible online, and can record and play user audio 
+-	+5 notes in recorded audio can be identified
+-	+5 tempo of recorded audio can be identified
+-	+5 instrument samples can matched to the notes and tempo of the recorded audio and played
+-	+5 complimentary chords can be determined and added to the generated instrumental 
+-	+5 audio files can be saved and exported as a MIDI file
+-	+5 additional features such as turning recorded audio into percussion, manual manipulation of the generated instrumental to add, remove, or alter notes, support for importing your own instrument sample library
