@@ -1,8 +1,12 @@
-# source code for .hum
+# DotHum Website:
 
-[open app](https://dothum.app/)
+### [DotHum.app](https://dothum.app/)
 
-## To install
+## DotHum Visualized
+
+![Idea:](/.humVisulaized.png)
+
+## Installation for Beginners
 
 ### make sure you have the latest version of node installed
 
