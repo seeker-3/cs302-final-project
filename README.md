@@ -1,6 +1,6 @@
-# DotHum Website:
+# DotHum Website
 
-### [DotHum.app](https://dothum.app/)
+## [DotHum.app](https://dothum.app/)
 
 ## DotHum Visualized
 
@@ -10,7 +10,7 @@
 
 ### make sure you have the latest version of node installed
 
-check verion:
+check version:
 
 `node -v`
 
