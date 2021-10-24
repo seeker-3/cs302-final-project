@@ -1,0 +1,13 @@
+Logging:
+JavaScript learning - 3 hours
+Pitch/Chord recognition - 3 hours
+
+Rubric:
+5 - pitch/chord recognition
+5 - time scale recognition
+5 - export file formatting (mp3, mp4, wav, midi)
+5 - timeline user interface
+10 - hum-to-instrument system
+10 - note prediction
+
+
