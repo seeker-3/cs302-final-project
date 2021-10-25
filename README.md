@@ -73,7 +73,7 @@ start the app in development mode:
 
 ### to publish
 
-`yarn gh-pages -d cs302-final-project/`
+`yarn gh-pages -d build/`
 
 ### to build and publish
 
