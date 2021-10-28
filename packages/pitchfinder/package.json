@@ -1,0 +1,18 @@
+{
+  "name": "pitch-finder",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "typescript": "^4.3.2",
+    "vite": "^2.6.4"
+  },
+  "dependencies": {
+    "pitchfinder": "^2.3.1",
+    "teoria": "^2.5.0"
+  }
+}
