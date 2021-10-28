@@ -1,5 +1,4 @@
 import Pitchfinder from "pitchfinder";
-import Teoria from "teoria";
 
 const getAudioBuffer = async () => {
   const ctx = new AudioContext();
