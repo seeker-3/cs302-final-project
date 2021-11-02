@@ -1,5 +1,7 @@
 //Hard coded Diatonic Scale for all chords using Circle of Fifths
 //Which is used to determine Complimentary chords from the "hummed" array
+//Input: array called "hummed"
+//Output: array called "recommendChords"
 
 var chords = [
     "C", "G", "D", 
