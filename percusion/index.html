@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app">
+      <input type="button" value="Play" id="play">
+      <input type="button" value="Pause" id="pause">
+    </div>
+    <div id="rec">
+      <input type="file" accept="audio/*" capture id="recorder">
+    </div>
+    <div id="drums"></div>
+    <div><canvas id="myChart"></canvas></div>
+    <script type="module" src="/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  </body>
+</html>
