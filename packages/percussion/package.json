@@ -1,0 +1,13 @@
+{
+  "name": "@dothum/percussion",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "vite": "^2.6.4"
+  }
+}

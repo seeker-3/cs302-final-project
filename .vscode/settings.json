@@ -5,5 +5,7 @@
   },
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "cSpell.words": ["dothum"]
+  "cSpell.words": [
+    "dothum"
+  ]
 }

@@ -4,7 +4,7 @@
 
 ## DotHum Visualized
 
-![Idea:](/.humVisulaized.png)
+![Idea:](/.hum-visulaized.png)
 
 ## Installation for Beginners
 
@@ -51,17 +51,15 @@ install wasm-pack:
 
 build the rust packages:
 
-`cd packages/wasm`
-
-`wasm-pack build -s dothum`
-
-cd back to the root
+`wasm-pack build packages/wasm --target web`
 
 install:
 
 `yarn`
 
 start the app in development mode:
+
+in the app directory
 
 `yarn start`
 
