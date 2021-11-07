@@ -1,8 +1,8 @@
-# DotHum Website
+# .hum Website
 
-## [DotHum.app](https://dothum.app/)
+## [dothum.app](https://dothum.app/)
 
-## DotHum Visualized
+## .him Visualized
 
 ![Idea:](/.hum-visulaized.png)
 
@@ -19,15 +19,15 @@ I recommend using a package manager to install node:
 - [chocolatey](https://chocolatey.org/) for window
 - [homebrew](https://brew.sh/) for mac
 
-### install yarn
+### install pnpm
 
 globally install corepack:
 
 `npm -g i corepack`
 
-enable yarn:
+enable pnpm:
 
-`corepack enable yarn`
+`corepack enable pnpm`
 
 ### install rust
 
@@ -55,24 +55,30 @@ build the rust packages:
 
 install:
 
-`yarn`
+`pnpm i`
 
 start the app in development mode:
 
 in the app directory
 
-`yarn start`
+`pnpm dev`
 
 ## Publish
 
 ### to build
 
-`yarn build`
+`pnpm build`
 
 ### to publish
 
-`yarn gh-pages -d build/`
+`pnpm gh-pages -d build/`
 
 ### to build and publish
 
-`yarn publish`
+`pnpm publish`
+
+## helpful resources
+
+### building your package into a library
+
+[https://vitejs.dev/guide/build.html#library-mode]
