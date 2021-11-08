@@ -2,7 +2,7 @@
 
 ## [dothum.app](https://dothum.app/)
 
-## .him Visualized
+## .hum Visualized
 
 ![Idea:](/.hum-visulaized.png)
 
