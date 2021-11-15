@@ -1,5 +1,5 @@
 [package]
-name = "dothum-wasm"
+name = "wasm"
 version = "0.1.0"
 authors = ["Abe <abramabradley@gmail.com>"]
 edition = "2018"
