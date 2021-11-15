@@ -5,5 +5,5 @@ import wasmPack from 'vite-plugin-wasm-pack'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePWA(), wasmPack([], 'dothum-wasm')],
+  plugins: [react(), VitePWA(), wasmPack([], '@dothum/wasm')],
 })

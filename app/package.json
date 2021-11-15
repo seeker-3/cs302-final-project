@@ -20,13 +20,14 @@
     "typescript": "^4.4.4",
     "vite": "^2.6.13",
     "vite-plugin-pwa": "^0.11.3",
-    "vite-plugin-wasm-pack": "^0.1.7",
+    "vite-plugin-wasm-pack": "^0.1.8",
     "workbox-window": "^6.3.0"
   },
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
-    "dothum-wasm": "workspace:*",
+    "@dothum/wasm": "workspace:*",
+    "idb": "^6.1.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.18.1",
