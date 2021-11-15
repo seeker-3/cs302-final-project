@@ -21,6 +21,11 @@ recorder.addEventListener('change', async ({ target }) => {
   const bpmBuffer = await audioContext.decodeAudioData(soundBuffer)
 
   const audioData = bpmBuffer.getChannelData(0)
+  audioToDrum(audioData)
+})
+
+
+function audioToDrum(audioData) {
   const length = audioData.length
   const rhythmData = []
   const labels = []
@@ -54,41 +59,50 @@ recorder.addEventListener('change', async ({ target }) => {
   }
 
   const intervals = []
-  let sum = 0
   for (let i = 0; i < beats.length - 1; i++) {
     intervals.push(beats[i + 1] - beats[i])
-    sum += beats[i + 1] - beats[i]
   }
 
-  //minInterval is used to set the amount of time between playing each
+    //minInterval is used to set the amount of time between playing each
   //tile on the drum machine. 
-  minInterval = Math.min.apply(null, intervals) / 41
+  let interval = Math.min.apply(null, intervals) / 41
+  if (interval < minInterval && numDrums > 0) {
+    //resetDrums(interval)
+    minInterval = interval 
+  } else if (numDrums == 0) {
+    minInterval = interval
+  }
 
+  let newDrum = [] 
+    for (let b = 0; b < beats.length-1; b++) {
+      newDrum.push(1);
+      let space = (intervals[b] / (minInterval*41)).toFixed()
+      for (let i = 0; i < space-1; i++) {
+        newDrum.push(0);
+      }
+    }
 
-  //right here I'm getting each beat from the audio file and adding it to the drum machine pattern
-  //with the appropiot number of spaces following based on the interval to the next beat
-  let firstDrum = []
-  for (let b = 0; b < beats.length-1; b++) {
-    firstDrum.push(1);
-    let space = (intervals[b] / (minInterval*41)).toFixed()
-    for (let i = 0; i < space-1; i++) {
-      firstDrum.push(0);
+  if (newDrum.length > numBeats) {
+    for (let i = 0; i < newDrum.length - numBeats; i++) {
+      for (let j = 0; j < numDrums; j++) {
+        drumArrays[j].push(0)
+      }
+    }
+    numBeats = newDrum.length
+  } else if (newDrum.length < numBeats) {
+    let diff = numBeats - newDrum.length
+    for (let i = 0; i < diff; i++) {
+      newDrum.push(0)
     }
   }
 
-  //Adding the new drum pattern to drumArrays and making the drum machine again so it will be included 
-  drumArrays.push(firstDrum)
-  numDrums++;
-  numBeats = firstDrum.length
+  drumArrays.push(newDrum)
+
+
+  numDrums = drumArrays.length
   makeDrumMachine(numDrums, numBeats)
 
-  const tempo = (60 / (sort(intervals) / 41000)).toFixed()
-  
-  document.querySelector(
-    '#rec',
-  ).innerHTML = `<h2> Your Temp is ${tempo} BPM</h2>`
-})
-
+}
 
 //This function is called to return the most commom interval found in the audio file
 //This is then used to determine the bpm
@@ -221,6 +235,20 @@ function shiftLeft(drumIndex) {
   drumArrays[drumIndex].shift()
   drumArrays[drumIndex].push(0)
   makeDrumMachine(numDrums, numBeats)
+}
+
+function resetDrums(interval) {
+  const beatMult = minInterval / interval
+  const newLength = drumArrays[0].length * beatMult
+  for (let i = 0; i < numDrums; i++) {
+    for (let j = 0; j < newLength; j++) {
+      let current = j
+      for (j = current; j < beatMult+current; j++) {
+        drumArrays[i].splice(j+1, 0, 0)
+      }
+    }
+  }
+  numBeats = drumArrays[0].length
 }
 
 
