@@ -96,8 +96,8 @@ export function audioToDrum(audioData) {
     }
   }
 
+  soundSettings.push(defaultSounds[drumArrays.length])
   drumArrays.push(newDrum)
-  soundSettings.push(defaultSound)
 
   numDrums = drumArrays.length
   makeDrumMachine(numDrums, numBeats)
@@ -173,12 +173,14 @@ export function getBPM() {
 //and manipulation of the drum machine from dom manipulation
 export const drumArrays = []
 export const soundSettings = []
-export const defaultSound = [2500, 0.1, 0.1, 0.1, 1, 250, 0.1, 0.1, 0.01, 1]
+export const defaultSounds = [[10000, 0.1, 0.1, 0.01, 1, 250, 0.1, 0.005, 0.01, 0.3],
+                              [2500, 0.1, 0.1, 0.1, 1, 250, 0.1, 0.1, 0.01, 1],
+                              [0, 0, 0, 0.01, 0, 250, 0.2, 0.2, 0.0001, 1]]
 
 export function addDrum() {
   const drumPattern = new Array(numBeats).fill(0)
+  soundSettings.push(defaultSounds[drumArrays.length])
   drumArrays.push(drumPattern)
-  soundSettings.push(defaultSound)
   numDrums++
   makeDrumMachine(numDrums, numBeats)
 }
