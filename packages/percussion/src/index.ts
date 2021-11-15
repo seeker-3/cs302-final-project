@@ -43,7 +43,7 @@ function audioToDrum(audioData) {
       //skip the rest of the sound for that beat. Using a for loop for
       //this is only necessary for generating the chart. In the end I wont
       //need it and it can be replaced by adding 5000 to i.
-      for (let i = current; i < current + 5000; i++) {
+      for (i = current; i < current + 5000; i++) {
         rhythmData.push(0)
         labels.push(i)
       }
@@ -63,10 +63,10 @@ function audioToDrum(audioData) {
 
   //minInterval is used to set the amount of time between playing each
   //tile on the drum machine.
-  const interval = Math.min(...intervals) / 41
+  const interval = Math.min.apply(null, intervals) / 41
   if (interval < minInterval && numDrums > 0) {
-    //resetDrums(interval)
-    minInterval = interval
+    resetDrums(interval)
+    minInterval = interval 
   } else if (numDrums == 0) {
     minInterval = interval
   }
@@ -95,6 +95,7 @@ function audioToDrum(audioData) {
   }
 
   drumArrays.push(newDrum)
+  soundSettings.push(defaultSound)
 
   numDrums = drumArrays.length
   makeDrumMachine(numDrums, numBeats)
@@ -143,36 +144,6 @@ function sort(intervals) {
   return commonInterval
 }
 
-//This isn't important. I just used this to help visualize the audio data.
-//I may want to use it again in the future, so I haven't deleted it yet
-function makeChart(rhythmData, labels) {
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: 'Sound Data',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
-        data: rhythmData,
-      },
-    ],
-  }
-
-  const config = {
-    type: 'line',
-    data: data,
-    options: {
-      scales: {
-        x: {
-          type: 'linear',
-          position: 'bottom',
-        },
-      },
-    },
-  }
-
-  // const myChart = new Chart(document.getElementById('myChart'), config)
-}
 
 //_________________Drum machine maker_____________________
 //
@@ -183,10 +154,13 @@ function makeChart(rhythmData, labels) {
 //pattern for each drum. I'm doing this to separate the creation
 //and manipulation of the drum machine from dom manipulation
 const drumArrays = []
+const soundSettings = []
+const defaultSound = [2500, 0.1, 0.1, 0.1, 1, 250, 0.1, 0.1, 0.01, 1]
 
 function addDrum() {
   const drumPattern = new Array(numBeats).fill(0)
   drumArrays.push(drumPattern)
+  soundSettings.push(defaultSound)
   numDrums++
   makeDrumMachine(numDrums, numBeats)
 }
@@ -199,6 +173,7 @@ function minusDrum() {
 
 function deleteDrum(drumIndex) {
   drumArrays.splice(drumIndex, 1)
+  soundSettings.splice(drumIndex, 1)
   numDrums--
   makeDrumMachine(numDrums, numBeats)
 }
@@ -232,13 +207,12 @@ function shiftLeft(drumIndex) {
 }
 
 function resetDrums(interval) {
-  const beatMultiplier = minInterval / interval
-  const newLength = drumArrays[0].length * beatMultiplier
+  const beatMult = parseInt((minInterval / interval).toFixed())
+
   for (let i = 0; i < numDrums; i++) {
-    for (let j = 0; j < newLength; j++) {
-      const current = j
-      for (j = current; j < beatMultiplier + current; j++) {
-        drumArrays[i].splice(j + 1, 0, 0)
+    for (let j = numBeats; j > 0; j--) {
+      for (let add = 0; add < beatMult - 1; add++) {
+        drumArrays[i].splice(j, 0, 0)
       }
     }
   }
@@ -382,13 +356,7 @@ async function playBeat(beatI) {
   for (let i = 0; i < numDrums; i++) {
     const tile = drumArrays[i][beatI]
     if (tile != 0) {
-      if (i == 0) {
-        playHiHat()
-      } else if (i == 1) {
-        playSnare()
-      } else {
-        playKick()
-      }
+      playSound(soundSettings[i])
     }
   }
 }
@@ -415,22 +383,8 @@ const primaryGainControl = audioContext.createGain()
 primaryGainControl.gain.setValueAtTime(0.05, 0)
 primaryGainControl.connect(audioContext.destination)
 
-// __White noise__
-const button = document.createElement('button')
-button.innerText = 'White Noise'
-button.addEventListener('click', () => {
-  const whiteNoiseSource = audioContext.createBufferSource()
-  whiteNoiseSource.buffer = buffer
-  whiteNoiseSource.connect(primaryGainControl)
-  whiteNoiseSource.start()
-})
-document.querySelector('body').appendChild(button)
 
 // __Snare__
-const snareFilter = audioContext.createBiquadFilter()
-snareFilter.type = 'highpass'
-snareFilter.frequency.value = 2500
-snareFilter.connect(primaryGainControl)
 
 const snareButton = document.createElement('button')
 snareButton.innerText = 'Snare'
@@ -440,37 +394,8 @@ snareButton.addEventListener('click', () => {
 })
 
 function playSnare() {
-  const whiteNoiseSource = audioContext.createBufferSource()
-  whiteNoiseSource.buffer = buffer
-
-  const whiteNoiseSourceGain = audioContext.createGain()
-  whiteNoiseSourceGain.gain.setValueAtTime(1, audioContext.currentTime)
-  whiteNoiseSourceGain.gain.exponentialRampToValueAtTime(
-    0.01,
-    audioContext.currentTime + 0.1,
-  )
-
-  whiteNoiseSource.connect(whiteNoiseSourceGain)
-  whiteNoiseSource.connect(snareFilter)
-
-  whiteNoiseSource.start()
-  whiteNoiseSource.stop(audioContext.currentTime + 0.1)
-
-  const snareOscillator = audioContext.createOscillator()
-  snareOscillator.type = 'square'
-  snareOscillator.frequency.setValueAtTime(250, audioContext.currentTime)
-
-  const oscillatorGain = audioContext.createGain()
-  oscillatorGain.gain.setValueAtTime(1, audioContext.currentTime)
-  oscillatorGain.gain.exponentialRampToValueAtTime(
-    0.01,
-    audioContext.currentTime + 0.1,
-  )
-
-  snareOscillator.connect(oscillatorGain)
-  oscillatorGain.connect(primaryGainControl)
-  snareOscillator.start()
-  snareOscillator.stop(audioContext.currentTime + 0.01)
+  playSound([2500, 0.1, 0.1, 0.1, 1,
+    250, 0.1, 0.1, 0.01, 1])
 }
 document.querySelector('body').appendChild(snareButton)
 
@@ -482,36 +407,14 @@ kickButton.addEventListener('click', () => {
   playKick()
 })
 
-kickButton.innerText = 'Kick'
 function playKick() {
-  const kickOscillator = audioContext.createOscillator()
-
-  kickOscillator.frequency.setValueAtTime(250, 0)
-  kickOscillator.frequency.exponentialRampToValueAtTime(
-    0.001,
-    audioContext.currentTime + 0.5,
-  )
-
-  const kickGain = audioContext.createGain()
-  kickGain.gain.setValueAtTime(1, 0)
-  kickGain.gain.exponentialRampToValueAtTime(
-    0.001,
-    audioContext.currentTime + 0.5,
-  )
-
-  kickOscillator.connect(kickGain)
-  kickGain.connect(primaryGainControl)
-  kickOscillator.start()
-  kickOscillator.stop(audioContext.currentTime + 0.5)
+  playSound([0, 0, 0, 0.01, 0,
+    250, 0.2, 0.2, 0.0001, 1])
 }
+kickButton.innerText = 'Kick'
 document.querySelector('body').appendChild(kickButton)
 
 // ___Hi Hat ____
-
-const hiHatFilter = audioContext.createBiquadFilter()
-hiHatFilter.type = 'highpass'
-hiHatFilter.frequency.value = 10000
-hiHatFilter.connect(primaryGainControl)
 
 const hiHatButton = document.createElement('button')
 hiHatButton.innerText = 'Hi Hat'
@@ -521,36 +424,60 @@ hiHatButton.addEventListener('click', () => {
 })
 
 function playHiHat() {
+  playSound([10000, 0.1, 0.1, 0.01, 1,
+    250, 0.1, 0.005, 0.01, 0.3])
+}
+document.querySelector('body').appendChild(hiHatButton)
+
+
+
+function playSound(setting) {
+    
+  let noiseFreq = setting[0]
+  let noiseGain = setting[1]
+  let noiseTime = setting[2]
+  let noiseRamp = setting[3]
+  let noiseVol = setting[4]
+  let oscilFreq = setting[5]
+  let oscilGain = setting[6]
+  let oscilTime = setting[7]
+  let oscilRamp = setting[8]
+  let oscilVol = setting[9]
+
+  const Filter = audioContext.createBiquadFilter()
+  Filter.type = 'highpass'
+  Filter.frequency.value = noiseFreq
+  Filter.connect(primaryGainControl)
+
   const whiteNoiseSource = audioContext.createBufferSource()
   whiteNoiseSource.buffer = buffer
 
   const whiteNoiseSourceGain = audioContext.createGain()
-  whiteNoiseSourceGain.gain.setValueAtTime(1, audioContext.currentTime)
+  whiteNoiseSourceGain.gain.setValueAtTime(noiseVol, audioContext.currentTime)
   whiteNoiseSourceGain.gain.exponentialRampToValueAtTime(
-    0.01,
-    audioContext.currentTime + 0.1,
+    noiseRamp,
+    audioContext.currentTime + noiseGain,
   )
 
   whiteNoiseSource.connect(whiteNoiseSourceGain)
-  whiteNoiseSource.connect(hiHatFilter)
+  whiteNoiseSource.connect(Filter)
 
   whiteNoiseSource.start()
-  whiteNoiseSource.stop(audioContext.currentTime + 0.2)
+  whiteNoiseSource.stop(audioContext.currentTime + noiseTime)
 
-  const hiHatOscillator = audioContext.createOscillator()
-  hiHatOscillator.type = 'square'
-  hiHatOscillator.frequency.setValueAtTime(250, audioContext.currentTime)
+  const oscillator = audioContext.createOscillator()
+  oscillator.type = 'square'
+  oscillator.frequency.setValueAtTime(oscilFreq, audioContext.currentTime)
 
   const oscillatorGain = audioContext.createGain()
-  oscillatorGain.gain.setValueAtTime(0.3, audioContext.currentTime)
+  oscillatorGain.gain.setValueAtTime(oscilVol, audioContext.currentTime)
   oscillatorGain.gain.exponentialRampToValueAtTime(
-    0.01,
-    audioContext.currentTime + 0.05,
+    oscilRamp,
+    audioContext.currentTime + oscilGain,
   )
 
-  hiHatOscillator.connect(oscillatorGain)
+  oscillator.connect(oscillatorGain)
   oscillatorGain.connect(primaryGainControl)
-  hiHatOscillator.start()
-  hiHatOscillator.stop(audioContext.currentTime + 0.01)
+  oscillator.start()
+  oscillator.stop(audioContext.currentTime + oscilTime)
 }
-document.querySelector('body').appendChild(hiHatButton)
