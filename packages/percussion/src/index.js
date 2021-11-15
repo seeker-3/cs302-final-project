@@ -1,5 +1,3 @@
-import './style.css'
-
 const audioContext = new AudioContext()
 
 const recorder = document.getElementById('recorder')
@@ -9,10 +7,9 @@ let numBeats = 0
 let numDrums = 0
 let minInterval = 125 //smallest interval between beats in milliseconds
 
-
 //This event listener waits for a file to uploaded and then it determines the tempo of that audio file.
 //It also converts the beats in that audio file into a patter than is pushed into drumArrays
-recorder.addEventListener('change', async ({ target }) => {
+export const handleOnChange = async ({ target }) => {
   const file = target.files[0]
   const url = URL.createObjectURL(file)
 
@@ -22,8 +19,9 @@ recorder.addEventListener('change', async ({ target }) => {
 
   const audioData = bpmBuffer.getChannelData(0)
   audioToDrum(audioData)
-})
+}
 
+recorder.onchange = handleOnChange
 
 function audioToDrum(audioData) {
   const length = audioData.length
@@ -32,20 +30,20 @@ function audioToDrum(audioData) {
   const beats = []
 
   //These for loops iterate through the raw audio data looking
-  //for the start of beat by searching for volume value greater 
+  //for the start of beat by searching for volume value greater
   //than the predetermined value for background noise. The let i
   // must maintained though out the nested for loops.
-  let i
-  for (i = 0; i < length; i++) {
+
+  for (let i = 0; i < length; i++) {
     if (audioData[i] > whisper) {
       rhythmData.push(1)
       let current = i
       beats.push(i)
       //This for loop is used to jump ahead by about 1/8 of a second to
-      //skip the rest of the sound for that beat. Using a for loop for 
-      //this is only nessesary for generating the chart. In the end I wont
+      //skip the rest of the sound for that beat. Using a for loop for
+      //this is only necessary for generating the chart. In the end I wont
       //need it and it can be replaced by adding 5000 to i.
-      for (i = current; i < current + 5000; i++) {
+      for (let i = current; i < current + 5000; i++) {
         rhythmData.push(0)
         labels.push(i)
       }
@@ -63,24 +61,24 @@ function audioToDrum(audioData) {
     intervals.push(beats[i + 1] - beats[i])
   }
 
-    //minInterval is used to set the amount of time between playing each
-  //tile on the drum machine. 
-  let interval = Math.min.apply(null, intervals) / 41
+  //minInterval is used to set the amount of time between playing each
+  //tile on the drum machine.
+  const interval = Math.min(...intervals) / 41
   if (interval < minInterval && numDrums > 0) {
     //resetDrums(interval)
-    minInterval = interval 
+    minInterval = interval
   } else if (numDrums == 0) {
     minInterval = interval
   }
 
-  let newDrum = [] 
-    for (let b = 0; b < beats.length-1; b++) {
-      newDrum.push(1);
-      let space = (intervals[b] / (minInterval*41)).toFixed()
-      for (let i = 0; i < space-1; i++) {
-        newDrum.push(0);
-      }
+  const newDrum = []
+  for (let b = 0; b < beats.length - 1; b++) {
+    newDrum.push(1)
+    const space = parseInt((intervals[b] / (minInterval * 41)).toFixed())
+    for (let i = 0; i < space - 1; i++) {
+      newDrum.push(0)
     }
+  }
 
   if (newDrum.length > numBeats) {
     for (let i = 0; i < newDrum.length - numBeats; i++) {
@@ -90,7 +88,7 @@ function audioToDrum(audioData) {
     }
     numBeats = newDrum.length
   } else if (newDrum.length < numBeats) {
-    let diff = numBeats - newDrum.length
+    const diff = numBeats - newDrum.length
     for (let i = 0; i < diff; i++) {
       newDrum.push(0)
     }
@@ -98,13 +96,11 @@ function audioToDrum(audioData) {
 
   drumArrays.push(newDrum)
 
-
   numDrums = drumArrays.length
   makeDrumMachine(numDrums, numBeats)
-
 }
 
-//This function is called to return the most commom interval found in the audio file
+//This function is called to return the most common interval found in the audio file
 //This is then used to determine the bpm
 function sort(intervals) {
   const intervalCats = []
@@ -115,7 +111,7 @@ function sort(intervals) {
 
   while (intervals.length > 0) {
     let i = 0
-    for (i = 0; i < intervalCats.length; i++) {
+    for (; i < intervalCats.length; i++) {
       const diff = Math.abs(intervalCats[i] - intervals[intervals.length - 1])
 
       if (diff < intervalCats[i] / 2) {
@@ -136,7 +132,7 @@ function sort(intervals) {
   }
 
   let maxRank = 0
-  let commonInterval
+  let commonInterval = null
   for (let i = 0; i < intervalRanks.length; i++) {
     if (intervalRanks[i] > maxRank) {
       maxRank = intervalRanks[i]
@@ -147,9 +143,8 @@ function sort(intervals) {
   return commonInterval
 }
 
-
-//This isnt important. I just used this to help visualize the audio data. 
-//I may want to use it again in the future, so I havent deleted it yet
+//This isn't important. I just used this to help visualize the audio data.
+//I may want to use it again in the future, so I haven't deleted it yet
 function makeChart(rhythmData, labels) {
   const data = {
     labels: labels,
@@ -176,22 +171,21 @@ function makeChart(rhythmData, labels) {
     },
   }
 
-  const myChart = new Chart(document.getElementById('myChart'), config)
+  // const myChart = new Chart(document.getElementById('myChart'), config)
 }
-
 
 //_________________Drum machine maker_____________________
 //
-//Each of these functions manipulates the 2d array that holds the patterns for each drumline in the 
-//drum machine. The machine starts out with no drums and no beats. You have to tell it to add them. 
+//Each of these functions manipulates the 2d array that holds the patterns for each drum line in the
+//drum machine. The machine starts out with no drums and no beats. You have to tell it to add them.
 
 //this array will hold arrays that represent the drum machine
-//pattern for each drum. I'm doing this to seperate the creation
+//pattern for each drum. I'm doing this to separate the creation
 //and manipulation of the drum machine from dom manipulation
-let drumArrays = []
+const drumArrays = []
 
 function addDrum() {
-  let drumPattern = new Array(numBeats).fill(0)
+  const drumPattern = new Array(numBeats).fill(0)
   drumArrays.push(drumPattern)
   numDrums++
   makeDrumMachine(numDrums, numBeats)
@@ -238,55 +232,50 @@ function shiftLeft(drumIndex) {
 }
 
 function resetDrums(interval) {
-  const beatMult = minInterval / interval
-  const newLength = drumArrays[0].length * beatMult
+  const beatMultiplier = minInterval / interval
+  const newLength = drumArrays[0].length * beatMultiplier
   for (let i = 0; i < numDrums; i++) {
     for (let j = 0; j < newLength; j++) {
-      let current = j
-      for (j = current; j < beatMult+current; j++) {
-        drumArrays[i].splice(j+1, 0, 0)
+      const current = j
+      for (j = current; j < beatMultiplier + current; j++) {
+        drumArrays[i].splice(j + 1, 0, 0)
       }
     }
   }
   numBeats = drumArrays[0].length
 }
 
-
-const addBeatButton = document.getElementById("addBeat")
+const addBeatButton = document.getElementById('addBeat')
 addBeatButton.onclick = () => {
   addBeat()
 }
 
-const remBeatButton = document.getElementById("remBeat")
+const remBeatButton = document.getElementById('remBeat')
 remBeatButton.onclick = () => {
   minusBeat()
 }
 
-const addDrumButton = document.getElementById("addDrum")
+const addDrumButton = document.getElementById('addDrum')
 addDrumButton.onclick = () => {
   addDrum()
 }
 
-
-
-
 //_________UI stuff__________________
 //
 //All the stuff in this section is just making buttons and stuff like that so I can
-//test out my code. 
-
+//test out my code.
 
 //All of this dom manipulation is just to give me a way to visualize the drum machine and add beats
 //from the website.
 //The functions for manipulating the drum machine are above. The functions for playing the drum machine
-//do not require these function bellow. 
+//do not require these function bellow.
 
 const machineContainer = document.getElementById('drums')
 
 function makeDrumMachine(numDrums, numBeats) {
   //I'm deleting whatever was in the machine container before because
-  //I create a new drum machine evertime I edit the the paramaters of it.
-  while(machineContainer.firstChild) {
+  //I create a new drum machine every time I edit the the parameters of it.
+  while (machineContainer.firstChild) {
     machineContainer.removeChild(machineContainer.firstChild)
   }
   for (let i = 0; i < numDrums; i++) {
@@ -295,29 +284,32 @@ function makeDrumMachine(numDrums, numBeats) {
 }
 
 function newDrumMachine(numBeats, index) {
-  
   const lineBreak = document.createElement('br')
 
-
   //This will button calls the shiftLeft function. Its
-  //faint becuase I don't know how to do UI
-  const leftButton = document.createElement('buton')
+  //faint because I don't know how to do UI
+  const leftButton = document.createElement('button')
   leftButton.innerText = '<'
-  leftButton.onclick = () => {shiftLeft(index)}
+  leftButton.onclick = () => {
+    shiftLeft(index)
+  }
 
-  //This button will call the shiftRigt function
+  //This button will call the shiftRight function
   const rightButton = document.createElement('button')
   rightButton.innerText = '>'
-  rightButton.onclick = () => {shiftRight(index)}
+  rightButton.onclick = () => {
+    shiftRight(index)
+  }
 
   //This is to make a button that can remove specific drums from
-  //The machine. The button is at the end of each drumline
+  //The machine. The button is at the end of each drum line
   const deleteButton = document.createElement('button')
   deleteButton.innerText = 'DEL'
-  deleteButton.onclick = () => {deleteDrum(index)}
+  deleteButton.onclick = () => {
+    deleteDrum(index)
+  }
 
   machineContainer.appendChild(leftButton)
-
 
   this.newDrumMachine = document.createElement('dev')
   this.newDrumMachine.setAttribute('id', 'drum' + index)
@@ -337,7 +329,7 @@ function newDrum(drum, beatIndex, drumIndex) {
   this.newDrum.setAttribute('id', 'beat' + drumIndex + beatIndex)
   this.newDrum.setAttribute('class', 'beat')
 
-  //This if statement loads whatever is in the drumArrays onto the 
+  //This if statement loads whatever is in the drumArrays onto the
   //drum machine visualizer.
   if (drumArrays[drumIndex][beatIndex] == 1) {
     this.newDrum.classList.add('beat-selected')
@@ -350,11 +342,11 @@ function newDrum(drum, beatIndex, drumIndex) {
     if (!this.newDrum.clicked) {
       this.newDrum.classList.add('beat-selected')
       this.newDrum.clicked = true
-      drumArrays[drumIndex][beatIndex] = 1//This makes it so the buttons on the website can edit the drum machine pattern
+      drumArrays[drumIndex][beatIndex] = 1 //This makes it so the buttons on the website can edit the drum machine pattern
     } else {
       this.newDrum.classList.remove('beat-selected')
       this.newDrum.clicked = false
-      drumArrays[drumIndex][beatIndex] = 0//Same here
+      drumArrays[drumIndex][beatIndex] = 0 //Same here
     }
   }
 }
@@ -377,7 +369,9 @@ async function playTrack() {
     }
 
     for (let i = 0; i < numBeats; i++) {
-      if(!run){break;}
+      if (!run) {
+        break
+      }
       await sleepFor(minInterval)
       playBeat(i)
     }
@@ -401,7 +395,7 @@ async function playBeat(beatI) {
 
 // _________Sounds Section ___________
 //
-//I will probobly either import sounds or create a thing that allows 
+//I will probably either import sounds or create a thing that allows
 //you to easily make your own, but either way it likely wont stay as just a kick,
 //snare, and hi hat sound.
 
@@ -421,8 +415,6 @@ const primaryGainControl = audioContext.createGain()
 primaryGainControl.gain.setValueAtTime(0.05, 0)
 primaryGainControl.connect(audioContext.destination)
 
-
-
 // __White noise__
 const button = document.createElement('button')
 button.innerText = 'White Noise'
@@ -433,8 +425,6 @@ button.addEventListener('click', () => {
   whiteNoiseSource.start()
 })
 document.querySelector('body').appendChild(button)
-
-
 
 // __Snare__
 const snareFilter = audioContext.createBiquadFilter()
@@ -484,8 +474,6 @@ function playSnare() {
 }
 document.querySelector('body').appendChild(snareButton)
 
-
-
 // ___Kick __
 
 const kickButton = document.createElement('button')
@@ -518,11 +506,7 @@ function playKick() {
 }
 document.querySelector('body').appendChild(kickButton)
 
-
-
-
 // ___Hi Hat ____
-
 
 const hiHatFilter = audioContext.createBiquadFilter()
 hiHatFilter.type = 'highpass'
@@ -558,7 +542,7 @@ function playHiHat() {
   hiHatOscillator.frequency.setValueAtTime(250, audioContext.currentTime)
 
   const oscillatorGain = audioContext.createGain()
-  oscillatorGain.gain.setValueAtTime(.3, audioContext.currentTime)
+  oscillatorGain.gain.setValueAtTime(0.3, audioContext.currentTime)
   oscillatorGain.gain.exponentialRampToValueAtTime(
     0.01,
     audioContext.currentTime + 0.05,
