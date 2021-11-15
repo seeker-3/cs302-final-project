@@ -3,9 +3,11 @@ const audioContext = new AudioContext()
 const recorder = document.getElementById('recorder')
 const whisper = 0.02
 
-let numBeats = 0
-let numDrums = 0
-let minInterval = 125 //smallest interval between beats in milliseconds
+export let numBeats = 0
+export let numDrums = 0
+export let minInterval = 125 //smallest interval between beats in milliseconds
+export let tempo = 60000 / minInterval 
+
 
 //This event listener waits for a file to uploaded and then it determines the tempo of that audio file.
 //It also converts the beats in that audio file into a patter than is pushed into drumArrays
@@ -23,7 +25,7 @@ export const handleOnChange = async ({ target }) => {
 
 recorder.onchange = handleOnChange
 
-function audioToDrum(audioData) {
+export function audioToDrum(audioData) {
   const length = audioData.length
   const rhythmData = []
   const labels = []
@@ -99,11 +101,32 @@ function audioToDrum(audioData) {
 
   numDrums = drumArrays.length
   makeDrumMachine(numDrums, numBeats)
+
+  getBPM()
 }
 
 //This function is called to return the most common interval found in the audio file
 //This is then used to determine the bpm
-function sort(intervals) {
+export function getBPM() {
+  const intervals = []
+
+  let intCount = 1
+  let count = 0
+  for (let i = 0; i < numDrums; i++) {
+    for (let j = 1; j < numBeats; j++) {
+      if (drumArrays[i][j] == 1 && count == 1) {
+        intervals.push(intCount)
+        intCount = 0
+      } else if (drumArrays[i][j] == 1 && count == 0) {
+        count = 1
+        intCount = 0
+      }
+      intCount += count
+    }
+    count = 0
+    intCount = 0
+  }
+
   const intervalCats = []
   const intervalRanks = []
 
@@ -113,15 +136,10 @@ function sort(intervals) {
   while (intervals.length > 0) {
     let i = 0
     for (; i < intervalCats.length; i++) {
-      const diff = Math.abs(intervalCats[i] - intervals[intervals.length - 1])
 
-      if (diff < intervalCats[i] / 2) {
-        intervalCats[i] *= intervalRanks[i]
+      if (intervalCats[i] == intervals[intervals.length - 1]) {
         intervalRanks[i]++
-
-        intervalCats[i] += intervals.pop()
-        intervalCats[i] /= intervalRanks[i]
-
+        intervals.pop()
         break
       }
     }
@@ -141,7 +159,7 @@ function sort(intervals) {
     }
   }
 
-  return commonInterval
+  tempo = 60000 / (commonInterval * minInterval)
 }
 
 
@@ -153,11 +171,11 @@ function sort(intervals) {
 //this array will hold arrays that represent the drum machine
 //pattern for each drum. I'm doing this to separate the creation
 //and manipulation of the drum machine from dom manipulation
-const drumArrays = []
-const soundSettings = []
-const defaultSound = [2500, 0.1, 0.1, 0.1, 1, 250, 0.1, 0.1, 0.01, 1]
+export const drumArrays = []
+export const soundSettings = []
+export const defaultSound = [2500, 0.1, 0.1, 0.1, 1, 250, 0.1, 0.1, 0.01, 1]
 
-function addDrum() {
+export function addDrum() {
   const drumPattern = new Array(numBeats).fill(0)
   drumArrays.push(drumPattern)
   soundSettings.push(defaultSound)
@@ -171,14 +189,14 @@ function minusDrum() {
   makeDrumMachine(numDrums, numBeats)
 }
 
-function deleteDrum(drumIndex) {
+export function deleteDrum(drumIndex) {
   drumArrays.splice(drumIndex, 1)
   soundSettings.splice(drumIndex, 1)
   numDrums--
   makeDrumMachine(numDrums, numBeats)
 }
 
-function addBeat() {
+export function addBeat() {
   for (let i = 0; i < drumArrays.length; i++) {
     drumArrays[i].push(0)
   }
@@ -186,7 +204,7 @@ function addBeat() {
   makeDrumMachine(numDrums, numBeats)
 }
 
-function minusBeat() {
+export function minusBeat() {
   for (let i = 0; i < drumArrays.length; i++) {
     drumArrays[i].pop()
   }
@@ -194,19 +212,19 @@ function minusBeat() {
   makeDrumMachine(numDrums, numBeats)
 }
 
-function shiftRight(drumIndex) {
+export function shiftRight(drumIndex) {
   drumArrays[drumIndex].unshift(0)
   drumArrays[drumIndex].pop()
   makeDrumMachine(numDrums, numBeats)
 }
 
-function shiftLeft(drumIndex) {
+export function shiftLeft(drumIndex) {
   drumArrays[drumIndex].shift()
   drumArrays[drumIndex].push(0)
   makeDrumMachine(numDrums, numBeats)
 }
 
-function resetDrums(interval) {
+export function resetDrums(interval) {
   const beatMult = parseInt((minInterval / interval).toFixed())
 
   for (let i = 0; i < numDrums; i++) {
@@ -327,7 +345,7 @@ function newDrum(drum, beatIndex, drumIndex) {
 
 //________Loop Section ______________
 
-const sleepFor = delay => new Promise(resolve => setTimeout(resolve, delay))
+export const sleepFor = delay => new Promise(resolve => setTimeout(resolve, delay))
 
 const play = document.getElementById('play')
 const pause = document.getElementById('pause')
@@ -335,7 +353,7 @@ play.onclick = () => {
   playTrack()
 }
 
-async function playTrack() {
+export async function playTrack() {
   let run = true
   while (run) {
     pause.onclick = () => {
@@ -352,7 +370,7 @@ async function playTrack() {
   }
 }
 
-async function playBeat(beatI) {
+export async function playBeat(beatI) {
   for (let i = 0; i < numDrums; i++) {
     const tile = drumArrays[i][beatI]
     if (tile != 0) {
@@ -367,19 +385,19 @@ async function playBeat(beatI) {
 //you to easily make your own, but either way it likely wont stay as just a kick,
 //snare, and hi hat sound.
 
-const buffer = audioContext.createBuffer(
+export const buffer = audioContext.createBuffer(
   1,
   audioContext.sampleRate * 1,
   audioContext.sampleRate,
 )
 
-const channelData = buffer.getChannelData(0)
+export const channelData = buffer.getChannelData(0)
 
 for (let i = 0; i < buffer.length; i++) {
   channelData[i] = Math.random() * 2 - 1
 }
 
-const primaryGainControl = audioContext.createGain()
+export const primaryGainControl = audioContext.createGain()
 primaryGainControl.gain.setValueAtTime(0.05, 0)
 primaryGainControl.connect(audioContext.destination)
 
@@ -393,7 +411,7 @@ snareButton.addEventListener('click', () => {
   playSnare()
 })
 
-function playSnare() {
+export function playSnare() {
   playSound([2500, 0.1, 0.1, 0.1, 1,
     250, 0.1, 0.1, 0.01, 1])
 }
@@ -407,7 +425,7 @@ kickButton.addEventListener('click', () => {
   playKick()
 })
 
-function playKick() {
+export function playKick() {
   playSound([0, 0, 0, 0.01, 0,
     250, 0.2, 0.2, 0.0001, 1])
 }
@@ -423,7 +441,7 @@ hiHatButton.addEventListener('click', () => {
   playHiHat()
 })
 
-function playHiHat() {
+export function playHiHat() {
   playSound([10000, 0.1, 0.1, 0.01, 1,
     250, 0.1, 0.005, 0.01, 0.3])
 }
@@ -431,7 +449,7 @@ document.querySelector('body').appendChild(hiHatButton)
 
 
 
-function playSound(setting) {
+export function playSound(setting) {
     
   let noiseFreq = setting[0]
   let noiseGain = setting[1]
