@@ -43,7 +43,7 @@ function audioToDrum(audioData) {
       //skip the rest of the sound for that beat. Using a for loop for
       //this is only necessary for generating the chart. In the end I wont
       //need it and it can be replaced by adding 5000 to i.
-      for (let i = current; i < current + 5000; i++) {
+      for (i = current; i < current + 5000; i++) {
         rhythmData.push(0)
         labels.push(i)
       }
@@ -63,7 +63,7 @@ function audioToDrum(audioData) {
 
   //minInterval is used to set the amount of time between playing each
   //tile on the drum machine.
-  const interval = Math.min(...intervals) / 41
+  const interval = Math.min.apply(null, intervals) / 41
   if (interval < minInterval && numDrums > 0) {
     resetDrums(interval)
     minInterval = interval 
@@ -95,6 +95,7 @@ function audioToDrum(audioData) {
   }
 
   drumArrays.push(newDrum)
+  soundSettings.push(defaultSound)
 
   numDrums = drumArrays.length
   makeDrumMachine(numDrums, numBeats)
