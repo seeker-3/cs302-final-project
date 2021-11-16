@@ -3,10 +3,10 @@ const audioContext = new AudioContext()
 const recorder = document.getElementById('recorder')
 const whisper = 0.02
 
-export let numBeats = 0
-export let numDrums = 0
-export let minInterval = 125 //smallest interval between beats in milliseconds
-export let tempo = 60000 / minInterval 
+let numBeats = 0
+let numDrums = 0
+let minInterval = 125 //smallest interval between beats in milliseconds
+let tempo = 60000 / minInterval 
 
 
 //This event listener waits for a file to uploaded and then it determines the tempo of that audio file.
@@ -25,7 +25,7 @@ export const handleOnChange = async ({ target }) => {
 
 recorder.onchange = handleOnChange
 
-export function audioToDrum(audioData) {
+function audioToDrum(audioData) {
   const length = audioData.length
   const rhythmData = []
   const labels = []
@@ -171,9 +171,9 @@ export function getBPM() {
 //this array will hold arrays that represent the drum machine
 //pattern for each drum. I'm doing this to separate the creation
 //and manipulation of the drum machine from dom manipulation
-export const drumArrays = []
-export const soundSettings = []
-export const defaultSounds = [[10000, 0.1, 0.1, 0.01, 1, 250, 0.1, 0.005, 0.01, 0.3],
+const drumArrays = []
+const soundSettings = []
+const defaultSounds = [[10000, 0.1, 0.1, 0.01, 1, 250, 0.1, 0.005, 0.01, 0.3],
                               [2500, 0.1, 0.1, 0.1, 1, 250, 0.1, 0.1, 0.01, 1],
                               [0, 0, 0, 0.01, 0, 250, 0.2, 0.2, 0.0001, 1]]
 
@@ -226,7 +226,7 @@ export function shiftLeft(drumIndex) {
   makeDrumMachine(numDrums, numBeats)
 }
 
-export function resetDrums(interval) {
+function resetDrums(interval) {
   const beatMult = parseInt((minInterval / interval).toFixed())
 
   for (let i = 0; i < numDrums; i++) {
@@ -347,7 +347,7 @@ function newDrum(drum, beatIndex, drumIndex) {
 
 //________Loop Section ______________
 
-export const sleepFor = delay => new Promise(resolve => setTimeout(resolve, delay))
+const sleepFor = delay => new Promise(resolve => setTimeout(resolve, delay))
 
 const play = document.getElementById('play')
 const pause = document.getElementById('pause')
@@ -372,7 +372,7 @@ export async function playTrack() {
   }
 }
 
-export async function playBeat(beatI) {
+async function playBeat(beatI) {
   for (let i = 0; i < numDrums; i++) {
     const tile = drumArrays[i][beatI]
     if (tile != 0) {
@@ -387,19 +387,19 @@ export async function playBeat(beatI) {
 //you to easily make your own, but either way it likely wont stay as just a kick,
 //snare, and hi hat sound.
 
-export const buffer = audioContext.createBuffer(
+const buffer = audioContext.createBuffer(
   1,
   audioContext.sampleRate * 1,
   audioContext.sampleRate,
 )
 
-export const channelData = buffer.getChannelData(0)
+const channelData = buffer.getChannelData(0)
 
 for (let i = 0; i < buffer.length; i++) {
   channelData[i] = Math.random() * 2 - 1
 }
 
-export const primaryGainControl = audioContext.createGain()
+const primaryGainControl = audioContext.createGain()
 primaryGainControl.gain.setValueAtTime(0.05, 0)
 primaryGainControl.connect(audioContext.destination)
 
@@ -413,7 +413,7 @@ snareButton.addEventListener('click', () => {
   playSnare()
 })
 
-export function playSnare() {
+function playSnare() {
   playSound([2500, 0.1, 0.1, 0.1, 1,
     250, 0.1, 0.1, 0.01, 1])
 }
@@ -427,7 +427,7 @@ kickButton.addEventListener('click', () => {
   playKick()
 })
 
-export function playKick() {
+function playKick() {
   playSound([0, 0, 0, 0.01, 0,
     250, 0.2, 0.2, 0.0001, 1])
 }
@@ -443,7 +443,7 @@ hiHatButton.addEventListener('click', () => {
   playHiHat()
 })
 
-export function playHiHat() {
+function playHiHat() {
   playSound([10000, 0.1, 0.1, 0.01, 1,
     250, 0.1, 0.005, 0.01, 0.3])
 }
