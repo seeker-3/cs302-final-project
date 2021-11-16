@@ -6,7 +6,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src'),
       name: '.humPercussion',
-      fileName: format => `index.${format}.js`,
+      fileName: format => `lib.${format}.ts`,
     },
   },
 })
