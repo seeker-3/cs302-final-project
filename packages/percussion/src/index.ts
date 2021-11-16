@@ -12,14 +12,22 @@ let tempo = 60000 / minInterval
 //This event listener waits for a file to uploaded and then it determines the tempo of that audio file.
 //It also converts the beats in that audio file into a patter than is pushed into drumArrays
 export const handleOnChange = async ({ target }) => {
-  const file = target.files[0]
+
+  //Store raw audio data in url object
+  const file = target.files[0] 
   const url = URL.createObjectURL(file)
 
+  //request data from the url object and store in a buffer
   const response = await fetch(url)
   const soundBuffer = await response.arrayBuffer()
-  const bpmBuffer = await audioContext.decodeAudioData(soundBuffer)
 
-  const audioData = bpmBuffer.getChannelData(0)
+  //pass buffer to the audioContext function decodeAudioData to get usable data
+  const dataBuffer = await audioContext.decodeAudioData(soundBuffer)
+
+  //get first channel. Channels represent different sources of audio. Like surround sound
+  //That function return a vector of audio data 
+  const audioData = dataBuffer.getChannelData(0)
+
   audioToDrum(audioData)
 }
 
@@ -485,17 +493,23 @@ export function playSound(setting) {
   whiteNoiseSource.start()
   whiteNoiseSource.stop(audioContext.currentTime + noiseTime)
 
+  //create a simple oscillator with the disired wave type and
+  //Set the frequency to whatever value at the beginning of the sound
   const oscillator = audioContext.createOscillator()
   oscillator.type = 'square'
   oscillator.frequency.setValueAtTime(oscilFreq, audioContext.currentTime)
 
+  //create a gain (input volume) controler. Use the exponentialRampToValueAtTime
+  //function to dampen the volume overtime 
   const oscillatorGain = audioContext.createGain()
   oscillatorGain.gain.setValueAtTime(oscilVol, audioContext.currentTime)
   oscillatorGain.gain.exponentialRampToValueAtTime(
-    oscilRamp,
-    audioContext.currentTime + oscilGain,
+    oscilRamp,//ramp to this value
+    audioContext.currentTime + oscilGain,//get there at this time
   )
 
+  //Connect oscillator to the gain controler audio moduel 
+  //and the primaryGainControl (made earlier in the code)
   oscillator.connect(oscillatorGain)
   oscillatorGain.connect(primaryGainControl)
   oscillator.start()
