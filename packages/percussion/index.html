@@ -9,15 +9,16 @@
   </head>
   <body>
     <div id="app">
-      <input type="button" value="Play" id="play" />
-      <input type="button" value="Pause" id="pause" />
-      <input type="button" value="Add Beat" id="addBeat" />
-      <input type="button" value="Rem Beat" id="remBeat" />
-      <input type="button" value="Add Drum" id="addDrum" />
+      <!-- AB -- this is more HTML5-y -->
+      <button id="play">Play</button>
+      <button id="pause">Pause</button>
+      <button id="addBeat">Add Beat</button>
+      <button id="remBeat">Rem Beat</button>
+      <button id="addDrum">Add Drum</button>
     </div>
     <div id="rec">
-      <input type="file" accept="audio/*" capture id="recorder" /><br>
-      <input type="button" value="Add To Machine" id="addToMachine" />
+      <input type="file" accept="audio/*" capture id="recorder" /><br />
+      <button value="Add To Machine" id="addToMachine">Add To Machine</button>
     </div>
     <div id="drums"></div>
     <div><canvas id="myChart"></canvas></div>
