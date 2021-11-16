@@ -1,20 +1,19 @@
-import {addBeat} from  "./lib"
-import {addDrum} from "./lib"
-import {deleteDrum} from "./lib"
-import {minusBeat} from "./lib"
-import {shiftRight} from "./lib"
-import { shiftLeft } from "./lib"
-import { playSound } from "./lib"
-import { playTrack } from "./lib"
-import { handleOnChange } from "./lib"
-import { pauseTrack } from "./lib"
-import {drumArrays} from "./lib"
-
-
-
+import {
+  addBeat,
+  addDrum,
+  drumArrays,
+  handleAudioElementChange,
+  pauseTrack,
+  playSound,
+  playTrack,
+  removeBeat,
+  removeDrum,
+  shiftLeft,
+  shiftRight,
+} from './lib'
 
 const recorder = document.getElementById('recorder')
-recorder.onchange = handleOnChange 
+recorder.onchange = handleAudioElementChange
 
 const addToMachineButton = document.getElementById('addToMachine')
 addToMachineButton.onclick = () => {
@@ -29,7 +28,7 @@ addBeatButton.onclick = () => {
 
 const remBeatButton = document.getElementById('remBeat')
 remBeatButton.onclick = () => {
-  minusBeat()
+  removeBeat()
   makeDrumMachine()
 }
 
@@ -39,21 +38,21 @@ addDrumButton.onclick = () => {
   makeDrumMachine()
 }
 
-//_________UI stuff__________________
+// _________UI stuff__________________
 //
-//All the stuff in this section is just making buttons and stuff like that so I can
-//test out my code.
+// All the stuff in this section is just making buttons and stuff like that so I can
+// test out my code.
 
-//All of this dom manipulation is just to give me a way to visualize the drum machine and add beats
-//from the website.
-//The functions for manipulating the drum machine are above. The functions for playing the drum machine
-//do not require these function bellow.
+// All of this dom manipulation is just to give me a way to visualize the drum machine and add beats
+// from the website.
+// The functions for manipulating the drum machine are above. The functions for playing the drum machine
+// do not require these function bellow.
 
 const machineContainer = document.getElementById('drums')
 
 function makeDrumMachine() {
-  //I'm deleting whatever was in the machine container before because
-  //I create a new drum machine every time I edit the the parameters of it.
+  // I'm deleting whatever was in the machine container before because
+  // I create a new drum machine every time I edit the the parameters of it.
   while (machineContainer.firstChild) {
     machineContainer.removeChild(machineContainer.firstChild)
   }
@@ -65,8 +64,8 @@ function makeDrumMachine() {
 function newDrumMachine(index) {
   const lineBreak = document.createElement('br')
 
-  //This will button calls the shiftLeft function. Its
-  //faint because I don't know how to do UI
+  // This will button calls the shiftLeft function. Its
+  // faint because I don't know how to do UI
   const leftButton = document.createElement('button')
   leftButton.innerText = '<'
   leftButton.onclick = () => {
@@ -74,7 +73,7 @@ function newDrumMachine(index) {
     makeDrumMachine()
   }
 
-  //This button will call the shiftRight function
+  // This button will call the shiftRight function
   const rightButton = document.createElement('button')
   rightButton.innerText = '>'
   rightButton.onclick = () => {
@@ -82,12 +81,12 @@ function newDrumMachine(index) {
     makeDrumMachine()
   }
 
-  //This is to make a button that can remove specific drums from
-  //The machine. The button is at the end of each drum line
+  // This is to make a button that can remove specific drums from
+  // The machine. The button is at the end of each drum line
   const deleteButton = document.createElement('button')
   deleteButton.innerText = 'DEL'
   deleteButton.onclick = () => {
-    deleteDrum(index)
+    removeDrum(index)
     makeDrumMachine()
   }
 
@@ -111,8 +110,8 @@ function newDrum(drum, beatIndex, drumIndex) {
   this.newDrum.setAttribute('id', 'beat' + drumIndex + beatIndex)
   this.newDrum.setAttribute('class', 'beat')
 
-  //This if statement loads whatever is in the drumArrays onto the
-  //drum machine visualizer.
+  // This if statement loads whatever is in the drumArrays onto the
+  // drum machine visualizer.
   if (drumArrays[drumIndex][beatIndex] == 1) {
     this.newDrum.classList.add('beat-selected')
     this.newDrum.clicked = true
@@ -124,74 +123,51 @@ function newDrum(drum, beatIndex, drumIndex) {
     if (!this.newDrum.clicked) {
       this.newDrum.classList.add('beat-selected')
       this.newDrum.clicked = true
-      drumArrays[drumIndex][beatIndex] = 1 //This makes it so the buttons on the website can edit the drum machine pattern
+      drumArrays[drumIndex][beatIndex] = 1 // This makes it so the buttons on the website can edit the drum machine pattern
     } else {
       this.newDrum.classList.remove('beat-selected')
       this.newDrum.clicked = false
-      drumArrays[drumIndex][beatIndex] = 0 //Same here
+      drumArrays[drumIndex][beatIndex] = 0 // Same here
     }
   }
 }
 
-//________Loop Section ______________
+// ________Loop Section ______________
 
-//const sleepFor = delay => new Promise(resolve => setTimeout(resolve, delay))
+// const sleepFor = delay => new Promise(resolve => setTimeout(resolve, delay))
 
 const play = document.getElementById('play')
 const pause = document.getElementById('pause')
-play.onclick = () => {
-  playTrack()
-}
-
-pause.onclick = () => {
-  pauseTrack()
-}
+play.onclick = playTrack
+pause.onclick = pauseTrack
 
 // __Snare__
 
 const snareButton = document.createElement('button')
 snareButton.innerText = 'Snare'
 
-snareButton.addEventListener('click', () => {
-  playSnare()
-})
-
-function playSnare() {
-  playSound([2500, 0.1, 0.1, 0.1, 1,
-    250, 0.1, 0.1, 0.01, 1])
+snareButton.onclick = () => {
+  playSound([2500, 0.1, 0.1, 0.1, 1, 250, 0.1, 0.1, 0.01, 1])
 }
 
-document.querySelector('body').appendChild(snareButton)
+document.body.appendChild(snareButton)
 
 // ___Kick __
 
 const kickButton = document.createElement('button')
-
-kickButton.addEventListener('click', () => {
-  playKick()
-})
-
-function playKick() {
-  playSound([0, 0, 0, 0.01, 0,
-    250, 0.2, 0.2, 0.0001, 1])
+kickButton.innerText = 'Kick'
+kickButton.onclick = () => {
+  playSound([0, 0, 0, 0.01, 0, 250, 0.2, 0.2, 0.0001, 1])
 }
 
-kickButton.innerText = 'Kick'
-document.querySelector('body').appendChild(kickButton)
+document.body.appendChild(kickButton)
 
 // ___Hi Hat ____
 
 const hiHatButton = document.createElement('button')
 hiHatButton.innerText = 'Hi Hat'
-
-hiHatButton.addEventListener('click', () => {
-  playHiHat()
-})
-
-function playHiHat() {
-  playSound([10000, 0.1, 0.1, 0.01, 1,
-    250, 0.1, 0.005, 0.01, 0.3])
+hiHatButton.onclick = () => {
+  playSound([10000, 0.1, 0.1, 0.01, 1, 250, 0.1, 0.005, 0.01, 0.3])
 }
 
-document.querySelector('body').appendChild(hiHatButton)
-
+document.body.appendChild(hiHatButton)
