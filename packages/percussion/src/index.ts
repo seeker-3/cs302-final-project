@@ -2,7 +2,7 @@ import {
   addBeat,
   addDrum,
   drumArrays,
-  handleAudioElementChange,
+  handleFileInputChange,
   pauseTrack,
   playSound,
   playTrack,
@@ -12,8 +12,8 @@ import {
   shiftRight,
 } from './lib'
 
-const recorder = document.getElementById('recorder')
-recorder.onchange = handleAudioElementChange
+const recorder = document.getElementById('recorder') as HTMLInputElement
+recorder.onchange = handleFileInputChange
 
 const addToMachineButton = document.getElementById('addToMachine')
 addToMachineButton.onclick = () => {
@@ -92,7 +92,7 @@ function newDrumMachine(index) {
 
   machineContainer.appendChild(leftButton)
 
-  this.newDrumMachine = document.createElement('dev')
+  this.newDrumMachine = document.createElement('div')
   this.newDrumMachine.setAttribute('id', 'drum' + index)
   machineContainer.appendChild(this.newDrumMachine)
 

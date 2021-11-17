@@ -7,7 +7,8 @@ let numDrums = 0
 let minInterval = 125 // smallest interval between beats in milliseconds
 let tempo = 60000 / minInterval
 
-export const drumArrays = []
+// AB - boolean ??
+export const drumArrays: (0 | 1)[][] = []
 const soundSettings = []
 const defaultSounds = [
   [10000, 0.1, 0.1, 0.01, 1, 250, 0.1, 0.005, 0.01, 0.3],
@@ -15,13 +16,14 @@ const defaultSounds = [
   [0, 0, 0, 0.01, 0, 250, 0.2, 0.2, 0.0001, 1],
 ]
 
-const sleepFor = delay => new Promise(resolve => setTimeout(resolve, delay))
+const sleepFor = (delay: number) =>
+  new Promise(resolve => setTimeout(resolve, delay))
 
 // _________Functions to Access_________
 
 // This event listener waits for a file to uploaded and then it determines the tempo of that audio file.
 // It also converts the beats in that audio file into a patter than is pushed into drumArrays
-export const handleAudioElementChange = async ({ target }) => {
+export const handleFileInputChange = async ({ target }) => {
   console.log('here')
   // Store raw audio data in url object
   const file = target.files[0] as File
@@ -95,6 +97,7 @@ export function getBPM() {
     }
   }
 
+  // unused variable
   tempo = 60000 / (commonInterval * minInterval)
 }
 
@@ -105,7 +108,7 @@ export function addDrum() {
   numDrums++
 }
 
-export function removeDrum(drumIndex) {
+export function removeDrum(drumIndex: number) {
   drumArrays.splice(drumIndex, 1)
   soundSettings.splice(drumIndex, 1)
   numDrums--
@@ -125,12 +128,12 @@ export function removeBeat() {
   numBeats--
 }
 
-export function shiftRight(drumIndex) {
+export function shiftRight(drumIndex: number) {
   drumArrays[drumIndex].unshift(0)
   drumArrays[drumIndex].pop()
 }
 
-export function shiftLeft(drumIndex) {
+export function shiftLeft(drumIndex: number) {
   drumArrays[drumIndex].shift()
   drumArrays[drumIndex].push(0)
 }
@@ -156,16 +159,16 @@ export function pauseTrack() {
 
 // AB - settings would probably be better as an object here
 
-interface Config {
+interface AudioNodeConfig {
   frequency: number
   gain: number
   time: number
   ramp: number
   volume: number
 }
-interface Settings {
-  noise: Config
-  oscillation: Config
+interface SoundSettings {
+  noise: AudioNodeConfig
+  oscillation: AudioNodeConfig
 }
 // AB - can use like this -- export function playSound(setting: Settings) {
 export function playSound(setting) {
@@ -180,10 +183,10 @@ export function playSound(setting) {
   const oscillationRamp = setting[8]
   const oscillationVol = setting[9]
 
-  const Filter = audioContext.createBiquadFilter()
-  Filter.type = 'highpass'
-  Filter.frequency.value = noiseFreq
-  Filter.connect(primaryGainControl)
+  const filter = audioContext.createBiquadFilter()
+  filter.type = 'highpass'
+  filter.frequency.value = noiseFreq
+  filter.connect(primaryGainControl)
 
   const whiteNoiseSource = audioContext.createBufferSource()
   whiteNoiseSource.buffer = buffer
@@ -196,7 +199,7 @@ export function playSound(setting) {
   )
 
   whiteNoiseSource.connect(whiteNoiseSourceGain)
-  whiteNoiseSource.connect(Filter)
+  whiteNoiseSource.connect(filter)
 
   whiteNoiseSource.start()
   whiteNoiseSource.stop(audioContext.currentTime + noiseTime)
@@ -226,7 +229,7 @@ export function playSound(setting) {
 
 // __________ Supporting Functions _____________
 
-function audioToDrum(audioData) {
+function audioToDrum(audioData: Float32Array) {
   const length = audioData.length
   const rhythmData = []
   const labels = []
@@ -240,7 +243,7 @@ function audioToDrum(audioData) {
   for (let i = 0; i < length; i++) {
     if (audioData[i] > whisper) {
       rhythmData.push(1)
-      let current = i
+      const current = i
       beats.push(i)
       // This for loop is used to jump ahead by about 1/8 of a second to
       // skip the rest of the sound for that beat. Using a for loop for
@@ -305,7 +308,7 @@ function audioToDrum(audioData) {
   getBPM()
 }
 
-function resetDrums(interval) {
+function resetDrums(interval: number) {
   const beatMultiplier = parseInt((minInterval / interval).toFixed())
 
   for (let i = 0; i < numDrums; i++) {
@@ -318,9 +321,9 @@ function resetDrums(interval) {
   numBeats = drumArrays[0].length
 }
 
-async function playBeat(beatI) {
+async function playBeat(beatIndex: number) {
   for (let i = 0; i < numDrums; i++) {
-    const tile = drumArrays[i][beatI]
+    const tile = drumArrays[i][beatIndex]
     if (tile != 0) {
       playSound(soundSettings[i])
     }
@@ -347,18 +350,18 @@ primaryGainControl.connect(audioContext.destination)
 
 // __Snare__
 
-function playSnare() {
+export function playSnare() {
   playSound([2500, 0.1, 0.1, 0.1, 1, 250, 0.1, 0.1, 0.01, 1])
 }
 
 // ___Kick __
 
-function playKick() {
+export function playKick() {
   playSound([0, 0, 0, 0.01, 0, 250, 0.2, 0.2, 0.0001, 1])
 }
 
 // ___Hi Hat ____
 
-function playHiHat() {
+export function playHiHat() {
   playSound([10000, 0.1, 0.1, 0.01, 1, 250, 0.1, 0.005, 0.01, 0.3])
 }
