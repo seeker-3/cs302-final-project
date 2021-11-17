@@ -51,29 +51,35 @@ install wasm-pack:
 
 build the rust packages:
 
-`wasm-pack build packages/wasm --target web`
+`wasm-pack build packages/wasm -s dothum --target web`
 
 install:
 
 `pnpm i`
 
-start the app in development mode:
-
-in the app directory
-
-`pnpm dev`
-
-## Publish
-
-### to build
+build packages:
 
 `pnpm build`
 
-### to publish
+link packages:
 
-`pnpm gh-pages -d build/`
+`pnpm i`
 
-### to build and publish
+start the app in development mode:
+
+## The App
+
+all of the following commands are run in the app directory: `cd app`
+
+start the app in development mode:
+
+`pnpm dev`
+
+build the app:
+
+`pnpm build`
+
+to publish the app to GitHub pages:
 
 `pnpm publish`
 
