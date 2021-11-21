@@ -1,43 +1,24 @@
+import complementaryChords from '@dothum/complementary-chords'
+import { convertBufferToNotes } from '@dothum/pitch-finder'
 import { StrictMode } from 'react'
 import { render } from 'react-dom'
-// @ts-ignore
 import { registerSW } from 'virtual:pwa-register'
-import Count from './Counter'
-import RecordAudio from './RecordAudio'
+import Percussion from './components/Percussion'
+import { AudioFilesProvider } from './context/IndexedDBContext'
 
-registerSW({
-  onNeedRefresh() {},
-  onOfflineReady() {},
-})
-
-// const App: FC = () => {
-//   return <RecordAudio />
-// }
+convertBufferToNotes
+complementaryChords
 
 render(
   <StrictMode>
     {/* <WasmRuntimeProvider> */}
-    <RecordAudio />
-    <Count />
+    <AudioFilesProvider>
+      {/* <RecordAudio /> */}
+      <Percussion />
+    </AudioFilesProvider>
     {/* </WasmRuntimeProvider> */}
   </StrictMode>,
   document.getElementById('root'),
 )
-// register()
-// reportWebVitals()
 
-// window.onload = () => {
-// window.onbeforeunload = event => {
-//   event.preventDefault()
-//   return 'warning'
-// }
-
-// window.addEventListener(
-//   'beforeunload',
-//   event => {
-//     event.preventDefault()
-//     return (event.returnValue = 'Are you sure you want to exit?')
-//   },
-//   { capture: true },
-// )
-// }
+registerSW()

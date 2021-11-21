@@ -1,6 +1,5 @@
-// @ts-ignore
+import init, { Counter } from '@dothum/wasm'
 import styled from '@emotion/styled'
-import init, { Counter } from 'dothum-wasm'
 import { FC, useEffect, useState } from 'react'
 
 const StyledDiv = styled.div`
@@ -20,6 +19,7 @@ const StyledDiv = styled.div`
     display: inline-block;
     background-color: inherit;
     outline: none;
+    font: inherit;
   }
 `
 
