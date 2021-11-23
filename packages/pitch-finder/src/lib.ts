@@ -1,11 +1,5 @@
 export { convertBufferToNotes } from './primitive'
 
-
-// __________ Supporting Functions _____________
-interface TimeInfo {
-  quantization: number;
-  tempo:        number;
-}
 /////////////////////////////////////////////////////////////////////////////////////////
 // _________ Functions for getting the tempo and quantization of hummed melodies__________
 
