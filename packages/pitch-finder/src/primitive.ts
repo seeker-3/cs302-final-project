@@ -58,15 +58,15 @@ const frequencyToNote = (input: number) => {
   }
 }
 
-export const convertBufferToNotes = async (buffer: ArrayBuffer) => {
+export const convertBufferToNotes = async (buffer: ArrayBuffer, timeInfo: [number, number]) => {
   try {
     const audioBuffer = await new AudioContext().decodeAudioData(buffer)
     const pitches = PitchFinder.frequencies(
       [YIN(), AMDF()],
       await audioBuffer.getChannelData(0), // get a single channel of sound
       {
-        tempo: 115, // in BPM, defaults to 120
-        quantization: 1, // samples per beat, defaults to 4 (i.e. 16th notes)
+        tempo: timeInfo[1], // in BPM, defaults to 120
+        quantization: timeInfo[0], // samples per beat, defaults to 4 (i.e. 16th notes)
       },
     )
 
