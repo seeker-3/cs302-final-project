@@ -1,6 +1,6 @@
 import PitchFinder, { AMDF, YIN } from 'pitchfinder'
 import notes from './notes'
-import { arrayToMelody } from './lib'
+import { audioToMelody } from './lib'
 
 const frequencyToNote = (input: number) => {
   const A4 = 440.0
