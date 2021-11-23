@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["AMDF", "dothum", "pitchfinder"]
+  "cSpell.words": ["AMDF", "dothum", "pitchfinder"],
+  "editor.formatOnSave": true
 }
