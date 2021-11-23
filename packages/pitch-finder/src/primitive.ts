@@ -62,7 +62,7 @@ const frequencyToNote = (input: number) => {
 export const convertBufferToNotes = async (buffer: ArrayBuffer) => {
   try {
     const audioBuffer = await new AudioContext().decodeAudioData(buffer);
-    let [quant, temp] = arrayToMelody(audioBuffer.getChannelData(0));
+    let [quant, temp] = audioToMelody(audioBuffer.getChannelData(0));
     const pitches = PitchFinder.frequencies(
       [YIN(), AMDF()],
       await audioBuffer.getChannelData(0), // get a single channel of sound
