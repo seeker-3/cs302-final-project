@@ -1,5 +1,6 @@
 import PitchFinder, { AMDF, YIN } from 'pitchfinder'
 import notes from './notes'
+import { arrayToMelody } from './lib'
 
 const frequencyToNote = (input: number) => {
   const A4 = 440.0
@@ -58,15 +59,16 @@ const frequencyToNote = (input: number) => {
   }
 }
 
-export const convertBufferToNotes = async (buffer: ArrayBuffer, timeInfo: [number, number]) => {
+export const convertBufferToNotes = async (buffer: ArrayBuffer) => {
   try {
-    const audioBuffer = await new AudioContext().decodeAudioData(buffer)
+    const audioBuffer = await new AudioContext().decodeAudioData(buffer);
+    let [quant, temp] = arrayToMelody(audioBuffer.getChannelData(0));
     const pitches = PitchFinder.frequencies(
       [YIN(), AMDF()],
       await audioBuffer.getChannelData(0), // get a single channel of sound
       {
-        tempo: timeInfo[1], // in BPM, defaults to 120
-        quantization: timeInfo[0], // samples per beat, defaults to 4 (i.e. 16th notes)
+        tempo: temp, // in BPM, defaults to 120
+        quantization: quant, // samples per beat, defaults to 4 (i.e. 16th notes)
       },
     )
 
