@@ -96,7 +96,7 @@ export const audioToMelody = (audioData: Float32Array, sampleRate: number) => {
 
   //This for loop iterates through the audioData minStep elements at a time
   //It records the index of the start of each note
-  for (let i = 0; i < length; i += minStep) {
+  for (let i = 0; i < quantizationLength; i += minStep) {
     // step holds the values within the range of minStep
     const step = audioData.slice(i, i + minStep) //get the next minStep worth of elements
 
@@ -149,7 +149,7 @@ export const audioToMelody = (audioData: Float32Array, sampleRate: number) => {
   //tempo is expressed in beats per minute. quantLen * quant is the amount of
   //time for a whole note in seconds (seconds/beat). Dividing 60 seconds by this value
   //gets beats/minute
-  const tempo = 60 / (quantizationLength * quantization)
+  const tempo = (60 / (quantizationLength * quantization)).toFixed(0);
 
   return { quantization, tempo }
 }
