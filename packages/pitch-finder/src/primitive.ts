@@ -220,7 +220,7 @@ export type Notes = ReturnType<typeof frequencyToNote>
 export const convertBufferToNotes = async (buffer: ArrayBuffer) => {
 
   // Establish an AudioContext
-  // Retrieve audio buffer buffer argument
+  // Retrieve audio buffer from buffer argument
   // Convert audio to "melody" e.g. find its tempo/quantization
   // Run pitch-finding algorithm
 
