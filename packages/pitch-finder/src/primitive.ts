@@ -149,11 +149,14 @@ export const audioToMelody = (audioData: Float32Array, sampleRate: number) => {
   //tempo is expressed in beats per minute. quantLen * quant is the amount of
   //time for a whole note in seconds (seconds/beat). Dividing 60 seconds by this value
   //gets beats/minute
-  const tempo = (60 / (quantizationLength * quantization)).toFixed(0);
+  const tempo = Math.round(60 / (quantizationLength * quantization));
 
   return { quantization, tempo }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////
+// Converts a frequency to its musical note equivalent with optional cent notation //
+////////////////////////////////////////////////////////////////////////////////////
 const frequencyToNote = (input: number) => {
   const A4 = 440.0
   const A4_INDEX = 57
@@ -206,14 +209,23 @@ const frequencyToNote = (input: number) => {
 
   return {
     note: notes[A4_INDEX + r_index],
-    side: side === PLUS ? 'plus' : 'minus',
-    cent: cent_index,
+    // side: side === PLUS ? 'plus' : 'minus',
+    // cent: cent_index,
   }
 }
 
 export type Notes = ReturnType<typeof frequencyToNote>
 
+/////////////////////////////////////////////////////////////////////////////////////
+// Converts a list of frequencies to their musical note equivalent and returns it //
+///////////////////////////////////////////////////////////////////////////////////
 export const convertBufferToNotes = async (buffer: ArrayBuffer) => {
+
+  // Establish an AudioContext
+  // Retrieve audio buffer buffer argument
+  // Convert audio to "melody" e.g. find its tempo/quantization
+  // Run pitch-finding algorithm
+
   try {
     const audioContext = new AudioContext()
 

@@ -7,5 +7,6 @@ void (async () => {
     throw Error('Response not okay')
   }
   const buffer = await response.arrayBuffer()
-  await convertBufferToNotes(buffer)
+  const notes = await convertBufferToNotes(buffer)
+  console.log(notes)
 })().catch(console.error)
