@@ -207,7 +207,7 @@ const frequencyToNote = (input: number) => {
     }
   }
 
-  notes[A4_INDEX + r_index]
+  return notes[A4_INDEX + r_index]
   // side: side === PLUS ? 'plus' : 'minus',
   // cent: cent_index,
 }
