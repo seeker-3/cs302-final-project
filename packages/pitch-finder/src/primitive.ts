@@ -207,11 +207,9 @@ const frequencyToNote = (input: number) => {
     }
   }
 
-  return {
-    note: notes[A4_INDEX + r_index],
-    // side: side === PLUS ? 'plus' : 'minus',
-    // cent: cent_index,
-  }
+  notes[A4_INDEX + r_index]
+  // side: side === PLUS ? 'plus' : 'minus',
+  // cent: cent_index,
 }
 
 export type Notes = ReturnType<typeof frequencyToNote>
