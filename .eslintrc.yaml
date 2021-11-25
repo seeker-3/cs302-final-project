@@ -35,4 +35,5 @@ settings:
 
 rules:
   jsx-a11y/media-has-caption: 0
+  react/prop-types: 0
   import/no-unresolved: 0

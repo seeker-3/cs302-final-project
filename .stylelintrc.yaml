@@ -2,4 +2,4 @@ extends:
   - stylelint-config-standard-scss
   - stylelint-config-idiomatic-order
 rules:
-  string-quotes": single
+  string-quotes: single
