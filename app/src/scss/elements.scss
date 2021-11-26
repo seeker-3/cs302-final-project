@@ -1,0 +1,129 @@
+@use 'sass:list';
+@use 'sass:map';
+@import 'variables';
+@import 'layout';
+
+.input,
+%input {
+  height: list.nth($sizing, 4);
+  background: list.nth($gray-scale, 4);
+}
+
+.hover,
+%hover {
+  background: list.nth($gray-scale, 4);
+
+  &:hover {
+    opacity: 0.8;
+    transition: opacity 250ms;
+  }
+}
+
+.focus,
+%focus {
+  &:focus {
+    outline: 0.15rem solid list.nth($gray-scale, 8);
+    transition: outline 100ms;
+  }
+}
+
+.disabled,
+%disabled {
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+
+.wide {
+  width: list.nth($sizing, 7);
+}
+
+.width2 {
+  width: list.nth($sizing, 6) * 2 + list.nth($sizing, 2);
+}
+
+.input-width,
+%input-width {
+  width: 40ch;
+}
+
+select,
+input,
+button {
+  @extend %input;
+  @extend %disabled;
+  @extend %hover;
+  @extend %focus;
+}
+
+button {
+  width: list.nth($sizing, 6);
+  cursor: pointer;
+}
+
+select {
+  width: list.nth($sizing, 6);
+  cursor: pointer;
+  text-align: center;
+}
+
+::placeholder {
+  color: list.nth($gray-scale, 6);
+}
+
+input[type='text'] {
+  @extend %input-width;
+
+  flex-grow: 1;
+  padding-right: list.nth($sizing, 1);
+  padding-left: list.nth($sizing, 1);
+}
+
+input[type='file'] {
+  width: list.nth($sizing, 6) * 3 + list.nth($sizing, 2) * 2;
+}
+
+label {
+  @extend %row;
+
+  height: list.nth($sizing, 4);
+  padding-right: list.nth($sizing, 1);
+  padding-left: list.nth($sizing, 1);
+
+  &:focus-within {
+    @extend %focus;
+
+    outline: 0.15rem solid list.nth($gray-scale, 8);
+  }
+
+  input[type='radio'] {
+    @extend %disabled;
+
+    width: list.nth($sizing, 4);
+    cursor: pointer;
+    gap: list.nth($sizing, 1);
+    outline: none;
+  }
+}
+
+.radio-group {
+  @extend %row;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+audio {
+  @extend %input;
+  @extend %input-width;
+
+  background: list.nth($gray-scale, 8);
+
+  &::-webkit-media-controls-panel {
+    background: list.nth($gray-scale, 8);
+    color: white;
+  }
+}

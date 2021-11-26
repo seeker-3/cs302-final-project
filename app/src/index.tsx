@@ -1,24 +1,16 @@
-import complementaryChords from '@dothum/complementary-chords'
-import { convertBufferToNotes } from '@dothum/pitch-finder'
 import { StrictMode } from 'react'
 import { render } from 'react-dom'
 import { registerSW } from 'virtual:pwa-register'
-import Percussion from './components/Percussion'
-import { AudioFilesProvider } from './context/IndexedDBContext'
-
-convertBufferToNotes
-complementaryChords
+import ContextProvider from './context'
+import Layout from './layout'
 
 render(
   <StrictMode>
-    {/* <WasmRuntimeProvider> */}
-    <AudioFilesProvider>
-      {/* <RecordAudio /> */}
-      <Percussion />
-    </AudioFilesProvider>
-    {/* </WasmRuntimeProvider> */}
+    <ContextProvider>
+      <Layout />
+    </ContextProvider>
   </StrictMode>,
-  document.getElementById('root'),
+  document.getElementById('app')
 )
 
 registerSW()

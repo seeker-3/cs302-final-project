@@ -3,7 +3,7 @@ import { FC, useEffect, useRef } from 'react'
 // React Component
 // Simple example of increasing the volume of an audio source with a gain node
 export default (function AudioSource({ audioSourceURL }) {
-  const audioRef = useRef<HTMLMediaElement>(null)
+  const audioRef = useRef(null)
 
   // create source after ref is defined
   useEffect(() => {

@@ -1,27 +1,5 @@
 import init, { Counter } from '@dothum/wasm'
-import styled from '@emotion/styled'
 import { FC, useEffect, useState } from 'react'
-
-const StyledDiv = styled.div`
-  margin-top: 8rem;
-  p:first-of-type {
-    font-size: 4rem;
-  }
-  p {
-    font-size: 2rem;
-    display: block;
-    text-align: center;
-  }
-  button {
-    color: #874ffe;
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-    background-color: inherit;
-    outline: none;
-    font: inherit;
-  }
-`
 
 export default (function Count() {
   const [count, setCount] = useState(0)
@@ -30,14 +8,14 @@ export default (function Count() {
   useEffect(() => {
     let counter: Counter | null = null
 
-    init().then(() => {
+    void (async () => {
+      await init()
       counter = Counter.new()
       setCounter(counter)
       setCount(counter.get_count())
-    })
-    return () => {
-      counter?.free()
-    }
+    })().catch(console.error)
+
+    return () => counter?.free()
   }, [setCounter])
 
   if (!counter) return null
@@ -50,9 +28,9 @@ export default (function Count() {
   const button = <button onClick={increment}>count</button>
 
   return (
-    <StyledDiv>
+    <div>
       <p>{count}</p>
       <p>you can {button} on me</p>
-    </StyledDiv>
+    </div>
   )
 } as FC)

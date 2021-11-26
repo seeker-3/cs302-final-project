@@ -1,0 +1,13 @@
+$sans-serif-fonts: roboto, 'open sans', 'fira sans', 'lucida sans',
+  'lucida sans unicode', 'trebuchet ms', 'liberation sans', 'nimbus sans l',
+  sans-serif;
+$monospace-fonts: 'fira mono', 'dejavu sans mono', menlo, consolas,
+  'liberation mono', monaco, 'lucida console', monospace;
+$gray-scale: #070707, #272727, #474747, #676767, #878787, #a7a7a7, #c7c7c7,
+  #e7e7e7;
+$mode: 'not-debug';
+$globals: (
+  // border-radius: 0.2rem,
+  // input-width: 20ch,
+);
+$sizing: 0.38rem, 0.6rem, 1rem, 1.62rem, 2.62rem, 4.25rem, 6.89rem;

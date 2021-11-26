@@ -1,0 +1,84 @@
+@use 'sass:list';
+@import 'variables';
+
+body {
+  margin: 0;
+  background: list.nth($gray-scale, 2);
+  color: list.nth($gray-scale, 8);
+  font-family: $sans-serif-fonts;
+  font-size: 100%;
+
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    border: none;
+    margin: 0;
+    background: inherit;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    outline: none;
+    text-decoration: none;
+
+    &::before,
+    &::after {
+      content: none;
+    }
+
+    @if $mode == 'debug' {
+      border: 0.1rem solid white;
+      margin-right: 0.1rem;
+      margin-left: 0.1rem;
+    }
+  }
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+  padding: list.nth($sizing, 2);
+}
+
+.flex,
+%flex {
+  display: flex;
+  align-items: center;
+  gap: list.nth($sizing, 2);
+}
+
+.row,
+%row {
+  @extend %flex;
+
+  flex-direction: row;
+}
+
+.column {
+  @extend %flex;
+
+  flex-direction: column;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.justify-content-right {
+  justify-content: right;
+}
+
+.justify-content-left {
+  justify-content: right;
+}
+
+.align-items-end {
+  align-items: end;
+}
+
+.align-items-start {
+  align-items: start;
+}

@@ -9,36 +9,34 @@
     "clean": "rm -rf build"
   },
   "devDependencies": {
-    "@types/node": "^16.11.6",
-    "@types/react": "^17.0.34",
+    "@types/node": "^16.11.10",
+    "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@types/react-router-dom": "^5.3.2",
-    "@vitejs/plugin-react": "^1.0.5",
+    "@vitejs/plugin-react": "^1.1.0",
     "autoprefixer": "^10.4.0",
     "cross-env": "^7.0.3",
     "gh-pages": "^3.2.3",
-    "postcss": "^8.3.11",
-    "sass": "^1.43.4",
+    "postcss": "^8.4.1",
+    "sass": "^1.43.5",
     "tailwindcss": "^2.2.19",
-    "typescript": "^4.4.4",
-    "vite": "^2.6.13",
-    "vite-plugin-pwa": "^0.11.3",
-    "vite-plugin-wasm-pack": "^0.1.8",
-    "workbox-window": "^6.3.0"
+    "typescript": "^4.5.2",
+    "vite": "^2.6.14",
+    "vite-plugin-pwa": "^0.11.7",
+    "vite-plugin-wasm-pack": "^0.1.9",
+    "workbox-window": "^6.4.1"
   },
   "dependencies": {
+    "@dothum/complementary-chords": "workspace:*",
     "@dothum/percussion": "workspace:*",
     "@dothum/pitch-finder": "workspace:*",
-    "@dothum/complementary-chords": "workspace:*",
     "@dothum/wasm": "workspace:*",
-    "@emotion/react": "^11.5.0",
-    "@emotion/styled": "^11.3.0",
-    "idb": "^6.1.5",
+    "idb": "^7.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-hook-form": "^7.18.1",
-    "react-query": "^3.31.0",
-    "react-router-dom": "^6.0.0"
+    "react-hook-form": "^7.20.3",
+    "react-query": "^3.33.5",
+    "react-router-dom": "^6.0.2"
   },
   "peerDependencies": {
     "@babel/core": "^7.0.0"

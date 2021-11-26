@@ -1,35 +1,10 @@
-// import { createContext, FC, useContext, useEffect, useState } from 'react'
+import init, { InitOutput } from '@dothum/wasm'
+import createAsyncContext from './createAsyncContext'
 
-// type WasmRuntime = typeof import('dothum-wasm') // alias
-// type WasmRuntimeOrNull = WasmRuntime | null
+type WasmRuntime = InitOutput
 
-// const WasmRuntimeContext = createContext<WasmRuntimeOrNull>(null)
+const [WasmRuntimeProvider, useWasmRuntime] =
+  createAsyncContext<WasmRuntime>(init)
 
-// export const WasmRuntimeProvider: FC = ({ children }) => {
-//   const [wasmRuntime, setWasmRuntime] = useState<WasmRuntimeOrNull>(null)
-
-//   useEffect(() => {
-//     void (async () => {
-//       const wasmModule = await import('dothum-wasm')
-//       console.log(wasmModule.Counter.new())
-//       setWasmRuntime(wasmModule)
-//     })().catch(console.error)
-//   })
-
-//   if (!wasmRuntime) return null
-
-//   return (
-//     <WasmRuntimeContext.Provider value={wasmRuntime}>
-//       {children}
-//     </WasmRuntimeContext.Provider>
-//   )
-// }
-
-// export default function useWasmRuntime(): WasmRuntime {
-//   const wasmRuntime = useContext(WasmRuntimeContext)
-//   if (!wasmRuntime)
-//     throw Error('useWasmRuntime: wasm runtime did not load properly')
-//   return wasmRuntime
-// }
-
-export {}
+export { WasmRuntimeProvider }
+export default useWasmRuntime

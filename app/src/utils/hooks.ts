@@ -3,13 +3,10 @@ import { useEffect, useRef, useState } from 'react'
 export const useAsyncState = <T>(callback: () => Promise<T>) => {
   const [state, setState] = useState<T | null>(null)
 
-  useEffect(() => {
-    void (async () => {
-      const state = await callback()
-
-      setState(state)
-    })()
-  }, [setState])
+  useEffect(
+    () => void (async () => setState(await callback()))().catch(console.error),
+    [callback]
+  )
 
   return state
 }
@@ -35,10 +32,10 @@ export const useAudioSource = () => {
 export const useLocalStorage = (
   key: string,
   initialState: string | null = null,
-  save = true,
+  save = true
 ) => {
   const [storedState, setStoredState] = useState<string | null>(
-    localStorage.getItem(key) ?? initialState,
+    localStorage.getItem(key) ?? initialState
   )
 
   useEffect(() => {
@@ -53,6 +50,6 @@ export const useLocalStorage = (
   return [storedState, setStoredState, deleteStoredData] as [
     typeof storedState,
     typeof setStoredState,
-    typeof deleteStoredData,
+    typeof deleteStoredData
   ]
 }
