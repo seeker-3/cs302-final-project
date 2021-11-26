@@ -1,9 +1,10 @@
 import { FC } from 'react'
-import AudioFileDeleter from '../components/AudioFileDeleter'
-import AudioFilePlayer from '../components/AudioFilePlayer'
+import AudioFileAnalyzer from '../components/editor/AudioFileAnalyzer'
+import AudioFileDeleter from '../components/editor/AudioFileDeleter'
+import AudioFilePlayer from '../components/editor/AudioFilePlayer'
 import AudioFileSelector, {
   useAudioFileSelector,
-} from '../components/AudioFileSelector'
+} from '../components/editor/AudioFileSelector'
 import { AudioFileStores } from '../context/indexedDB'
 
 export default (function ({ title, storeName }) {
@@ -16,9 +17,7 @@ export default (function ({ title, storeName }) {
       <div className="column align-items-start">
         <div className="row">
           <AudioFileSelector {...selector} />
-          <button disabled={!audioFile} onClick={() => alert('analyze this')}>
-            analyze
-          </button>
+          <AudioFileAnalyzer audioFile={audioFile} />
           <AudioFileDeleter storeName={storeName} audioFile={audioFile} />
         </div>
         <div className="row">

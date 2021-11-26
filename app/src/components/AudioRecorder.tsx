@@ -64,7 +64,7 @@ export default (function AudioRecorderControls({
     <>
       <div className="row">
         <button type="button" onClick={handleStartRecording}>
-          {isRecording ? 'stop' : 'start'}
+          {isRecording ? 'stop' : 'record'}
         </button>
         <button
           type="button"

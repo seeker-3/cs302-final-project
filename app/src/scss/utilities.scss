@@ -1,3 +1,108 @@
+.input,
+%input {
+  height: list.nth($sizing, 4);
+  background: list.nth($gray-scale, 4);
+}
+
+.hover,
+%hover {
+  background: list.nth($gray-scale, 4);
+
+  &:hover {
+    opacity: 0.8;
+    transition: opacity 250ms;
+  }
+}
+
+@mixin focus {
+  outline: 0.15rem solid list.nth($gray-scale, 8);
+  transition: outline 100ms;
+}
+
+.focus,
+%focus {
+  &:focus {
+    @include focus;
+  }
+}
+
+.focus-within,
+%focus-within {
+  &:focus-within {
+    @include focus;
+  }
+}
+
+.disabled,
+%disabled {
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+
 .outline {
   outline: 1px solid white;
+}
+
+@each $name, $color in $colors {
+  .#{'' + $name} {
+    color: $color;
+  }
+  .bg-#{'' + $name} {
+    background: $color;
+  }
+}
+
+.width2 {
+  width: list.nth($sizing, 6) * 2 + list.nth($sizing, 2);
+}
+
+.text-width2 {
+  width: list.nth($text-width, 2);
+}
+
+.flex,
+%flex {
+  display: flex;
+  align-items: center;
+  gap: list.nth($sizing, 2);
+}
+
+.row,
+%row {
+  @extend %flex;
+
+  flex-direction: row;
+}
+
+.column {
+  @extend %flex;
+
+  flex-direction: column;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.grow,
+%grow {
+  flex-grow: 1;
+}
+
+.justify-content-right {
+  justify-content: right;
+}
+
+.justify-content-left {
+  justify-content: right;
+}
+
+.align-items-end {
+  align-items: end;
+}
+
+.align-items-start {
+  align-items: start;
 }

@@ -7,7 +7,11 @@ interface SaveAction {
   filetype: 'tune' | 'beat'
 }
 
-export default (function FileSaver({ audioBlob, children, name = '' }) {
+export default (function FileSaver({
+  audioBlob,
+  children,
+  defaultFilename = '',
+}) {
   const {
     register,
     handleSubmit,
@@ -18,12 +22,15 @@ export default (function FileSaver({ audioBlob, children, name = '' }) {
   const { saveAudioFile } = useAudioFiles()
 
   const onSubmit = handleSubmit(async ({ filename, filetype }) => {
+    console.log(filename, filetype)
     if (!audioBlob) throw Error('tried to save file with no audio data')
 
     const result = await saveAudioFile(
       filetype === 'tune' ? 'tunes' : 'beats',
       new File([audioBlob], filename)
     )
+
+    console.log(result)
 
     // success
     if (result) return
@@ -46,7 +53,7 @@ export default (function FileSaver({ audioBlob, children, name = '' }) {
       {children}
       <input
         type="text"
-        defaultValue={name}
+        defaultValue={defaultFilename}
         placeholder={errors.filename?.message ?? 'filename'}
         disabled={disabled}
         {...register('filename', { required: true })}
@@ -55,11 +62,11 @@ export default (function FileSaver({ audioBlob, children, name = '' }) {
       <label>
         tune
         <input
-          defaultChecked
           type="radio"
-          value="tune"
           disabled={disabled}
-          {...register('filetype')}
+          checked={!disabled}
+          value="tune"
+          {...register('filetype', { required: true })}
         />
       </label>
       <label>
@@ -68,7 +75,7 @@ export default (function FileSaver({ audioBlob, children, name = '' }) {
           type="radio"
           value="beat"
           disabled={disabled}
-          {...register('filetype', {})}
+          {...register('filetype', { required: true })}
         />
       </label>
     </form>
@@ -76,5 +83,5 @@ export default (function FileSaver({ audioBlob, children, name = '' }) {
 } as FC<{
   action: 'recording' | 'upload'
   audioBlob: Blob | null
-  name?: string
+  defaultFilename?: string
 }>)

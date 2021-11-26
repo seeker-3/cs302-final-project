@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import Banner from '../components/Banner'
 import Editor from './Editor'
 import Recorder from './Recorder'
 import Uploader from './Uploader'
@@ -14,6 +15,7 @@ export default (function Layout() {
         <Editor title="Tune" storeName="tunes" />
         <Editor title="Beat" storeName="beats" />
       </div>
+      <Banner message="test" />
     </main>
   )
 } as FC)

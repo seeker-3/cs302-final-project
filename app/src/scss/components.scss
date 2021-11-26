@@ -1,0 +1,28 @@
+.square-button,
+%square-button {
+  height: list.nth($sizing, 4);
+  width: list.nth($sizing, 4);
+}
+
+.banner {
+  @extend %focus-within;
+  @extend %row;
+
+  position: absolute;
+  bottom: list.nth($sizing, 2);
+  left: 0;
+  margin: list.nth($sizing, 3);
+  min-width: list.nth($text-width, 2);
+  height: list.nth($sizing, 4);
+  background: list.nth($gray-scale, 4);
+  padding-left: list.nth($sizing, 1);
+  gap: 0;
+  button {
+    @extend %square-button;
+    outline: none;
+  }
+
+  p {
+    @extend %grow;
+  }
+}
