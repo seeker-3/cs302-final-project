@@ -32,6 +32,7 @@ input[type='text'] {
 }
 
 input[type='file'] {
+  cursor: pointer;
   width: list.nth($sizing, 6) * 3 + list.nth($sizing, 2) * 2;
 }
 
@@ -64,8 +65,8 @@ li {
 
 audio {
   @extend %input;
-  width: list.nth($text-width, 2);
 
+  width: list.nth($text-width, 2);
   background: list.nth($gray-scale, 8);
 
   &::-webkit-media-controls-panel {

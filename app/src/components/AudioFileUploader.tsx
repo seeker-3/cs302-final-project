@@ -1,4 +1,5 @@
-import { ChangeEventHandler, forwardRef, useState } from 'react'
+import { ChangeEventHandler, FC, useState } from 'react'
+import { FileSaverForm } from './AudioFileSaverForm'
 
 export const useAudioFileUploader = () => {
   const [audioUpload, setAudioUpload] = useState<File | null>(null)
@@ -14,11 +15,21 @@ export const useAudioFileUploader = () => {
   }
 }
 
-type Props = ReturnType<typeof useAudioFileUploader>
-
-export default forwardRef<HTMLInputElement, Props>(function AudioFileUploader(
-  { handleChange },
-  ref
-) {
-  return <input ref={ref} type="file" onChange={handleChange} />
-})
+export default (function AudioFileUploader({ register, setValue }) {
+  return (
+    <>
+      <input style={{ display: 'none' }} />
+      <input
+        type="file"
+        {...register('fileData', {
+          required: true,
+          onChange: ({ target }) => {
+            const filename = target?.files && target.files[0]?.name
+            if (!filename) return
+            setValue('filename', filename)
+          },
+        })}
+      />
+    </>
+  )
+} as FC<FileSaverForm>)

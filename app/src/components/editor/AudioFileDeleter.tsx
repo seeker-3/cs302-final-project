@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import useAudioFiles from '../../context/AudioFilesContext'
-import { AudioFileStores } from '../../context/indexedDB'
+import useAudioFiles from '../../context/db/AudioFilesContext'
+import { AudioFileStores } from '../../context/db/indexedDB'
 
 export default (function AudioFileDeleter({ storeName, audioFile }) {
   const { deleteAudioFile } = useAudioFiles()
@@ -9,8 +9,8 @@ export default (function AudioFileDeleter({ storeName, audioFile }) {
       disabled={!audioFile}
       onClick={async () => {
         if (
-          !audioFile ||
-          !confirm(`are you sure you want to delete ${audioFile.name}?`)
+          !audioFile
+          // || !confirm(`are you sure you want to delete ${audioFile.name}?`)
         )
           return
         await deleteAudioFile(storeName, audioFile)

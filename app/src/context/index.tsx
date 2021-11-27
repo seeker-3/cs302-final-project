@@ -1,14 +1,14 @@
 import { FC } from 'react'
-import { AudioFilesProvider } from './AudioFilesContext'
-import { MediaDeviceProvider } from './MediaDeviceContext'
+import { BannerProvider } from './BannerContext'
+import { AudioFilesProvider } from './db/AudioFilesContext'
 import { WasmRuntimeProvider } from './WasmRuntimeContext'
 
 export default (function ContextProvider({ children }) {
   return (
-    <MediaDeviceProvider>
+    <WasmRuntimeProvider>
       <AudioFilesProvider>
-        <WasmRuntimeProvider>{children}</WasmRuntimeProvider>
+        <BannerProvider>{children}</BannerProvider>
       </AudioFilesProvider>
-    </MediaDeviceProvider>
+    </WasmRuntimeProvider>
   )
 } as FC)

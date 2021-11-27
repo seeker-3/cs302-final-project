@@ -5,7 +5,7 @@ import AudioFilePlayer from '../components/editor/AudioFilePlayer'
 import AudioFileSelector, {
   useAudioFileSelector,
 } from '../components/editor/AudioFileSelector'
-import { AudioFileStores } from '../context/indexedDB'
+import { AudioFileStores } from '../context/db/indexedDB'
 
 export default (function ({ title, storeName }) {
   const selector = useAudioFileSelector(storeName)
