@@ -1,5 +1,5 @@
 import Pitchfinder from "pitchfinder";
-
+import { Piano } from "@tonejs/piano";
 const getAudioBuffer = async () => {
   const ctx = new AudioContext();
   const response = await fetch("C-major2.wav");
@@ -12,17 +12,17 @@ const getAudioBuffer = async () => {
   const buffer = await response.arrayBuffer();
   const audio_buffer = ctx.decodeAudioData(buffer);
   return audio_buffer;
-
+}
 
 var convert = function (frequencies: (number | null)[]) {
-  let count = 0;
+  var musicalNotes
   for (let tone of frequencies) {
-    count++;
     if (tone === null) {
       continue;
     }
-    console.log(frequencyToNote(tone) + " - Note #" + count);
+    musicalNotes.push(frequencyToNote(tone));
   }
+  return musicalNotes
 }
 
 var frequencyToNote = function (input: any) {
@@ -118,7 +118,6 @@ const FindPitch = async () => {
   console.log(melody);
   const detectors = [detectPitch, Pitchfinder.AMDF()];
   const moreAccurateFrequencies = Pitchfinder.frequencies(detectors, float32Array, melody);
-  alert("Pitches Found!");
   return moreAccurateFrequencies;
 }
  
@@ -328,354 +327,22 @@ const button = document.getElementById("playBtn");
 if (button) {
   button.onclick = async function() {
     const frequencies = await FindPitch();
-    convert(frequencies);
-    //or another function to use audio source
-  }
-}
-
-/* function updatePitch() {
-	var cycles = new Array;
-	analyser.getFloatTimeDomainData( buf );
-	var ac = autoCorrelate( buf, audioContext.sampleRate );
-	// TODO: Paint confidence meter on canvasElem here.
-
-	if (DEBUGCANVAS) {  // This draws the current waveform, useful for debugging
-		waveCanvas.clearRect(0,0,512,256);
-		waveCanvas.strokeStyle = "red";
-		waveCanvas.beginPath();
-		waveCanvas.moveTo(0,0);
-		waveCanvas.lineTo(0,256);
-		waveCanvas.moveTo(128,0);
-		waveCanvas.lineTo(128,256);
-		waveCanvas.moveTo(256,0);
-		waveCanvas.lineTo(256,256);
-		waveCanvas.moveTo(384,0);
-		waveCanvas.lineTo(384,256);
-		waveCanvas.moveTo(512,0);
-		waveCanvas.lineTo(512,256);
-		waveCanvas.stroke();
-		waveCanvas.strokeStyle = "black";
-		waveCanvas.beginPath();
-		waveCanvas.moveTo(0,buf[0]);
-		for (var i=1;i<512;i++) {
-			waveCanvas.lineTo(i,128+(buf[i]*128));
-		}
-		waveCanvas.stroke();
-	}
-
- 	if (ac == -1) {
- 		detectorElem.className = "vague";
-	 	pitchElem.innerText = "--";
-		noteElem.innerText = "-";
-		detuneElem.className = "";
-		detuneAmount.innerText = "--";
- 	} else {
-	 	detectorElem.className = "confident";
-	 	pitch = ac;
-	 	pitchElem.innerText = Math.round( pitch ) ;
-	 	var note =  noteFromPitch( pitch );
-		noteElem.innerHTML = noteStrings[note%12];
-		var detune = centsOffFromPitch( pitch, note );
-		if (detune == 0 ) {
-			detuneElem.className = "";
-			detuneAmount.innerHTML = "--";
-		} else {
-			if (detune < 0)
-				detuneElem.className = "flat";
-			else
-				detuneElem.className = "sharp";
-			detuneAmount.innerHTML = Math.abs( detune );
-		}
-	}
-
-	if (!window.requestAnimationFrame)
-		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
-	rafID = window.requestAnimationFrame( updatePitch );
-} */
-
-/*
-import aubio from 'aubiojs'
-//import { arrayBuffer } from 'stream/consumers';
-import init from 'aubiojs'
-
-type InputBuffer = Float32Array | number[];
-type AsyncReturnType<T extends (...args: any) => any> =
-  // if T matches this signature and returns a Promise, extract
-  // U (the type of the resolved promise) and use that, or...
-  T extends (...args: any) => Promise<infer U>
-    ? U
-    : // if T matches this signature and returns anything else,
-    // extract the return value U and use that, or...
-    T extends (...args: any) => infer U
-    ? U
-    : // if everything goes to hell, return an `any`
-      any
-
-type Aubio = AsyncReturnType<typeof init>
-
-// AudioPackage structure consisting of the ArrayBuffer, AudioBuffer, and AudioContext
-// belonging to whatever audio file being processed
-
-interface AudioPackage {
-  bufferLength: number;
-  audioBuffer: AudioBuffer;
-  actx: AudioContext;
-}
-
-let audioSource, audioContext, scriptProcessor;
-      let count = 0;
-      const bufferSize = 1 << 12;
-      const size = bufferSize / (1 << 10);
-      audio.addEventListener("play", run);
-
-      function run() {
-        if (audioContext) return;
-
-        audioContext = new AudioContext();
-        scriptProcessor = audioContext.createScriptProcessor(bufferSize, 1, 1);
-        audioSource = audioContext.createMediaElementSource(audio);
-        audioSource.connect(scriptProcessor);
-        audioSource.connect(audioContext.destination);
-        scriptProcessor.connect(audioContext.destination);
-
-
-        aubio().then(({ Pitch }) => {
-          const pitchDetector = new Pitch(
-            "default",
-            scriptProcessor.bufferSize,
-            scriptProcessor.bufferSize / 8,
-            audioContext.sampleRate
-          );
-          scriptProcessor.addEventListener("audioprocess", function (event) {
-            if (audio.paused) return;
-
-            const data = event.inputBuffer.getChannelData(0);
-            const frequency = pitchDetector.do(data);
-
-
-            if (frequency) {
-              console.log(frequencyToNote(frequency.toFixed(1)));
-            }
-
-            count += 1;
-          });
-        });
+    const musicalNotes = convert(frequencies);
+    console.log(musicalNotes)
+    const piano = new Piano({
+      velocities: 5
+    })
+    piano.toDestination()
+    piano.load().then(() => {
+      console.log('loaded!')
+      let i = 0.0
+      for (let note of musicalNotes) {
+        piano.keyDown({ note, time: `+${i}` })
+        piano.keyUp({note, time: `+${i+0.5}`})
+        // increment size determines note length -- currently 
+        // 0,5s note length
+        i += 0.5
       }
-
-var frequencyToNote = function (input: any) {
-
-  var A4 = 440.0;
-  var A4_INDEX = 57;
-  
-  var notes = [
-    "C0","C#0","D0","D#0","E0","F0","F#0","G0","G#0","A0","A#0","B0",
-    "C1","C#1","D1","D#1","E1","F1","F#1","G1","G#1","A1","A#1","B1",
-    "C2","C#2","D2","D#2","E2","F2","F#2","G2","G#2","A2","A#2","B2",
-    "C3","C#3","D3","D#3","E3","F3","F#3","G3","G#3","A3","A#3","B3",
-    "C4","C#4","D4","D#4","E4","F4","F#4","G4","G#4","A4","A#4","B4",
-    "C5","C#5","D5","D#5","E5","F5","F#5","G5","G#5","A5","A#5","B5",
-    "C6","C#6","D6","D#6","E6","F6","F#6","G6","G#6","A6","A#6","B6",
-    "C7","C#7","D7","D#7","E7","F7","F#7","G7","G#7","A7","A#7","B7",
-    "C8","C#8","D8","D#8","E8","F8","F#8","G8","G#8","A8","A#8","B8",
-    "C9","C#9","D9","D#9","E9","F9","F#9","G9","G#9","A9","A#9","B9" ];
-  
-  var MINUS = 0;
-  var PLUS = 1;
-  
-  var frequency;
-  var r = Math.pow(2.0, 1.0/12.0);
-  var cent = Math.pow(2.0, 1.0/1200.0);
-  var r_index = 0;
-  var cent_index = 0;
-  var side;  
-  
-  frequency = A4;
-  
-  if(input >= frequency) {
-    while(input >= r*frequency) {
-      frequency = r*frequency;
-      r_index++;
-    }
-    while(input > cent*frequency) {
-      frequency = cent*frequency;
-      cent_index++;
-    }
-    if((cent*frequency - input) < (input - frequency))
-      cent_index++;
-    if(cent_index > 50) {
-      r_index++;
-      cent_index = 100 - cent_index;
-      if(cent_index != 0)
-        side = MINUS;
-      else
-        side = PLUS;
-    }
-    else
-      side = PLUS;
-  }
-  
-  else {
-    while(input <= frequency/r) {
-      frequency = frequency/r;
-      r_index--;
-    }
-    while(input < frequency/cent) {
-      frequency = frequency/cent;
-      cent_index++;
-    }
-    if((input - frequency/cent) < (frequency - input))
-      cent_index++;
-    if(cent_index >= 50) {
-      r_index--;
-      cent_index = 100 - cent_index;
-      side = PLUS;
-    }
-    else {
-      if(cent_index != 0)
-        side = MINUS;
-      else
-        side = PLUS;
-    }  
-  }
-  
-  var result = notes[A4_INDEX + r_index];
-  if(side == PLUS)
-    result = result + " plus ";
-  else
-    result = result + " minus ";
-  result = result + cent_index + " cents";
-  return result;
-  }
-  
-// Instantiates AudioPackage from given audio file
-/*const getAudioPackage = async () => {
-  
-  const actx = new AudioContext();
-  const response = await fetch("C-major.wav");
-
-  const buffer = await response.arrayBuffer();
-  const bufferLength = buffer.byteLength;
-  const audioBuffer = await actx.decodeAudioData(buffer);
-
-  return { bufferLength, audioBuffer, actx };
-}
-
-// takes an AudioPackage argument and determines the pitch from the
-// packages AudioContext and buffer
-// -- potentially some issues with this method
-const detectPitch = async (aubio: Aubio, audioPackage: AudioPackage) => {
-  
-  const { Pitch } =  aubio;
-  const pitchDetector = new Pitch(
-      "default",                     // pitch detection algorithm method
-      audioPackage.bufferLength,     // size of the input buffer to analyze
-      1,                             // step size between two consecutive analysis instances
-      audioPackage.actx.sampleRate   // sampling rate of a given signal
-    );
-  console.log("Buffer size: %d", audioPackage.bufferLength);
-  const data = audioPackage.audioBuffer.getChannelData(0);
-  const frequency = pitchDetector.do(data);
-  return frequency;
-}
-
-// frequency conversions -- ignore
-var frequencyToNote = function (input: number) {
-
-  var A4 = 440.0;
-  var A4_INDEX = 57;
-  
-  var notes = [
-    "C0","C#0","D0","D#0","E0","F0","F#0","G0","G#0","A0","A#0","B0",
-    "C1","C#1","D1","D#1","E1","F1","F#1","G1","G#1","A1","A#1","B1",
-    "C2","C#2","D2","D#2","E2","F2","F#2","G2","G#2","A2","A#2","B2",
-    "C3","C#3","D3","D#3","E3","F3","F#3","G3","G#3","A3","A#3","B3",
-    "C4","C#4","D4","D#4","E4","F4","F#4","G4","G#4","A4","A#4","B4",
-    "C5","C#5","D5","D#5","E5","F5","F#5","G5","G#5","A5","A#5","B5",
-    "C6","C#6","D6","D#6","E6","F6","F#6","G6","G#6","A6","A#6","B6",
-    "C7","C#7","D7","D#7","E7","F7","F#7","G7","G#7","A7","A#7","B7",
-    "C8","C#8","D8","D#8","E8","F8","F#8","G8","G#8","A8","A#8","B8",
-    "C9","C#9","D9","D#9","E9","F9","F#9","G9","G#9","A9","A#9","B9" ];
-  
-  var MINUS = 0;
-  var PLUS = 1;
-  
-  var frequency;
-  var r = Math.pow(2.0, 1.0/12.0);
-  var cent = Math.pow(2.0, 1.0/1200.0);
-  var r_index = 0;
-  var cent_index = 0;
-  var side;  
-  
-  frequency = A4;
-  
-  if(input >= frequency) {
-    while(input >= r*frequency) {
-      frequency = r*frequency;
-      r_index++;
-    }
-    while(input > cent*frequency) {
-      frequency = cent*frequency;
-      cent_index++;
-    }
-    if((cent*frequency - input) < (input - frequency))
-      cent_index++;
-    if(cent_index > 50) {
-      r_index++;
-      cent_index = 100 - cent_index;
-      if(cent_index != 0)
-        side = MINUS;
-      else
-        side = PLUS;
-    }
-    else
-      side = PLUS;
-  }
-  
-  else {
-    while(input <= frequency/r) {
-      frequency = frequency/r;
-      r_index--;
-    }
-    while(input < frequency/cent) {
-      frequency = frequency/cent;
-      cent_index++;
-    }
-    if((input - frequency/cent) < (frequency - input))
-      cent_index++;
-    if(cent_index >= 50) {
-      r_index--;
-      cent_index = 100 - cent_index;
-      side = PLUS;
-    }
-    else {
-      if(cent_index != 0)
-        side = MINUS;
-      else
-        side = PLUS;
-    }  
-  }
-  
-  var result = notes[A4_INDEX + r_index];
-  if(side == PLUS)
-    result = result + " plus ";
-  else
-    result = result + " minus ";
-  result = result + cent_index + " cents";
-  return result;
-  }
-
-async function printNotes() {
-  // audio package containing buffer, audio context, and audio buffer
-  const audioPackage = await getAudioPackage();
-  const aubio = await init();
-  // print notes for duration of given audio file
-  let startTime = Date.now();
-  while (Date.now() - startTime <= (audioPackage.audioBuffer.duration / 1000)) {
-    console.log("%d %d", Date.now() - startTime, audioPackage.audioBuffer.duration);
-    await wait();
-    const frequency = frequencyToNote(await detectPitch(aubio, audioPackage));
-    console.log(frequency);
+    })
   }
 }
-const wait = (time = 1000) => new Promise((res) => setTimeout(res, time));
-printNotes();*/
