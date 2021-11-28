@@ -1,4 +1,5 @@
-import { ChangeEventHandler, forwardRef, useState } from 'react'
+import { ChangeEventHandler, FC, useState } from 'react'
+import { FileSaverForm } from './AudioFileSaverForm'
 
 export const useAudioFileUploader = () => {
   const [audioUpload, setAudioUpload] = useState<File | null>(null)
@@ -14,11 +15,45 @@ export const useAudioFileUploader = () => {
   }
 }
 
-type Props = ReturnType<typeof useAudioFileUploader>
+export default (function AudioFileUploader({
+  register,
+  setValue,
+  setError,
+  clearErrors,
+}) {
+  return (
+    <>
+      <input style={{ display: 'none' }} />
+      <input
+        type="file"
+        {...register('fileData', {
+          required: true,
+          onChange: ({ target }) => {
+            const file = target?.files[0]
+            if (!file) return
+            const validMIMETypes = file.type.match(/^audio\/*$/)
 
-export default forwardRef<HTMLInputElement, Props>(function AudioFileUploader(
-  { handleChange },
-  ref
-) {
-  return <input ref={ref} type="file" onChange={handleChange} />
-})
+            if (!validMIMETypes) {
+              target.files = new DataTransfer().files
+              setError(
+                'fileData',
+                {
+                  message: `Invalid file type: ${file.type}. File must be an audio file.`,
+                },
+                {
+                  shouldFocus: true,
+                }
+              )
+              return
+            }
+
+            clearErrors('fileData')
+
+            setValue('filename', file.name)
+          },
+          validate: ([file]) => !!(file && file.type.match(/^audio\/*$/)),
+        })}
+      />
+    </>
+  )
+} as FC<FileSaverForm>)

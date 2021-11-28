@@ -1,26 +1,35 @@
 import { convertBufferToNotes, Notes } from '@dothum/pitch-finder'
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 
-export default (function ({ buffer }) {
+export default (function ({ audioFile }) {
   const [notes, setNotes] = useState<Notes[] | null>(null)
-  useEffect(() => {
-    void (async () => {
-      const notes = await convertBufferToNotes(buffer)
-      setNotes(notes)
-    })().catch(console.error)
-  }, [buffer, setNotes])
 
-  if (!notes) return
   return (
-    <ul>
-      {notes.map(({ note, side, cent }, i) => (
-        <li key={i}>
-          <p>note:</p>
-          <p>{note}</p>
-          <p>{side}</p>
-          <p>{cent}</p>
-        </li>
-      ))}
-    </ul>
+    <div className="row">
+      <button
+        className="width2"
+        onClick={async () => {
+          if (!audioFile) return
+          const notes = await convertBufferToNotes(
+            await audioFile.arrayBuffer()
+          )
+          setNotes(notes)
+        }}
+        disabled={!audioFile}
+      >
+        get notes
+      </button>
+      {notes && (
+        <ul className="row">
+          {notes.map((note, i) => (
+            <li key={i}>
+              <p>note: {note}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   )
-} as FC<{ buffer: ArrayBuffer }>)
+} as FC<{
+  audioFile: File | null
+}>)

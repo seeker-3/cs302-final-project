@@ -15,7 +15,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && tsc",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "clean": "rm -rf dist"
   },
   "devDependencies": {
     "@types/node": "^16.11.10",

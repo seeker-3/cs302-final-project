@@ -1,22 +1,17 @@
 import { FC, useEffect, useState } from 'react'
 
 export default (function ({ audioFile }) {
-  const [audioFileURL, setAudioFileURL] = useState<string | null>(null)
+  const [audioFileURL, setAudioFileURL] = useState<string | undefined>()
 
   useEffect(() => {
-    if (!audioFile || audioFileURL) return
+    if (!audioFile) return setAudioFileURL(undefined)
+
     const url = URL.createObjectURL(audioFile)
     setAudioFileURL(url)
     return () => URL.revokeObjectURL(url)
-  }, [audioFile, audioFileURL])
+  }, [audioFile])
 
-  return (
-    <div className="row">
-      <audio controls>
-        {audioFileURL && <source src={audioFileURL} type="audio/mpeg" />}
-      </audio>
-    </div>
-  )
+  return <audio controls src={audioFileURL} />
 } as FC<{
   audioFile: File | null
 }>)

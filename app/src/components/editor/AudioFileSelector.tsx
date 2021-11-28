@@ -1,14 +1,13 @@
 import { ChangeEventHandler, FC, useEffect, useState } from 'react'
-import useAudioFiles from '../../context/AudioFilesContext'
-import { AudioFileStores } from '../../context/indexedDB'
+import useAudioFiles from '../../context/db/AudioFilesContext'
+import { AudioFileStores } from '../../context/db/indexedDB'
 
 export const useAudioFileSelector = (storeName: AudioFileStores) => {
   const { [storeName]: audioFiles } = useAudioFiles()
   const [audioFile, setAudioFile] = useState<File | null>(null)
 
   useEffect(() => {
-    if (!audioFiles.length) return
-    setAudioFile(audioFiles[0])
+    setAudioFile(audioFiles[0] ?? null)
   }, [audioFiles])
 
   const handleChange: ChangeEventHandler<HTMLSelectElement> = ({ target }) => {
@@ -31,6 +30,10 @@ export default (function AudioFileSelector({
   audioFile,
   handleChange,
 }) {
+  const placeholder = audioFiles.length
+    ? 'select beat'
+    : `no ${storeName} exist`
+
   return (
     <select
       className="text-width2"
@@ -38,13 +41,18 @@ export default (function AudioFileSelector({
       disabled={!audioFiles.length}
       placeholder={`no ${storeName} exist`}
       onChange={handleChange}
-      value={audioFile?.name}
+      value={audioFile?.name ?? placeholder}
     >
-      {audioFiles.map(audioFile => (
-        <option key={audioFile.name} value={audioFile.name}>
-          {audioFile.name}
+      <>
+        <option value={placeholder} disabled hidden>
+          {placeholder}
         </option>
-      ))}
+        {audioFiles.map(audioFile => (
+          <option key={audioFile.name} value={audioFile.name}>
+            {audioFile.name}
+          </option>
+        ))}
+      </>
     </select>
   )
 } as FC<ReturnType<typeof useAudioFileSelector>>)

@@ -121,7 +121,7 @@ export const AudioFilesProvider: FC = ({ children }) => {
   )
 }
 
-export default function useAudioFilesContext(): AudioFilesContextValue {
+export default function useAudioFiles(): AudioFilesContextValue {
   const audioFilesContext = useContext(AudioFilesContext)
   if (!audioFilesContext)
     throw Error('audio files context did not load properly')

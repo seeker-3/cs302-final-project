@@ -15,9 +15,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && tsc",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "clean": "rm -rf dist"
   },
   "devDependencies": {
+    "typescript": "^4.5.2",
     "vite": "^2.6.14"
   }
 }
