@@ -1,16 +1,21 @@
 import {
   addBeat,
   addDrum,
-  drumArrays,
   inputAudioFile,
   pauseTrack,
-  playSound,
   playTrack,
   removeBeat,
   removeDrum,
   shiftLeft,
   shiftRight,
 } from './src/lib'
+
+import {
+  drumArrays,
+  playHiHat,
+  playKick,
+  playSnare,
+} from './src/helper'
 
 const recorder = document.getElementById('recorder') as HTMLInputElement
 
@@ -151,7 +156,7 @@ const snareButton = document.createElement('button')
 snareButton.innerText = 'Snare'
 
 snareButton.onclick = () => {
-  playSound([2500, 0.1, 0.1, 0.1, 1, 250, 0.1, 0.1, 0.01, 1])
+  playSnare()
 }
 
 document.body.appendChild(snareButton)
@@ -161,7 +166,7 @@ document.body.appendChild(snareButton)
 const kickButton = document.createElement('button')
 kickButton.innerText = 'Kick'
 kickButton.onclick = () => {
-  playSound([0, 0, 0, 0.01, 0, 250, 0.2, 0.2, 0.0001, 1])
+  playKick()
 }
 
 document.body.appendChild(kickButton)
@@ -171,7 +176,7 @@ document.body.appendChild(kickButton)
 const hiHatButton = document.createElement('button')
 hiHatButton.innerText = 'Hi Hat'
 hiHatButton.onclick = () => {
-  playSound([10000, 0.1, 0.1, 0.01, 1, 250, 0.1, 0.005, 0.01, 0.3])
+  playHiHat()
 }
 
 document.body.appendChild(hiHatButton)
