@@ -5,7 +5,7 @@
     "build": "tsc && vite build",
     "dev": "vite",
     "serve": "vite preview",
-    "publish": "gh-pages --dist build",
+    "publish": "gh-pages --no-git-checks --dist build",
     "clean": "rm -rf build"
   },
   "devDependencies": {

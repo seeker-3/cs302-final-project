@@ -34,7 +34,10 @@ export default (function AudioFileSaver({ render, children }) {
 
   const { setMessage } = useBanner()
 
+  console.log(errors)
+
   const onSubmit = handleSubmit(async ({ filename, filetype, fileData }) => {
+    console.log(filename, filetype, fileData)
     const file = fileData[0]
 
     if (!file) throw Error('received empty file')
