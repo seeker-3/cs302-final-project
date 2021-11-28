@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useForm, UseFormReturn } from 'react-hook-form'
 import useBanner from '../context/BannerContext'
 import useAudioFiles from '../context/db/AudioFilesContext'
@@ -22,11 +22,13 @@ export default (function AudioFileSaver({ render, children }) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState,
     setError,
+    clearErrors,
     watch,
     reset,
   } = form
+  const { errors } = formState
 
   const { saveAudioFile } = useAudioFiles()
 
@@ -44,21 +46,36 @@ export default (function AudioFileSaver({ render, children }) {
 
     const result = await saveAudioFile(
       tuneOrBeat,
-      file.name === filename ? file : new File([file], filename)
+      file.name === filename
+        ? file
+        : new File([file], filename, {
+            type: file.type,
+          })
     )
+
     // success
     if (result) return reset()
 
-    setMessage(`a ${filetype} with that name already exists`)
-
     setError(
       'filename',
-      {},
+      {
+        message: `error: ${filetype} with that name already exists`,
+      },
       {
         shouldFocus: true,
       }
     )
   })
+
+  // flash error to user with the banner
+  useEffect(() => {
+    const errors = Object.values(formState.errors)
+    if (!errors.length) return
+    for (const { message } of errors) {
+      if (message) setMessage(message)
+    }
+    clearErrors()
+  }, [formState, clearErrors, setMessage])
 
   const registerOptions = {
     required: true,

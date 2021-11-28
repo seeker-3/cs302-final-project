@@ -9,9 +9,7 @@ export default (function Banner() {
   return (
     <div className="banner">
       <p className="grow">{message}</p>
-      <button className="square-button" onClick={unmount}>
-        x
-      </button>
+      <button onClick={unmount}>x</button>
     </div>
   )
 } as FC)

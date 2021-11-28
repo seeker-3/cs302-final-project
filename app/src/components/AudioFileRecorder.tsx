@@ -15,7 +15,11 @@ export default (function AudioFileRecorder({ setValue, resetField, reset }) {
 
   useEffect(() => {
     if (!audioRecording) return resetField('fileData')
-    const file = new File([audioRecording], 'recording')
+
+    const file = new File([audioRecording], 'recording', {
+      type: audioRecording.type,
+    })
+
     const container = new DataTransfer()
     container.items.add(file)
 

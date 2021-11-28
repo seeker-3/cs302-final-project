@@ -82,7 +82,8 @@
   flex-direction: column;
 }
 
-.wrap {
+.wrap,
+%wrap {
   flex-wrap: wrap;
 }
 

@@ -11,8 +11,7 @@ export default function useAudioRecording() {
       const mediaRecorder = new MediaRecorder(
         await navigator.mediaDevices.getUserMedia({
           audio: true,
-        }),
-        {}
+        })
       )
 
       mediaRecorder.ondataavailable = ({ data }) =>

@@ -30,6 +30,10 @@ export default (function AudioFileSelector({
   audioFile,
   handleChange,
 }) {
+  const placeholder = audioFiles.length
+    ? 'select beat'
+    : `no ${storeName} exist`
+
   return (
     <select
       className="text-width2"
@@ -37,13 +41,18 @@ export default (function AudioFileSelector({
       disabled={!audioFiles.length}
       placeholder={`no ${storeName} exist`}
       onChange={handleChange}
-      value={audioFile?.name}
+      value={audioFile?.name ?? placeholder}
     >
-      {audioFiles.map(audioFile => (
-        <option key={audioFile.name} value={audioFile.name}>
-          {audioFile.name}
+      <>
+        <option value={placeholder} disabled hidden>
+          {placeholder}
         </option>
-      ))}
+        {audioFiles.map(audioFile => (
+          <option key={audioFile.name} value={audioFile.name}>
+            {audioFile.name}
+          </option>
+        ))}
+      </>
     </select>
   )
 } as FC<ReturnType<typeof useAudioFileSelector>>)

@@ -15,7 +15,12 @@ export const useAudioFileUploader = () => {
   }
 }
 
-export default (function AudioFileUploader({ register, setValue }) {
+export default (function AudioFileUploader({
+  register,
+  setValue,
+  setError,
+  clearErrors,
+}) {
   return (
     <>
       <input style={{ display: 'none' }} />
@@ -24,10 +29,29 @@ export default (function AudioFileUploader({ register, setValue }) {
         {...register('fileData', {
           required: true,
           onChange: ({ target }) => {
-            const filename = target?.files && target.files[0]?.name
-            if (!filename) return
-            setValue('filename', filename)
+            const file = target?.files[0]
+            if (!file) return
+            const validMIMETypes = file.type.match(/^audio\/*$/)
+
+            if (!validMIMETypes) {
+              target.files = new DataTransfer().files
+              setError(
+                'fileData',
+                {
+                  message: `Invalid file type: ${file.type}. File must be an audio file.`,
+                },
+                {
+                  shouldFocus: true,
+                }
+              )
+              return
+            }
+
+            clearErrors('fileData')
+
+            setValue('filename', file.name)
           },
+          validate: ([file]) => !!(file && file.type.match(/^audio\/*$/)),
         })}
       />
     </>

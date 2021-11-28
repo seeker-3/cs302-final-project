@@ -2,27 +2,27 @@ import {
   addBeat,
   addDrum,
   drumArrays,
-  handleFileInputChange,
+  inputAudioFile,
   pauseTrack,
   playTrack,
   removeBeat,
   removeDrum,
 } from '@dothum/percussion'
-import { ChangeEventHandler, FC, useState } from 'react'
+import classNames from 'classnames'
+import { FC, useReducer, useState } from 'react'
 
-export const usePercussion = () => {
-  const [drums, setDrums] = useState([...drumArrays])
+export const usePercussion = (file: File | null) => {
+  const [drums, updateLocalDrumState] = useReducer(
+    () => [...drumArrays],
+    drumArrays
+  )
   const [playing, setPlaying] = useState(false)
 
-  const reloadDrumState = () => {
-    setDrums([...drumArrays])
+  const loadDrum = async () => {
+    if (!file) return
+    await inputAudioFile(file)
+    updateLocalDrumState()
   }
-
-  const handleUpload: ChangeEventHandler<HTMLInputElement> | undefined =
-    async e => {
-      await handleFileInputChange(e)
-      reloadDrumState()
-    }
 
   const handlePlayState = () => {
     if (playing) pauseTrack()
@@ -32,24 +32,24 @@ export const usePercussion = () => {
 
   const handleAddDrum = () => {
     addDrum()
-    reloadDrumState()
+    updateLocalDrumState()
   }
 
   const handleAddBeat = () => {
     addBeat()
-    reloadDrumState()
+    updateLocalDrumState()
   }
 
   const handleRemoveBeat = () => {
     removeBeat()
-    reloadDrumState()
+    updateLocalDrumState()
   }
 
   return {
     drums,
     playing,
-    reloadDrumState,
-    handleUpload,
+    loadDrum,
+    updateLocalDrumState,
     handlePlayState,
     handleAddDrum,
     handleAddBeat,
@@ -57,49 +57,82 @@ export const usePercussion = () => {
   }
 }
 
-export default (function () {
+export default (function ({ audioFile }) {
   const {
     drums,
     playing,
-    reloadDrumState,
-    handleUpload,
+    loadDrum,
+    updateLocalDrumState,
     handlePlayState,
     handleAddDrum,
     handleAddBeat,
     handleRemoveBeat,
-  } = usePercussion()
+  } = usePercussion(audioFile)
+
+  const loaderDisabled = !audioFile
+  const controlsDisabled = loaderDisabled || !drums.length
 
   return (
-    <>
-      <input type="file" onChange={handleUpload} />
-      <button onClick={handlePlayState}>{playing ? 'pause' : 'play'}</button>
-      <button onClick={handleAddBeat}>add beat</button>
-      <button onClick={handleRemoveBeat}>remove beat</button>
-      <button onClick={handleAddDrum}>add drum</button>
-      {drums.map((beats, i) => (
-        <div key={i}>
-          <button
-            className="bg-red"
-            onClick={() => {
-              removeDrum(i)
-              reloadDrumState()
-            }}
-          >
-            remove drum
-          </button>
-          {beats.map((beat, j) => (
+    <div className="column">
+      <div className="row">
+        <button className="width2" disabled={!audioFile} onClick={loadDrum}>
+          load beat
+        </button>
+        <button
+          className="width2"
+          onClick={handlePlayState}
+          disabled={controlsDisabled}
+        >
+          {playing ? 'pause' : 'play'}
+        </button>
+        <button
+          className="width2"
+          onClick={handleAddBeat}
+          disabled={controlsDisabled}
+        >
+          add beat
+        </button>
+        <button
+          className="width2"
+          onClick={handleRemoveBeat}
+          disabled={controlsDisabled}
+        >
+          remove beat
+        </button>
+        <button
+          className="width2"
+          onClick={handleAddDrum}
+          disabled={controlsDisabled}
+        >
+          add drum
+        </button>
+      </div>
+      <div className="column">
+        {drums.map((beats, i) => (
+          <div className="row align-items-start" key={i}>
             <button
-              className="m-16"
-              key={j}
-              style={{ background: beat ? '#333' : '#ccc' }}
               onClick={() => {
-                drumArrays[i][j] = drumArrays[i][j] ? 0 : 1
-                reloadDrumState()
+                removeDrum(i)
+                updateLocalDrumState()
               }}
-            />
-          ))}
-        </div>
-      ))}
-    </>
+            >
+              remove
+            </button>
+            <div className="drum-beats">
+              {beats.map((beat, j) => (
+                <button
+                  className={classNames({ selected: beat })}
+                  key={j}
+                  onClick={() => {
+                    drumArrays[i][j] = drumArrays[i][j] ? 0 : 1
+                    updateLocalDrumState()
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   )
-} as FC)
+} as FC<{ audioFile: File | null }>)
