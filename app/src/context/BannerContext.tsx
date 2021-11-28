@@ -21,7 +21,7 @@ export const BannerProvider: FC = ({ children }) => {
       if (event.key === 'Escape') closeBanner()
     }
 
-    const timeout = setTimeout(closeBanner, 3000)
+    const timeout = setTimeout(closeBanner, 5000)
 
     window.addEventListener('keydown', closeEvent)
 

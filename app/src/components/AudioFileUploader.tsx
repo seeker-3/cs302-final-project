@@ -31,7 +31,9 @@ export default (function AudioFileUploader({
           onChange: ({ target }) => {
             const file = target?.files[0]
             if (!file) return
-            const validMIMETypes = file.type.match(/^audio\/*$/)
+            const validMIMETypes = file.type.match(/^audio\/.*$/)
+
+            console.log(file.type)
 
             if (!validMIMETypes) {
               target.files = new DataTransfer().files

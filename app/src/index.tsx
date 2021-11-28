@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { registerSW } from 'virtual:pwa-register'
 import App from './app'
 import ContextProvider from './context'
+import './scss/index.scss'
 
 render(
   <StrictMode>
