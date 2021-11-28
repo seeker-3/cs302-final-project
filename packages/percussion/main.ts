@@ -2,7 +2,7 @@ import {
   addBeat,
   addDrum,
   drumArrays,
-  handleFileInputChange,
+  inputAudioFile,
   pauseTrack,
   playSound,
   playTrack,
@@ -10,10 +10,14 @@ import {
   removeDrum,
   shiftLeft,
   shiftRight,
-} from './lib'
+} from './src/lib'
 
 const recorder = document.getElementById('recorder') as HTMLInputElement
-recorder.onchange = handleFileInputChange
+
+recorder.onchange = async ({ target }) => {
+  const file = (target as HTMLInputElement).files[0]
+  await inputAudioFile(file)
+}
 
 const addToMachineButton = document.getElementById('addToMachine')
 addToMachineButton.onclick = () => {
