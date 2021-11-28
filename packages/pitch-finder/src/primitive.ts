@@ -149,7 +149,7 @@ export const audioToMelody = (audioData: Float32Array, sampleRate: number) => {
   //tempo is expressed in beats per minute. quantLen * quant is the amount of
   //time for a whole note in seconds (seconds/beat). Dividing 60 seconds by this value
   //gets beats/minute
-  const tempo = Math.round(60 / (quantizationLength * quantization));
+  const tempo = Math.round(60 / (quantizationLength * quantization))
 
   return { quantization, tempo }
 }
@@ -218,7 +218,6 @@ export type Notes = ReturnType<typeof frequencyToNote>
 // Converts a list of frequencies to their musical note equivalent and returns it //
 ///////////////////////////////////////////////////////////////////////////////////
 export const convertBufferToNotes = async (buffer: ArrayBuffer) => {
-
   // Establish an AudioContext
   // Retrieve audio buffer from buffer argument
   // Convert audio to "melody" e.g. find its tempo/quantization
@@ -236,13 +235,13 @@ export const convertBufferToNotes = async (buffer: ArrayBuffer) => {
     const pitches = PitchFinder.frequencies(
       [YIN(), AMDF()],
       audioChannel0, // get a single channel of sound
-      melody,
+      melody
     )
 
     return pitches.reduce(
       (notes, tone) =>
         tone === null ? notes : [...notes, frequencyToNote(tone)],
-      [] as Notes[],
+      [] as Notes[]
     )
   } catch (error) {
     console.error(error)

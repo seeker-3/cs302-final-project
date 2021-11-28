@@ -3,8 +3,7 @@
 // Input: array called "hummed"
 // Output: array called "recommendChords"
 
-
-const hummed = ["C", "G", "Dm"]
+const hummed = ['C', 'G', 'Dm']
 
 getComplimentaryChords(hummed)
 
@@ -86,7 +85,6 @@ export function getComplimentaryChords(hummed: string[]) {
   // MODIFY THIS TO BE INPUT FROM CHORDS GIVEN
   // given by user
 
-
   document.write('</br>' + 'Given Chords: ' + hummed + '</br></br>')
 
   const compChords = []
@@ -150,17 +148,16 @@ export function getComplimentaryChords(hummed: string[]) {
     }
   }
 
-
   window.onload = () => {
     const app = document.getElementById('app')
 
-    app.innerText = `Complimentary Chords: ${recommendChords.length > 0
-      ? recommendChords
-      : 'None (you have the best ones)'
-      }`
+    app.innerText = `Complimentary Chords: ${
+      recommendChords.length > 0
+        ? recommendChords
+        : 'None (you have the best ones)'
+    }`
   }
 
   //return array of Complimentary chords
-  return recommendChords;
-
+  return recommendChords
 }
