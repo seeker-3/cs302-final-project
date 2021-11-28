@@ -1,8 +1,8 @@
-import { convertBufferToNotes } from './lib'
+import { convertBufferToNotes } from './src/lib'
 
 void (async () => {
   // TODO:
-  // Fetch the file provided by user and 
+  // Fetch the file provided by user and
   // plug that into "file" var,
   // but also provide option to use sample file
   // e.g. the default (C-major2.wav)

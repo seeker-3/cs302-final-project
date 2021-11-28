@@ -22,14 +22,10 @@ const sleepFor = (delay: number) =>
 
 // This event listener waits for a file to uploaded and then it determines the tempo of that audio file.
 // It also converts the beats in that audio file into a patter than is pushed into drumArrays
-export const handleFileInputChange = async ({ target }) => {
-  console.log('here')
-  // Store raw audio data in url object
-  const file = target.files[0] as File
-
+export const inputAudioFile = async (file: File) => {
   const soundBuffer = await file.arrayBuffer()
 
-  console.log(soundBuffer)
+  if (import.meta.env.DEV) console.log(soundBuffer)
 
   // pass buffer to the audioContext function decodeAudioData to get usable data
   const dataBuffer = await audioContext.decodeAudioData(soundBuffer)
@@ -37,11 +33,10 @@ export const handleFileInputChange = async ({ target }) => {
   // get first channel. Channels represent different sources of audio. Like surround sound
   // That function return a vector of audio data
   const audioData = dataBuffer.getChannelData(0)
-  console.log(audioData)
+  if (import.meta.env.DEV) console.log(audioData)
 
-  console.log(audioContext.sampleRate)
+  if (import.meta.env.DEV) console.log(audioContext.sampleRate)
   audioToDrum(audioData)
-  audioToMelody(audioData)
 }
 
 // This function is called to return the most common interval found in the audio file
@@ -162,7 +157,7 @@ export function playSound(setting) {
   whiteNoiseSourceGain.gain.setValueAtTime(noiseVol, audioContext.currentTime)
   whiteNoiseSourceGain.gain.exponentialRampToValueAtTime(
     noiseRamp,
-    audioContext.currentTime + noiseGain,
+    audioContext.currentTime + noiseGain
   )
 
   whiteNoiseSource.connect(whiteNoiseSourceGain)
@@ -183,7 +178,7 @@ export function playSound(setting) {
   oscillatorGain.gain.setValueAtTime(oscillationVol, audioContext.currentTime)
   oscillatorGain.gain.exponentialRampToValueAtTime(
     oscillationRamp, // ramp to this value
-    audioContext.currentTime + oscillationGain, // get there at this time
+    audioContext.currentTime + oscillationGain // get there at this time
   )
 
   // Connect oscillator to the gain controller audio module
@@ -345,10 +340,11 @@ function audioToMelody(audioData: Float32Array) {
   //gets beats/minute
   const tempo = 60 / (quantLen * quant)
 
-  console.log(quant)
-  console.log(tempo)
+  if (import.meta.env.DEV) console.log(quant)
+  if (import.meta.env.DEV) console.log(tempo)
 }
 
+if (import.meta.env.DEV) console.log(import.meta.env)
 //////////////////////////////////////////////////////////////////////
 //____________End of functions for getting quantization and tempo for melodies//
 //////////////////////////////////////////////////////////////////////
@@ -407,7 +403,7 @@ function audioToDrum(audioData: Float32Array) {
       (
         intervals[b] /
         (minInterval * (audioContext.sampleRate / 1000))
-      ).toFixed(),
+      ).toFixed()
     )
     for (let i = 0; i < space - 1; i++) {
       newDrum.push(0)
@@ -460,7 +456,7 @@ async function playBeat(beatIndex: number) {
 const buffer = audioContext.createBuffer(
   1,
   audioContext.sampleRate * 1,
-  audioContext.sampleRate,
+  audioContext.sampleRate
 )
 
 const channelData = buffer.getChannelData(0)
