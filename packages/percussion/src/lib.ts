@@ -4,9 +4,10 @@ import {
   sleepFor,
   getCommonInterval,
   audioToDrum,
-  SoundSettings,
   playBeat
 } from './helper'
+
+export {drumArrays} from './helper'
 
 const audioContext = new AudioContext()
 
