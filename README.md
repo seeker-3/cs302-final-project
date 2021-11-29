@@ -9,11 +9,11 @@
 
 ## Usage:
 1. Open dothum website in another tab
-![Idea:](dothum/images/Orginal1.0.png)
+![I1:](/images/Orginal1.0.png)
 2. To begin either: 
 - "Choose File" to upload an existing file (red)
 - "record" to record some audio (blue)
-![Idea:](/images/.Orginal2.0.png)
+![I2](/images/Orginal2.0.png)
 3. Name the audio file (red), select it the audio is a "tune" or a "beat" (blue), and push save (orange)
 4. Tune:
 - To listen back to your audio file, click "process"
