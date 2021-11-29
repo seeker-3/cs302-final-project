@@ -21,8 +21,9 @@
 ![I4](/images/Orginal4.0.png)
 - To create the midi piano version of your audio file, click "original", select "piano", then click "process"
 ![I5](/images/Orginal5.0.png)
-- The output should be a list of notes detected in your audio file, and a piano representation
+- The output should be a list of notes detected in your audio file, and a piano audio
 ![I6](/images/Orginal6.0.png)
+5: Beat:
 
 
 
