@@ -46,7 +46,6 @@ importers:
       '@dothum/wasm': workspace:*
       '@types/react': ^17.0.37
       '@types/react-dom': ^17.0.11
-      '@types/react-router-dom': ^5.3.2
       '@vitejs/plugin-react': ^1.1.0
       autoprefixer: ^10.4.0
       classnames: ^2.3.1
@@ -61,7 +60,7 @@ importers:
       tailwindcss: ^2.2.19
       typescript: ^4.5.2
       vite: ^2.6.14
-      vite-plugin-pwa: ^0.11.7
+      vite-plugin-pwa: ^0.11.8
       vite-plugin-wasm-pack: ^0.1.9
       workbox-window: ^6.4.1
     dependencies:
@@ -78,7 +77,6 @@ importers:
     devDependencies:
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
-      '@types/react-router-dom': 5.3.2
       '@vitejs/plugin-react': 1.1.0
       autoprefixer: 10.4.0_postcss@8.4.4
       classnames: 2.3.1
@@ -88,7 +86,7 @@ importers:
       tailwindcss: 2.2.19_6b4e3d148bdcb715d5f821ed0a9c268b
       typescript: 4.5.2
       vite: 2.6.14_sass@1.43.5
-      vite-plugin-pwa: 0.11.7_vite@2.6.14
+      vite-plugin-pwa: 0.11.8_vite@2.6.14
       vite-plugin-wasm-pack: 0.1.9
       workbox-window: 6.4.1
 
@@ -135,12 +133,12 @@ importers:
       tone: ^14.7.77
       typescript: ^4.5.2
       vite: ^2.6.14
-      webmidi: ^2.5.1
+      webmidi: 2.5.1
     dependencies:
-      '@tonejs/piano': 0.2.1_tone@14.7.77+webmidi@2.5.3
+      '@tonejs/piano': 0.2.1_tone@14.7.77+webmidi@2.5.1
       events: 3.3.0
       tone: 14.7.77
-      webmidi: 2.5.3
+      webmidi: 2.5.1
     devDependencies:
       '@types/events': 3.0.0
       '@types/node': 16.11.10
@@ -1463,7 +1461,7 @@ packages:
       string.prototype.matchall: 4.0.6
     dev: true
 
-  /@tonejs/piano/0.2.1_tone@14.7.77+webmidi@2.5.3:
+  /@tonejs/piano/0.2.1_tone@14.7.77+webmidi@2.5.1:
     resolution: {integrity: sha512-JIwZ91RSFR7Rt16o7cA7O7G30wenFl0lY5yhTsuwZmn48MO9KV+X7kyXE98Bqvs/dCBVg9PoAJ1GKMabPOW4yQ==}
     peerDependencies:
       tone: ^14.6.1
@@ -1471,7 +1469,7 @@ packages:
     dependencies:
       tone: 14.7.77
       tslib: 1.14.1
-      webmidi: 2.5.3
+      webmidi: 2.5.1
     dev: false
 
   /@types/estree/0.0.39:
@@ -1480,10 +1478,6 @@ packages:
 
   /@types/events/3.0.0:
     resolution: {integrity: sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==}
-    dev: true
-
-  /@types/history/4.7.9:
-    resolution: {integrity: sha512-MUc6zSmU3tEVnkQ78q0peeEjKWPUADMlC/t++2bI8WnAG2tvYRPIgHG8lWkXwqc8MsUF6Z2MOf+Mh5sazOmhiQ==}
     dev: true
 
   /@types/json-schema/7.0.9:
@@ -1517,21 +1511,6 @@ packages:
   /@types/react-dom/17.0.11:
     resolution: {integrity: sha512-f96K3k+24RaLGVu/Y2Ng3e1EbZ8/cVJvypZWd7cy0ofCBaf2lcM46xNhycMZ2xGwbBjRql7hOlZ+e2WlJ5MH3Q==}
     dependencies:
-      '@types/react': 17.0.37
-    dev: true
-
-  /@types/react-router-dom/5.3.2:
-    resolution: {integrity: sha512-ELEYRUie2czuJzaZ5+ziIp9Hhw+juEw8b7C11YNA4QdLCVbQ3qLi2l4aq8XnlqM7V31LZX8dxUuFUCrzHm6sqQ==}
-    dependencies:
-      '@types/history': 4.7.9
-      '@types/react': 17.0.37
-      '@types/react-router': 5.1.17
-    dev: true
-
-  /@types/react-router/5.1.17:
-    resolution: {integrity: sha512-RNSXOyb3VyRs/EOGmjBhhGKTbnN6fHWvy5FNLzWfOWOGjgVUKqJZXfpKzLmgoU8h6Hj8mpALj/mbXQASOb92wQ==}
-    dependencies:
-      '@types/history': 4.7.9
       '@types/react': 17.0.37
     dev: true
 
@@ -2098,9 +2077,9 @@ packages:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
     dev: true
 
-  /commander/6.2.1:
-    resolution: {integrity: sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==}
-    engines: {node: '>= 6'}
+  /commander/8.3.0:
+    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
+    engines: {node: '>= 12'}
     dev: true
 
   /common-tags/1.8.2:
@@ -4136,11 +4115,11 @@ packages:
     resolution: {integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==}
     engines: {node: '>=6'}
 
-  /purgecss/4.0.3:
-    resolution: {integrity: sha512-PYOIn5ibRIP34PBU9zohUcCI09c7drPJJtTDAc0Q6QlRz2/CHQ8ywGLdE7ZhxU2VTqB7p5wkvj5Qcm05Rz3Jmw==}
+  /purgecss/4.1.1:
+    resolution: {integrity: sha512-oVNNzN9tRVoRCeITtpC3ofLU5wGLLYayXkOELeSr0FjwSVdxNK1GbIAvDQNSm5X1WFXGkfcb9JbvTsS2G364/w==}
     hasBin: true
     dependencies:
-      commander: 6.2.1
+      commander: 8.3.0
       glob: 7.2.0
       postcss: 8.4.4
       postcss-selector-parser: 6.0.6
@@ -4869,7 +4848,7 @@ packages:
       postcss-selector-parser: 6.0.6
       postcss-value-parser: 4.1.0
       pretty-hrtime: 1.0.3
-      purgecss: 4.0.3
+      purgecss: 4.1.1
       quick-lru: 5.1.1
       reduce-css-calc: 2.1.8
       resolve: 1.20.0
@@ -5109,8 +5088,8 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vite-plugin-pwa/0.11.7_vite@2.6.14:
-    resolution: {integrity: sha512-sU+VrUNVP87E79GCCBTusdoiqja3Qapsrp48+xFDf28zaeNZ2nuuCoCIPshmyusGuY0I51wRFxiBjcbdheEBSw==}
+  /vite-plugin-pwa/0.11.8_vite@2.6.14:
+    resolution: {integrity: sha512-IbiVEwvvXWlm2LeNPcTjnQfYTwPN/BDicbY6Nn9LNx2ECKjjCDDraLpqFe8v7OKATAiuXnx35q4DDI7UvJoqPw==}
     peerDependencies:
       vite: ^2.0.0
     dependencies:
@@ -5189,8 +5168,8 @@ packages:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
     dev: true
 
-  /webmidi/2.5.3:
-    resolution: {integrity: sha512-PyMGvKcDGpvbQUfnmBORQJciyG3VAZ4aHlGy1iRZ3uEs4kG4HCvI7KRthUpM1vuHDPL98lidRIUaoRomkJtWtg==}
+  /webmidi/2.5.1:
+    resolution: {integrity: sha512-rX9/vBBSnSZR04ZZcLWCe/ujOizH9f/Q9HX11+Zw+HHwOy7edUTbbC3Axc2RjoiDQ2W7RkK1tY4yv0nYSfUcJg==}
     engines: {node: '>0.6.x'}
     dev: false
 

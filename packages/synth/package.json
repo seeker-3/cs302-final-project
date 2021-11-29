@@ -29,6 +29,6 @@
     "@tonejs/piano": "^0.2.1",
     "events": "^3.3.0",
     "tone": "^14.7.77",
-    "webmidi": "^2.5.1"
+    "webmidi": "2.5.1"
   }
 }

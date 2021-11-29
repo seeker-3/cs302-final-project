@@ -14,4 +14,6 @@ render(
   document.getElementById('app')
 )
 
-registerSW()
+registerSW({
+  immediate: true,
+})
