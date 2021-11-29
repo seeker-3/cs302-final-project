@@ -2,10 +2,6 @@
 
 ## [dothum.app](https://dothum.app/)
 
-## .hum Visualized
-
-![Idea:](/.hum-visulaized.png)
-
 
 ## Usage:
 1. Open dothum website in another tab
