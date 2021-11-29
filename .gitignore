@@ -1,4 +1,6 @@
 node_modules/
+dist/
+build/
 
 .yarn/*
 !.yarn/patches
@@ -10,12 +12,6 @@ node_modules/
 
 /.pnp
 .pnp.js
-
-# testing
-/coverage
-
-# production
-/build/
 
 # misc
 .DS_Store
@@ -29,3 +25,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .pnpm-debug.log
+
+# Local Netlify folder
+.netlify

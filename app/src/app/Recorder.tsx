@@ -1,13 +1,13 @@
 import { FC } from 'react'
-import AudioFileSaver from '../components/AudioFileSaverForm'
-import AudioRecorderControls from '../components/AudioFileRecorder'
+import AudioFileRecorder from '../components/form/AudioFileRecorder'
+import AudioFileSaver from '../components/form/AudioFileSaverForm'
 
 export default (function Recorder() {
   return (
     <AudioFileSaver
       action="recording"
       render={fileSaverForm => {
-        return <AudioRecorderControls {...fileSaverForm} />
+        return <AudioFileRecorder {...fileSaverForm} />
       }}
     />
   )

@@ -6,7 +6,6 @@ plugins:
   - '@typescript-eslint'
   - import
   - jsx-a11y
-  - promise
   - react
   - react-hooks
 
@@ -16,7 +15,6 @@ extends:
   - plugin:import/recommended
   - plugin:import/typescript
   - plugin:jsx-a11y/recommended
-  - plugin:promise/recommended
   - plugin:react/recommended
   - plugin:react/jsx-runtime
   - plugin:react-hooks/recommended

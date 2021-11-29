@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import useAudioRecording from '../hooks/useAudioRecording'
+import useAudioRecording from '../../hooks/useAudioRecording'
 import { FileSaverForm } from './AudioFileSaverForm'
 
 export default (function AudioFileRecorder({ setValue, resetField, reset }) {

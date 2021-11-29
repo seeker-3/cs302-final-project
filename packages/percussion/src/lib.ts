@@ -1,15 +1,14 @@
 import {
-  minInterval,
-  drumArrays,
-  sleepFor,
-  getCommonInterval,
   audioToDrum,
-  playBeat
+  drumArrays,
+  getCommonInterval,
+  minInterval,
+  playBeat,
+  sleepFor,
 } from './helper'
 
 
 const audioContext = new AudioContext()
-
 
 // _________Functions to Access_________
 
@@ -27,7 +26,6 @@ export const inputAudioFile = async (file: File) => {
 
   audioToDrum(audioData)
 }
-
 
 // This function is called to return the most common interval found in the audio file
 // This is then used to determine the bpm
@@ -104,4 +102,4 @@ export function pauseTrack() {
   run = false
 }
 
-export {drumArrays}
+export { drumArrays }

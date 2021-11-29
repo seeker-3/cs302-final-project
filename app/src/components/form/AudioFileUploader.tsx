@@ -35,8 +35,6 @@ export default (function AudioFileUploader({
             if (!file) return
             const validMIMETypes = file.type.match(audioMIMETypeRegex)
 
-            console.log(file.type)
-
             if (!validMIMETypes) {
               target.files = new DataTransfer().files
               setError(
@@ -55,10 +53,7 @@ export default (function AudioFileUploader({
 
             setValue('filename', file.name)
           },
-          validate: ([file]) => {
-            console.log(!!(file && file.type.match(audioMIMETypeRegex)))
-            return true
-          },
+          validate: ([file]) => !!(file && file.type.match(audioMIMETypeRegex)),
         })}
       />
     </>
