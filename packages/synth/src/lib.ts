@@ -1,3 +1,9 @@
+/*
+  Synth Function:
+  Usage: Takes an input of an array of musical notes
+    and outputs a midi audio of a piano playing the notes
+*/
+
 // import * as Tone from 'tone'
 import { Piano } from '@tonejs/piano'
 const wait = (time = 1000) => new Promise(resolve => setTimeout(resolve, time))
@@ -9,12 +15,7 @@ export async function pianoSynth(musicalNotes: string[]) {
     velocities: 5,
   })
 
-  // play all the notes in the musicalNotes array
-
-  // piano.toDestination()
-
   // create all dependencies to be able to record piano audio
-  // const audio = document.querySelector('audio')
   const pianoContext = piano.context
   const mediaStreamDestination = pianoContext.createMediaStreamDestination()
   const recorder = new MediaRecorder(mediaStreamDestination.stream)
@@ -32,10 +33,11 @@ export async function pianoSynth(musicalNotes: string[]) {
   let i = 0.0
   await piano.load()
 
+  // play all the notes in the musicalNotes array
   for (const note of musicalNotes) {
+    //starts recording once the notes start playing
     if (recorder.state !== 'recording') recorder.start()
 
-    // if (noteI === 0)
     piano.keyDown({ note, time: `+${i}` })
     piano.keyUp({ note, time: `+${i + 0.25}` })
     // increment size determines note length -- currently
@@ -43,6 +45,7 @@ export async function pianoSynth(musicalNotes: string[]) {
     i += 0.33
   }
 
+  //stops recording once all the notes have been played in the array
   const mediaRecorderOnstopPromise = new Promise<Blob>(
     resolve =>
       (recorder.onstop = () => resolve(new Blob(chunks, { type: 'audio/wav' })))
@@ -51,5 +54,6 @@ export async function pianoSynth(musicalNotes: string[]) {
   await wait(i * 1000 + 1000)
   recorder.stop()
 
+  // returns piano audio file
   return mediaRecorderOnstopPromise
 }

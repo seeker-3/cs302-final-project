@@ -1,8 +1,10 @@
-// put code you want exported to the final app here
+/*
 // Hard coded Diatonic Scale for all chords using Circle of Fifths
 // Which is used to determine Complimentary chords from the "hummed" array
 // Input: array called "hummed"
 // Output: array called "recommendChords"
+// Usage: None, sadly the implementation of it was not needed.
+*/
 
 const hummed = ['C', 'G', 'Dm']
 
@@ -13,6 +15,7 @@ getComplimentaryChords(hummed)
   Output: Recommended chords to use with random Chords
 */
 export function getComplimentaryChords(hummed: string[]) {
+  //All chords on circle of Fifths
   const chords = [
     'C',
     'G',
@@ -40,6 +43,7 @@ export function getComplimentaryChords(hummed: string[]) {
     'Dm',
   ]
 
+  //Diatonic Scale for each Chord Major and Minor on Circle of Fifths
   const diatonicScale = [
     ['F', 'G', 'Dm', 'Am', 'Em'],
     ['C', 'D', 'Am', 'Em', 'Bm'],
@@ -83,10 +87,8 @@ export function getComplimentaryChords(hummed: string[]) {
   // Given a vector of chords, if 2 or more chords are part of each others
   // Diatonic scale then make them recommended
 
-  // MODIFY THIS TO BE INPUT FROM CHORDS GIVEN
-  // given by user
-
-  document.write('</br>' + 'Given Chords: ' + hummed + '</br></br>')
+  //usage for a separate html page but not function
+  //document.write('</br>' + 'Given Chords: ' + hummed + '</br></br>')
 
   const compChords = []
   const temp = []
@@ -149,6 +151,8 @@ export function getComplimentaryChords(hummed: string[]) {
     }
   }
 
+  /*
+  //usage for a separate html page but not function
   window.onload = () => {
     const app = document.getElementById('app')
 
@@ -158,7 +162,7 @@ export function getComplimentaryChords(hummed: string[]) {
         : 'None (you have the best ones)'
     }`
   }
-
+  */
   //return array of Complimentary chords
   return recommendChords
 }
