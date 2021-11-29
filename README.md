@@ -15,6 +15,7 @@
 - "record" to record some audio (blue)
 ![I2](/images/Orginal2.0.png)
 3. Name the audio file (red), select it the audio is a "tune" or a "beat" (blue), and push save (orange)
+![I3](/images/Orginal3.0.png)
 4. Tune:
 - To listen back to your audio file, click "process"
 - To create the midi piano version of your audio file, click "original", select "piano", then click "process"
