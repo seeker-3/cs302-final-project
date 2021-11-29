@@ -7,34 +7,26 @@ import {
   useRef,
 } from 'react'
 import { AudioFilesDB, AudioFileStores, openAudioFiles } from '../db/indexedDB'
-import useFileSelector from '../hooks/useFileSelector'
 
-interface AudioFilesReducerState {
+type AudioFilesReducerState = {
   tunes: File[]
   beats: File[]
 }
-
 const audioFilesReducer = (
   state: AudioFilesReducerState,
-  update: {
-    tunes?: File[]
-    beats?: File[]
-  }
+  update: Partial<AudioFilesReducerState>
 ) => ({
   ...state,
   ...update,
 })
 
-const useAudioContextBody = () => {
+const useContextBody = () => {
   const ref = useRef<AudioFilesDB | null>(null)
 
   const [store, dispatch] = useReducer(audioFilesReducer, {
     tunes: [],
     beats: [],
   })
-
-  const tuneSelector = useFileSelector(store.tunes)
-  const beatSelector = useFileSelector(store.beats)
 
   useEffect(() => {
     void (async () => {
@@ -99,24 +91,24 @@ const useAudioContextBody = () => {
   }
 }
 
-const AudioFilesContext = createContext<ReturnType<
-  typeof useAudioContextBody
+const AudioFilesIndexedDBContext = createContext<ReturnType<
+  typeof useContextBody
 > | null>(null)
 
-export const AudioFilesProvider: FC = ({ children }) => {
-  const audioFilesContext = useAudioContextBody()
-  if (!audioFilesContext) return null
+export const AudioFilesIndexedDBProvider: FC = ({ children }) => {
+  const audioFilesIndexedDBContext = useContextBody()
+  if (!audioFilesIndexedDBContext) return null
 
   return (
-    <AudioFilesContext.Provider value={audioFilesContext}>
+    <AudioFilesIndexedDBContext.Provider value={audioFilesIndexedDBContext}>
       {children}
-    </AudioFilesContext.Provider>
+    </AudioFilesIndexedDBContext.Provider>
   )
 }
 
-export default function useAudioFiles() {
-  const audioFilesContext = useContext(AudioFilesContext)
-  if (!audioFilesContext)
-    throw Error('audio files context did not load properly')
-  return audioFilesContext
+export default function useAudioFilesIndexedDB() {
+  const audioFilesIndexedDBContext = useContext(AudioFilesIndexedDBContext)
+  if (!audioFilesIndexedDBContext)
+    throw Error('audio files indexedDB context did not load properly')
+  return audioFilesIndexedDBContext
 }

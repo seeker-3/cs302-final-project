@@ -1,41 +1,40 @@
 import { FC } from 'react'
-import AudioFileRecorder from '../components/AudioFileRecorder'
-import AudioFileSaver from '../components/AudioFileSaverForm'
-import AudioFileUploader from '../components/AudioFileUploader'
+import { ErrorBoundary } from 'react-error-boundary'
 import Banner from '../components/Banner'
-import Percussion from '../components/Percussion'
-import PitchFinder from '../components/PitchFinder'
-import Editor from './Editor'
-
-const tuneInstruments = ['piano', 'fish']
-const beatInstruments = ['drum']
+import AudioFileRecorder from '../components/form/AudioFileRecorder'
+import AudioFileSaver from '../components/form/AudioFileSaverForm'
+import AudioFileUploader from '../components/form/AudioFileUploader'
+import Beat from './Beat'
+import Tune from './Tune'
 
 export default (function App() {
   return (
     <main className="column">
       <div className="column align-items-end">
-        <AudioFileSaver
-          action="recording"
-          render={fileSaverForm => <AudioFileRecorder {...fileSaverForm} />}
-        />
-        <AudioFileSaver
-          action="upload"
-          render={fileSaverForm => <AudioFileUploader {...fileSaverForm} />}
-        />
+        <ErrorBoundary
+          fallback={<p className="center">audio file recorder crashed</p>}
+        >
+          <AudioFileSaver
+            action="recording"
+            render={fileSaverForm => <AudioFileRecorder {...fileSaverForm} />}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary
+          fallback={<p className="center">audio file uploader crashed</p>}
+        >
+          <AudioFileSaver
+            action="upload"
+            render={fileSaverForm => <AudioFileUploader {...fileSaverForm} />}
+          />
+        </ErrorBoundary>
       </div>
       <div className="column grow two-static-children">
-        <Editor
-          title="Tune"
-          storeName="tunes"
-          instruments={tuneInstruments}
-          render={props => <PitchFinder {...props} />}
-        />
-        <Editor
-          title="Beat"
-          storeName="beats"
-          instruments={beatInstruments}
-          render={props => <Percussion {...props} />}
-        />
+        <ErrorBoundary fallback={<p className="center">tune editor crashed</p>}>
+          <Tune />
+        </ErrorBoundary>
+        <ErrorBoundary fallback={<p className="center">beat editor crashed</p>}>
+          <Beat />
+        </ErrorBoundary>
       </div>
       <Banner />
     </main>

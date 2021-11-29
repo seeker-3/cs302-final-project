@@ -100,3 +100,5 @@ export async function playTrack() {
 export function pauseTrack() {
   run = false
 }
+
+export { drumArrays }

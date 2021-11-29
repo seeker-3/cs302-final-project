@@ -55,6 +55,7 @@ importers:
       postcss: ^8.4.4
       react: ^17.0.2
       react-dom: ^17.0.2
+      react-error-boundary: ^3.1.4
       react-hook-form: ^7.20.4
       sass: ^1.43.5
       tailwindcss: ^2.2.19
@@ -72,6 +73,7 @@ importers:
       idb: 7.0.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+      react-error-boundary: 3.1.4_react@17.0.2
       react-hook-form: 7.20.4_react@17.0.2
     devDependencies:
       '@types/react': 17.0.37
@@ -4173,6 +4175,16 @@ packages:
       object-assign: 4.1.1
       react: 17.0.2
       scheduler: 0.20.2
+    dev: false
+
+  /react-error-boundary/3.1.4_react@17.0.2:
+    resolution: {integrity: sha512-uM9uPzZJTF6wRQORmSrvOIgt4lJ9MC1sNgEOj2XGsDTRE4kmpWxg7ENK9EWNKJRMAOY9z0MuF4yIfl6gp4sotA==}
+    engines: {node: '>=10', npm: '>=6'}
+    peerDependencies:
+      react: '>=16.13.1'
+    dependencies:
+      '@babel/runtime': 7.16.3
+      react: 17.0.2
     dev: false
 
   /react-hook-form/7.20.4_react@17.0.2:

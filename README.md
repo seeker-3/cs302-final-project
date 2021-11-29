@@ -51,7 +51,7 @@ install wasm-pack:
 
 build the rust packages:
 
-`wasm-pack build packages/wasm -s dothum --target web`
+`pnpm build:wasm`
 
 install:
 

@@ -1,5 +1,5 @@
 import { convertBufferToNotes, Notes } from '@dothum/pitch-finder'
-import { PianoSynth } from '@dothum/synth'
+import { pianoSynth } from '@dothum/synth'
 import { FC, useState } from 'react'
 
 const wait = (time = 1000) => new Promise(resolve => setTimeout(resolve, time))
@@ -41,7 +41,7 @@ export default (function ({ audioFile }) {
           disabled={!notes}
           onClick={async () => {
             if (!notes) return
-            const blob = await PianoSynth(notes)
+            const blob = await pianoSynth(notes)
             console.log(blob)
           }}
         >

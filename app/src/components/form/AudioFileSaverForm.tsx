@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react'
 import { useForm, UseFormReturn } from 'react-hook-form'
-import useAudioFiles from '../context/AudioFilesContext'
-import useBanner from '../context/BannerContext'
+import useAudioFilesIndexedDB from '../../context/AudioFilesIndexedDBContext'
+import useBanner from '../../context/BannerContext'
 
 export interface FileSaverFormInterface {
   filename: string
@@ -30,7 +30,7 @@ export default (function AudioFileSaver({ render, children }) {
   } = form
   const { errors } = formState
 
-  const { saveAudioFile } = useAudioFiles()
+  const { saveAudioFile } = useAudioFilesIndexedDB()
 
   const { setMessage } = useBanner()
 

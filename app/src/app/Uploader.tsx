@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import FileSaver from '../components/AudioFileSaverForm'
-import AudioFileUploader from '../components/AudioFileUploader'
+import FileSaver from '../components/form/AudioFileSaverForm'
+import AudioFileUploader from '../components/form/AudioFileUploader'
 
 export default (function Uploader() {
   return (
