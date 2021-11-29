@@ -7,7 +7,6 @@ import {
   playBeat
 } from './helper'
 
-export {drumArrays} from './helper'
 
 const audioContext = new AudioContext()
 
@@ -105,4 +104,4 @@ export function pauseTrack() {
   run = false
 }
 
-
+export {drumArrays}
