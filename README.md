@@ -9,7 +9,7 @@
 
 ## Usage:
 1. Open dothum website in another tab
-![Idea:](/images/.Orginal1.0)
+![Idea:](/images/.Orginal1.0.png)
 3. To begin either: 
 - "Choose File" to upload an existing file (red)
 - "record" to record some audio (blue)
