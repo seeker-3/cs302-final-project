@@ -9,11 +9,12 @@
 
 ## Usage:
 1. Open dothum website in another tab
-2. To begin either: 
+![Idea:](/images/.Orginal1.0)
+3. To begin either: 
 - "Choose File" to upload an existing file (red)
 - "record" to record some audio (blue)
-3. Name the audio file (red), select it the audio is a "tune" or a "beat" (blue), and push save (orange)
-4. Tune:
+4. Name the audio file (red), select it the audio is a "tune" or a "beat" (blue), and push save (orange)
+5. Tune:
 - To listen back to your audio file, click "process"
 - To create the midi piano version of your audio file, click "original", select "piano", then click "process"
 - The output should be a list of notes detected in your audio file, and a piano representation
