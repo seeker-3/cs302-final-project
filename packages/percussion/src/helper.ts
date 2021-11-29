@@ -1,6 +1,8 @@
 
 const audioContext = new AudioContext
 
+//This is used to hold the settings for one of the audio nodes
+//used to generate drum sounds
 interface AudioNodeConfig {
     frequency: number
     gain: number
@@ -8,6 +10,9 @@ interface AudioNodeConfig {
     ramp: number
     volume: number
 }
+
+//This holds the two audio node configurations needed to make
+//a drum sound
 export interface SoundSettings {
     noise: AudioNodeConfig
     oscillation: AudioNodeConfig
@@ -17,12 +22,15 @@ const whisper = 0.02
 
 export let minInterval = 250 // smallest interval between beats in milliseconds
 
-export const drumArrays: (0 | 1)[][] = []
+export const drumArrays: (0 | 1)[][] = [] // holds drum patters
 
+//used to leave time inbetween beats
 export const sleepFor = (delay: number) =>
   new Promise(resolve => setTimeout(resolve, delay))
 
 
+//This function takes in an array of intervals between beats and returns the most common one.
+//The intervals are measured in how many multiples of minInterval they are.
 export function getCommonInterval(intervals: Array<number>) {
     const intervalCats = [] //this will hold the catagories of interval length
     const intervalRanks = [] //this will hold the number of occurrences for each category
@@ -71,74 +79,40 @@ export function getCommonInterval(intervals: Array<number>) {
     //shortest intervals it is long.
     return commonInterval
 }
-
-
-// This function is called to return the most common interval found in the audio file
-// This is then used to determine the bpm
-export function getDrumBPM() {
-    const intervals = []
   
-    let intCount = 1
-    let count = 0
-    for (let i = 0; i < drumArrays.length; i++) {
-      for (let j = 1; j < drumArrays[0].length; j++) {
-        if (drumArrays[i][j] == 1 && count == 1) {
-          intervals.push(intCount)
-          intCount = 0
-        } else if (drumArrays[i][j] == 1 && count == 0) {
-          count = 1
-          intCount = 0
-        }
-        intCount += count
-      }
-      count = 0
-      intCount = 0
-    }
-  
-    return 60 / ((minInterval / 1000) * getCommonInterval(intervals))
-}
-  
-
+//This function takes in a vector of raw audio data and turns it into a drum pattern.
+//This drum pattern is then added to the drum machine
 export function audioToDrum(audioData: Float32Array) {
     const length = audioData.length
-    const rhythmData = []
     const beats = []
   
-    // These for loops iterate through the raw audio data looking
+    // This for loop iterate through the raw audio data looking
     // for the start of beat by searching for volume value greater
-    // than the predetermined value for background noise. The let i
-    // must maintained though out the nested for loops.
-  
-    for (let i = 0; i < length; i++) {
+    // than the predetermined value for background noise.
+    let i
+    for (i = 0; i < length; i++) {
       if (audioData[i] > whisper) {
-        rhythmData.push(1)
-        const current = i
         beats.push(i)
-        // This for loop is used to jump ahead by about 1/8 of a second to
-        // skip the rest of the sound for that beat. Using a for loop for
-        // this is only necessary for generating the chart. In the end I wont
-        // need it and it can be replaced by adding 5000 to i.
-        for (i = current; i < current + 5000; i++) {
-          rhythmData.push(0)
-        }
-      } else {
-        // this part of the if statement is also only need for generating
-        // data for the chart. In the end the only thing from this
-        // for loop that is needed is the index of each beat.
-        rhythmData.push(0)
-      }
+        //this jumps 1/16 of a second forward to jump over the rest of the beat
+        i += parseInt((audioContext.sampleRate / 8).toFixed())
+      } 
     }
+    console.log(beats)
   
     const intervals = []
-    for (let i = 0; i < beats.length - 1; i++) {
+    for (i = 0; i < beats.length - 1; i++) {
       intervals.push(beats[i + 1] - beats[i])
     }
   
     // minInterval is used to set the amount of time between playing each
-    // tile on the drum machine.
-    // AB - Math.min(..intervals) ??? -- gets the smallest value in an array
+    // tile on the drum machine. The interval variable here holds the smallest 
+    //interval in the new audioData so it can be compared to the current minInterval
     const interval =
       Math.min.apply(null, intervals) / (audioContext.sampleRate / 1000)
+
+    //If the smallest interval in the new drum data is smaller than the current
+    //minInterval then the number of tiles inbetweeen each beat needs to change for
+    //the rest of the drums, so resetDrums is called. 
     if (interval < minInterval && drumArrays.length > 0) {
       resetDrums(interval)
       minInterval = interval
@@ -146,6 +120,11 @@ export function audioToDrum(audioData: Float32Array) {
       minInterval = interval
     }
   
+    //This for loop constructs the drum pattern for the new drum.
+    //Each element in the beats array holds the index value of a 
+    //beat in the audioData, so for each beat it adds a 1 to the new
+    //drum pattern and then it adds the appropiot number of 0s after it
+    //to match the number of minIntervals before the next beat.
     const newDrum = []
     for (let b = 0; b < beats.length - 1; b++) {
       newDrum.push(1)
@@ -160,16 +139,23 @@ export function audioToDrum(audioData: Float32Array) {
       }
     }
     
+    //This if statement stops the program from running this next bit 
+    //if there are no drums in the drumArray yet
     if (drumArrays.length > 0) {
 
-      if (newDrum.length > drumArrays[0].length) {
-        for (let i = 0; i < newDrum.length - drumArrays[0].length; i++) {
+      //This if else statement determines if the newDrum pattern is longer than the current
+      //drum patterns. If it is then the current drum patterns have to be extended with 0s.
+      //Else if the newDrum pattern is shorter then it has to be extended with 0s
+      const currLength = drumArrays[0].length
+      const newLength = newDrum.length
+      if (newLength > currLength) {
+        for (let i = 0; i < newLength -currLength; i++) {
           for (let j = 0; j < drumArrays.length; j++) {
             drumArrays[j].push(0)
           }
         }
-      } else if (newDrum.length < drumArrays[0].length) {
-        const diff = drumArrays[0].length - newDrum.length
+      } else if (newLength < currLength) {
+        const diff = currLength - newLength
         for (let i = 0; i < diff; i++) {
           newDrum.push(0)
         }
@@ -178,13 +164,19 @@ export function audioToDrum(audioData: Float32Array) {
     
     drumArrays.push(newDrum)
   
-    getDrumBPM()
 }
 
-
+//This function streatches the current drum patterns to match a faster rythmn of a newDrum.
+//It does this by getting the quotient of dividing the old minInterval by the new one. This value
+//is then used to muliply the number of tiles after each current tile.
 export function resetDrums(interval: number) {
+    //get the factor by which the patterns are stretched 
     const beatMultiplier = parseInt((minInterval / interval).toFixed())
   
+    //These for loops iterate through each of the drum patterns starting at the end.
+    //It starts at the end of each drum pattern so the newly added beat wont effect 
+    //our ability to iterate through the current drum pattern. At each tile it adds
+    //beatMultiplier-1 number of tiles infront of the current one.
     for (let i = 0; i < drumArrays.length; i++) {
       for (let j = drumArrays[0].length; j > 0; j--) {
         for (let add = 0; add < beatMultiplier - 1; add++) {
@@ -201,12 +193,26 @@ export function resetDrums(interval: number) {
 //Functions for playing sounds//////////////////
 ///////////////////////////////////////////////
 
+
+
+//This function plays one column of drumArrays by iterating through
+//each row at a given beatIndex. 
 export async function playBeat(beatIndex: number) {
+
+    //This for loop iterates through each drum pattern at
+    //a given beatIndex
     for (let i = 0; i < drumArrays.length; i++) {
       const tile = drumArrays[i][beatIndex]
+
+      //This if statement determines if the tile says play
+      //or not and then plays the appropiot sound
       if (tile != 0) {
+
+        //This if else statement determines which sound to play 
+        //given the collumn index of drumArray. The first drum is 
+        //allways a hihat, the second a snare, and the third a kick
         if (i == 0) {
-        playHiHat()
+          playHiHat()
         }
         else if (i == 1) {
           playSnare()
@@ -218,14 +224,23 @@ export async function playBeat(beatIndex: number) {
     }
 }
   
+
+//Create a buffer that we will use to create a sound.
 const buffer = audioContext.createBuffer(
-    1,
-    audioContext.sampleRate * 1,
-    audioContext.sampleRate,
+    1, //number of channels 
+    audioContext.sampleRate * 1,//length
+    audioContext.sampleRate,//sample rate
 )
   
+//get the channelData in the form of a vector of amplitudes, 
+//all of which are 0 right now
 const channelData = buffer.getChannelData(0)
   
+//This for loop goes through the channelData vector 
+//randomly asigning amplitude values to each point.
+//This will create white noise. This white noise vector
+//will be used to make the ratteling sound you get in some 
+//drums like HiHats and Snares
 for (let i = 0; i < buffer.length; i++) {
     channelData[i] = Math.random() * 2 - 1
 }
@@ -236,8 +251,13 @@ const primaryGainControl = audioContext.createGain()
 primaryGainControl.gain.setValueAtTime(0.05, 0)
 primaryGainControl.connect(audioContext.destination)
   
+
+
 // __Snare__
   
+//Setting the values of the snareSoundObject to make sound profile
+//for the white noise apsect and the oscillator aspect. I do the same thing for the other 
+//two sounds (kick and HiHat) but with different settings. 
 const snareSoundObject: SoundSettings = {
     noise: {
       frequency: 2500,
@@ -254,7 +274,9 @@ const snareSoundObject: SoundSettings = {
       volume: 1,
     },
 }
-    
+
+//The playSnare function calls the playSound function with the appropriot 
+//settings. The other sounds will do the same for their functions
 export function playSnare() {
     playSound(snareSoundObject)
 }
@@ -308,26 +330,40 @@ export function playKick() {
   }
   
 
+
+//This function takes in a SoundSetting object and uses its
+//values to play the desired sound
 export function playSound(sound: SoundSettings) {
 
+    //Here we are making a highpass filter that filters out
+    //frequencies below a certain threshold. This filter is used to make
+    //the resulting sound from white noise and oscillator less chaotic 
     const filter = audioContext.createBiquadFilter()
     filter.type = 'highpass'
     filter.frequency.value = sound.noise.frequency
     filter.connect(primaryGainControl)
   
+    //Here we make a buffer for the while noise source and set it 
+    //equal to the white noise buffer we made earlier. whiteNoiseSource will
+    //be used to change the noise for each sound we play
     const whiteNoiseSource = audioContext.createBufferSource()
     whiteNoiseSource.buffer = buffer
   
+    //Here we make a gain controller for the whiteNoise. This controller decreases the gain 
+    //of the noise exponentialy over a given period of time
     const whiteNoiseSourceGain = audioContext.createGain()
     whiteNoiseSourceGain.gain.setValueAtTime(sound.noise.volume, audioContext.currentTime)
     whiteNoiseSourceGain.gain.exponentialRampToValueAtTime(
-      sound.noise.ramp,
-      audioContext.currentTime + sound.noise.gain,
+      sound.noise.ramp, //ramp down to this volume
+      audioContext.currentTime + sound.noise.gain, //ramp to the volume in this amount of time
     )
   
+    //connect the whiteNoiseSource to its gain controller and the highpass filter
     whiteNoiseSource.connect(whiteNoiseSourceGain)
     whiteNoiseSource.connect(filter)
   
+    //Here we tell the white noise to start playing and end at a specified time. 
+    //The program will continue to run while it plays
     whiteNoiseSource.start()
     whiteNoiseSource.stop(audioContext.currentTime + sound.noise.time)
   

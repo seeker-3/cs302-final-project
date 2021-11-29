@@ -27,11 +27,16 @@ export const inputAudioFile = async (file: File) => {
   audioToDrum(audioData)
 }
 
-// This function is called to return the most common interval found in the audio file
-// This is then used to determine the bpm
+// This function returns the BPM of the current drum machine recodings
 export function getDrumBPM() {
   const intervals = []
 
+
+  //These for loops iterate through the drum patterns recoding interval length
+  //inbtween beats. The intervals are measured in incriments of minInterval. The 
+  //variable count there to make sure intervals are only counted while the beat is palying.
+  //The variable intCount is used to keep track of the number of minIntervals inbeteen each beat.
+  //It starts as 1 because if there is a beat at the next tile that would be an interval of 1
   let intCount = 1
   let count = 0
   for (let i = 0; i < drumArrays.length; i++) {
@@ -49,44 +54,60 @@ export function getDrumBPM() {
     intCount = 0
   }
 
+  //it returns the tempo in BPM by dividing 60 by the seconds per beat.
+  //The seconds per beat are found by multiplying most common interval by 
+  //minInterval in seconds. getCommonInterval finds the most common interval 
+  //(represented in # of minIntervals) in the audioData
   return 60 / ((minInterval / 1000) * getCommonInterval(intervals))
 }
 
+//adds a new drum line to the drumArrays that has no beats in it
 export function addDrum() {
   const drumPattern = new Array(drumArrays[0].length).fill(0)
   drumArrays.push(drumPattern)
 }
 
+//removes a specific drum line from the drum machine
 export function removeDrum(drumIndex: number) {
   drumArrays.splice(drumIndex, 1)
 }
 
+//adds 1 beat to the end of every drum line
 export function addBeat() {
   for (let i = 0; i < drumArrays.length; i++) {
     drumArrays[i].push(0)
   }
 }
 
+//removes 1 beat from the end of every drum line
 export function removeBeat() {
   for (let i = 0; i < drumArrays.length; i++) {
     drumArrays[i].pop()
   }
 }
 
+//shifts the pattern right
 export function shiftRight(drumIndex: number) {
   drumArrays[drumIndex].unshift(0)
   drumArrays[drumIndex].pop()
 }
 
+//shifts the pattern left
 export function shiftLeft(drumIndex: number) {
   drumArrays[drumIndex].shift()
   drumArrays[drumIndex].push(0)
 }
 
+//used to determine if the drum machine should be playing
 let run = false
 
+//This starts the drum machine loop playing until it is told
+//otherwise
 export async function playTrack() {
   run = true
+
+  //This while loop tells each beat in the drum macine to play in order and 
+  //wait for the correct amount of time before playing the next
   while (run) {
     for (let i = 0; i < drumArrays[0].length; i++) {
       if (!run) {
