@@ -14,7 +14,7 @@
 - "Choose File" to upload an existing audio file (red)
 - "record" to record some audio (blue)
 ![I2](/images/Orginal2.0.png)
-3. Name the audio file (red), select it the audio is a "tune" or a "beat" (blue), and push save (orange)
+3. Name the audio file (red), select it the audio is a "tune" or a "beat" (blue), and push "save" (orange)
 ![I3](/images/Orginal3.0.png)
 4. Tune:
 - To listen back to your audio file, click "process" then the play button
@@ -24,6 +24,12 @@
 - The output should be a list of notes detected in your audio file, and a piano audio
 ![I6](/images/Orginal6.0.png)
 5: Beat:
+- Once you "record" and "save" a tapping beat, you can push "load beat" and your audio tapping turns into an editable percussion tool.
+![I7](/images/Orginal7.0.png)
+- You can also add an editable drum by clicking "add drum"
+![I8](/images/Orginal8.0.png)
+- You can add as many drums and beats as you want
+- To play the beat you created click "play" 
 
 
 
