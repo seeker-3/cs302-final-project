@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import useAudioFiles from '../../context/db/AudioFilesContext'
-import { AudioFileStores } from '../../context/db/indexedDB'
+import useAudioFiles from '../../context/AudioFilesContext'
+import { AudioFileStores } from '../../db/indexedDB'
 
 export default (function AudioFileDeleter({ storeName, audioFile }) {
   const { deleteAudioFile } = useAudioFiles()

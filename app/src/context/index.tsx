@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { BannerProvider } from './BannerContext'
-import { AudioFilesProvider } from './db/AudioFilesContext'
+import { AudioFilesProvider } from './AudioFilesContext'
 import { WasmRuntimeProvider } from './WasmRuntimeContext'
 
 export default (function ContextProvider({ children }) {

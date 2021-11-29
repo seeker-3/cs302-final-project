@@ -1,15 +1,15 @@
 import { DBSchema, IDBPDatabase, openDB } from 'idb/with-async-ittr'
 
-interface FileStore<T extends File = File> {
+interface FileStore<T extends object = object> {
   key: string
-  value: T
+  value: File & T
   indexes: { lastModified: number }
 }
 
 export type AudioFileStores = 'tunes' | 'beats'
 
 export interface AudioFilesSchema extends DBSchema {
-  tunes: FileStore
+  tunes: FileStore<{ notes: string[] }>
   beats: FileStore
 }
 

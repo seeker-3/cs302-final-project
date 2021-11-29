@@ -6,14 +6,15 @@ import {
   useReducer,
   useRef,
 } from 'react'
-import { AudioFilesDB, AudioFileStores, openAudioFiles } from './indexedDB'
+import { AudioFilesDB, AudioFileStores, openAudioFiles } from '../db/indexedDB'
+import useFileSelector from '../hooks/useFileSelector'
 
 interface AudioFilesReducerState {
   tunes: File[]
   beats: File[]
 }
 
-const audioFileReducer = (
+const audioFilesReducer = (
   state: AudioFilesReducerState,
   update: {
     tunes?: File[]
@@ -24,34 +25,18 @@ const audioFileReducer = (
   ...update,
 })
 
-type SaveAudioFile = (
-  store: AudioFileStores,
-  audioFile: File
-) => Promise<string | null>
-
-type DeleteAudioFile = (
-  store: AudioFileStores,
-  audioFile: File
-) => Promise<void>
-
-interface AudioFilesContextValue extends AudioFilesReducerState {
-  saveAudioFile: SaveAudioFile
-  deleteAudioFile: DeleteAudioFile
-}
-
-const AudioFilesContext = createContext<AudioFilesContextValue | null>(null)
-
-export const AudioFilesProvider: FC = ({ children }) => {
+const useAudioContextBody = () => {
   const ref = useRef<AudioFilesDB | null>(null)
 
-  const [store, dispatch] = useReducer(audioFileReducer, {
+  const [store, dispatch] = useReducer(audioFilesReducer, {
     tunes: [],
     beats: [],
   })
 
+  const tuneSelector = useFileSelector(store.tunes)
+  const beatSelector = useFileSelector(store.beats)
+
   useEffect(() => {
-    if (ref.current)
-      throw Error('audio files context effect not behaving as expected')
     void (async () => {
       const db = (ref.current = await openAudioFiles())
 
@@ -64,6 +49,8 @@ export const AudioFilesProvider: FC = ({ children }) => {
         tunes,
         beats,
       })
+
+      return () => db.close()
     })().catch(console.error)
   }, [])
 
@@ -71,10 +58,7 @@ export const AudioFilesProvider: FC = ({ children }) => {
 
   const db = ref.current
 
-  const saveAudioFile: SaveAudioFile = async (
-    storeName: AudioFileStores,
-    audioFile: File
-  ) => {
+  const saveAudioFile = async (storeName: AudioFileStores, audioFile: File) => {
     const transaction = db.transaction(storeName, 'readwrite')
     const { store } = transaction
     const fileExists = await store.get(audioFile.name)
@@ -93,7 +77,7 @@ export const AudioFilesProvider: FC = ({ children }) => {
     return result
   }
 
-  const deleteAudioFile: DeleteAudioFile = async (
+  const deleteAudioFile = async (
     storeName: AudioFileStores,
     audioFile: File
   ) => {
@@ -108,20 +92,29 @@ export const AudioFilesProvider: FC = ({ children }) => {
     dispatch({ [storeName]: files })
   }
 
+  return {
+    ...store,
+    saveAudioFile,
+    deleteAudioFile,
+  }
+}
+
+const AudioFilesContext = createContext<ReturnType<
+  typeof useAudioContextBody
+> | null>(null)
+
+export const AudioFilesProvider: FC = ({ children }) => {
+  const audioFilesContext = useAudioContextBody()
+  if (!audioFilesContext) return null
+
   return (
-    <AudioFilesContext.Provider
-      value={{
-        ...store,
-        saveAudioFile,
-        deleteAudioFile,
-      }}
-    >
+    <AudioFilesContext.Provider value={audioFilesContext}>
       {children}
     </AudioFilesContext.Provider>
   )
 }
 
-export default function useAudioFiles(): AudioFilesContextValue {
+export default function useAudioFiles() {
   const audioFilesContext = useContext(AudioFilesContext)
   if (!audioFilesContext)
     throw Error('audio files context did not load properly')

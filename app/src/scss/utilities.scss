@@ -41,7 +41,8 @@
   }
 }
 
-.outline {
+.outline,
+%outline {
   outline: 1px solid white;
 }
 
@@ -106,4 +107,11 @@
 
 .align-items-start {
   align-items: start;
+}
+
+.two-static-children {
+  > * {
+    flex-basis: 50%;
+    width: 120ch;
+  }
 }

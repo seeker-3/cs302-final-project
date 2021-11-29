@@ -23,7 +23,7 @@ export default (function App() {
           render={fileSaverForm => <AudioFileUploader {...fileSaverForm} />}
         />
       </div>
-      <div className="column grow">
+      <div className="column grow two-static-children">
         <Editor
           title="Tune"
           storeName="tunes"

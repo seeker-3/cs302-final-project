@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react'
 import { useForm, UseFormReturn } from 'react-hook-form'
+import useAudioFiles from '../context/AudioFilesContext'
 import useBanner from '../context/BannerContext'
-import useAudioFiles from '../context/db/AudioFilesContext'
 
 export interface FileSaverFormInterface {
   filename: string
@@ -34,10 +34,7 @@ export default (function AudioFileSaver({ render, children }) {
 
   const { setMessage } = useBanner()
 
-  console.log(errors)
-
   const onSubmit = handleSubmit(async ({ filename, filetype, fileData }) => {
-    console.log(filename, filetype, fileData)
     const file = fileData[0]
 
     if (!file) throw Error('received empty file')

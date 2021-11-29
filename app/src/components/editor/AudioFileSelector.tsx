@@ -1,6 +1,6 @@
 import { ChangeEventHandler, FC, useEffect, useState } from 'react'
-import useAudioFiles from '../../context/db/AudioFilesContext'
-import { AudioFileStores } from '../../context/db/indexedDB'
+import useAudioFiles from '../../context/AudioFilesContext'
+import { AudioFileStores } from '../../db/indexedDB'
 
 export const useAudioFileSelector = (storeName: AudioFileStores) => {
   const { [storeName]: audioFiles } = useAudioFiles()
@@ -12,7 +12,7 @@ export const useAudioFileSelector = (storeName: AudioFileStores) => {
 
   const handleChange: ChangeEventHandler<HTMLSelectElement> = ({ target }) => {
     const file = audioFiles.find(file => file.name === target.value)
-    if (!file) throw Error('selected audio file not found')
+    if (!file) throw Error('selected file not found')
     setAudioFile(file)
   }
 

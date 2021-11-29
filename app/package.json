@@ -29,6 +29,7 @@
     "@dothum/complementary-chords": "workspace:*",
     "@dothum/percussion": "workspace:*",
     "@dothum/pitch-finder": "workspace:*",
+    "@dothum/synth": "workspace:*",
     "@dothum/wasm": "workspace:*",
     "idb": "^7.0.0",
     "react": "^17.0.2",
