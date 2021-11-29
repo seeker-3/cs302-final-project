@@ -6,6 +6,20 @@
 
 ![Idea:](/.hum-visulaized.png)
 
+
+## Usage:
+1. Open dothum website in another tab
+2. To begin either: 
+  a. "Choose File" to upload an existing file (red)
+  b. "record" to record some audio (blue)
+3. Name the audio file (red), select it the audio is a "tune" or a "beat" (blue), and push save (orange)
+4. Tune:
+  a. To listen back to your audio file, click "process"
+  b. To create the midi piano version of your audio file, click "original", select "piano", then click "process"
+  c. The Output should be a list of notes detected in your audio file, and a piano representation
+
+
+
 ## Installation for Beginners
 
 ### make sure you have the latest version of node installed
