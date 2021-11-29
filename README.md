@@ -23,7 +23,7 @@
 ![I5](/images/Orginal5.0.png)
 - The output should be a list of notes detected in your audio file, and a piano audio
 ![I6](/images/Orginal6.0.png)
-5: Beat:
+5. Beat:
 - Once you "record" and "save" a tapping beat, you can push "load beat" and your audio tapping turns into an editable percussion tool.
 ![I7](/images/Orginal7.0.png)
 - You can also add an editable drum by clicking "add drum"
