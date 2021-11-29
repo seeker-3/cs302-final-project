@@ -7,7 +7,6 @@ export default defineConfig({
       entry: resolve(__dirname, 'src', 'lib.ts'),
       name: '.humSynth',
       fileName: format => `lib.${format}.js`,
-      formats: ['es'],
     },
   },
 })
