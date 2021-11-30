@@ -5,6 +5,9 @@ import {
   minInterval,
   playBeat,
   sleepFor,
+  primaryGainControl,
+  audioDestination,
+  audioOut
 } from './helper'
 
 
@@ -25,6 +28,9 @@ export const inputAudioFile = async (file: File) => {
   const audioData = dataBuffer.getChannelData(0)
 
   audioToDrum(audioData)
+  const blob = await getWAV()
+  console.log(blob)
+
 }
 
 // This function returns the BPM of the current drum machine recodings
@@ -122,5 +128,46 @@ export async function playTrack() {
 export function pauseTrack() {
   run = false
 }
+
+//This function returns a blob containing the a .wav file of the drum machine
+export async function getWAV() {
+
+  const trackDuration = drumArrays[0].length * minInterval
+  const chunks = []
+
+  //create a meadia recorder and set it to listen the final stop of the audio
+  //before it goes out the speaker
+  const mediaRecorder = new MediaRecorder(audioDestination.stream)
+  primaryGainControl.disconnect(audioOut)//disconnect from the audioOut destination so it does play outloud
+  primaryGainControl.connect(audioDestination)
+
+  //start recording and play the strack
+  mediaRecorder.start()
+  playTrack()
+
+  //wait for the track to end and stop both
+  await sleepFor(trackDuration) 
+  mediaRecorder.stop()
+  pauseTrack()
+
+  //when the dataavailable event happens it adds the most recent blob piece to chunk
+  mediaRecorder.ondataavailable = function(aud) {
+    chunks.push(aud.data)
+  }
+
+  //This promise takes the chucnks and puts them together as an audio .wav file in a new blob
+  const trackCompletePromise = new Promise<Blob>(
+    resolve => 
+      (mediaRecorder.onstop = () => resolve(new Blob(chunks, {type: 'audio/wav'})))
+  )
+
+  //reconnect the primaryGainControl to audioOut for future plays
+  primaryGainControl.disconnect(audioDestination)
+  primaryGainControl.connect(audioOut)
+
+  return trackCompletePromise
+
+}
+
 
 export { drumArrays }

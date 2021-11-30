@@ -97,7 +97,6 @@ export function audioToDrum(audioData: Float32Array) {
         i += parseInt((audioContext.sampleRate / 8).toFixed())
       } 
     }
-    console.log(beats)
   
     const intervals = []
     for (i = 0; i < beats.length - 1; i++) {
@@ -247,9 +246,13 @@ for (let i = 0; i < buffer.length; i++) {
   
 // Making primary gain control and connecting it to
 // destination (The default audio out)
-const primaryGainControl = audioContext.createGain()
+export const primaryGainControl = audioContext.createGain()
 primaryGainControl.gain.setValueAtTime(0.05, 0)
 primaryGainControl.connect(audioContext.destination)
+
+export const audioDestination = audioContext.createMediaStreamDestination()
+
+export const audioOut = audioContext.destination
   
 
 
@@ -333,7 +336,8 @@ export function playKick() {
 
 //This function takes in a SoundSetting object and uses its
 //values to play the desired sound
-export function playSound(sound: SoundSettings) {
+export async function playSound(sound: SoundSettings) {
+
 
     //Here we are making a highpass filter that filters out
     //frequencies below a certain threshold. This filter is used to make
@@ -381,14 +385,16 @@ export function playSound(sound: SoundSettings) {
       sound.oscillation.ramp, // ramp to this value
       audioContext.currentTime + sound.oscillation.gain, // get there at this time
     )
-  
+   
+
+    
     // Connect oscillator to the gain controller audio module
     // and the primaryGainControl (made earlier in the code)
     oscillator.connect(oscillatorGain)
     oscillatorGain.connect(primaryGainControl)
     oscillator.start()
     oscillator.stop(audioContext.currentTime + sound.oscillation.time)
-}
-  
 
-  
+}
+
+
