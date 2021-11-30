@@ -21,7 +21,7 @@ const recorder = document.getElementById('recorder') as HTMLInputElement
 
 recorder.onchange = async ({ target }) => {
   const file = (target as HTMLInputElement).files[0]
-  await inputAudioFile(file)
+  await inputAudioFile(file, drumArrays.length+1)
 }
 
 const addToMachineButton = document.getElementById('addToMachine')
@@ -43,7 +43,7 @@ remBeatButton.onclick = () => {
 
 const addDrumButton = document.getElementById('addDrum')
 addDrumButton.onclick = () => {
-  addDrum()
+  addDrum(drumArrays.length+1)
   makeDrumMachine()
 }
 

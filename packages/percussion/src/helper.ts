@@ -18,11 +18,14 @@ export interface SoundSettings {
     oscillation: AudioNodeConfig
 }
 
+
 const whisper = 0.02
 
 export let minInterval = 250 // smallest interval between beats in milliseconds
 
 export const drumArrays: (0 | 1)[][] = [] // holds drum patters
+
+export const instrumentSelection: Array<number> = []
 
 //used to leave time inbetween beats
 export const sleepFor = (delay: number) =>
@@ -210,13 +213,13 @@ export async function playBeat(beatIndex: number) {
         //This if else statement determines which sound to play 
         //given the collumn index of drumArray. The first drum is 
         //allways a hihat, the second a snare, and the third a kick
-        if (i == 0) {
+        if (instrumentSelection[i] == 1) {
           playHiHat()
         }
-        else if (i == 1) {
+        else if (instrumentSelection[i] == 2) {
           playSnare()
         }
-        else if (i == 2) {
+        else if (instrumentSelection[i] == 3) {
           playKick()
         }
       }
@@ -328,10 +331,9 @@ export function playKick() {
     },
   }
   
-  export function playHiHat() {
+export function playHiHat() {
     playSound(hihatSoundObject)
-  }
-  
+}
 
 
 //This function takes in a SoundSetting object and uses its

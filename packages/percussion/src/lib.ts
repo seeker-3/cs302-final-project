@@ -7,7 +7,8 @@ import {
   sleepFor,
   primaryGainControl,
   audioDestination,
-  audioOut
+  audioOut,
+  instrumentSelection
 } from './helper'
 
 
@@ -17,7 +18,7 @@ const audioContext = new AudioContext()
 
 // This event listener waits for a file to uploaded and then it determines the tempo of that audio file.
 // It also converts the beats in that audio file into a patter than is pushed into drumArrays
-export const inputAudioFile = async (file: File) => {
+export const inputAudioFile = async (file: File, instrumentIndex: number) => {
   const soundBuffer = await file.arrayBuffer()
 
   // pass buffer to the audioContext function decodeAudioData to get usable data
@@ -27,9 +28,9 @@ export const inputAudioFile = async (file: File) => {
   // That function return a vector of audio data
   const audioData = dataBuffer.getChannelData(0)
 
+
+  instrumentSelection.push(instrumentIndex)
   audioToDrum(audioData)
-  const blob = await getWAV()
-  console.log(blob)
 
 }
 
@@ -68,13 +69,15 @@ export function getDrumBPM() {
 }
 
 //adds a new drum line to the drumArrays that has no beats in it
-export function addDrum() {
+export function addDrum(instrumentIndex: number) {
   const drumPattern = new Array(drumArrays[0].length).fill(0)
+  instrumentSelection.push(instrumentIndex)
   drumArrays.push(drumPattern)
 }
 
 //removes a specific drum line from the drum machine
 export function removeDrum(drumIndex: number) {
+  instrumentSelection.splice(drumIndex, 1)
   drumArrays.splice(drumIndex, 1)
 }
 
