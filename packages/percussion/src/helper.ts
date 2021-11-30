@@ -189,19 +189,18 @@ export async function playBeat(beatIndex: number) {
   //This for loop iterates through each drum pattern at
   //a given beatIndex
   for (let i = 0; i < drumArrays.length; i++) {
-    const tile = drumArrays[i].beats[beatIndex]
-
+    const tile = drumArrays[i]?.beats[beatIndex] ?? 0
     //This if statement determines if the tile says play
     //or not and then plays the appropiot sound
     if (tile != 0) {
       //This if else statement determines which sound to play
       //given the collumn index of drumArray. The first drum is
       //allways a hihat, the second a snare, and the third a kick
-      if (drumArrays[i].label == 'hihat') {
+      if (drumArrays[i]?.label == 'hihat') {
         playHiHat()
-      } else if (drumArrays[i].label == 'snare') {
+      } else if (drumArrays[i]?.label == 'snare') {
         playSnare()
-      } else if (drumArrays[i].label == 'kick') {
+      } else if (drumArrays[i]?.label == 'kick') {
         playKick()
       }
     }

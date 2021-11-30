@@ -115,8 +115,8 @@ export async function playTrack() {
 
   //This while loop tells each beat in the drum machine to play in order and
   //wait for the correct amount of time before playing the next
-  while (run && (drumArrays[0]?.beats.length ?? 0) > 0) {
-    for (let i = 0; i < drumArrays[0]?.beats.length ?? 0; i++) {
+  while (run) {
+    for (let i = 0; i < (drumArrays[0]?.beats.length || 1); i++) {
       if (!run) {
         break
       }

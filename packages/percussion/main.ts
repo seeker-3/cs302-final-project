@@ -154,8 +154,6 @@ function newDrum(drum, beatIndex, drumIndex) {
 
 // ________Loop Section ______________
 
-// const sleepFor = delay => new Promise(resolve => setTimeout(resolve, delay))
-
 const play = document.getElementById('play')
 const pause = document.getElementById('pause')
 play.onclick = playTrack
