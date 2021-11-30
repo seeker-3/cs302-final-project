@@ -5,10 +5,8 @@ import useSelector, { type UseSelector } from '../hooks/useSelector'
 import useAudioFilesIndexedDB from './AudioFilesIndexedDBContext'
 
 const tuneInstrumentList = ['original', 'piano']
+// const beatInstrumentsList = ['original', 'recording']
 const beatInstrumentsList = ['hiHat', 'snare', 'kick']
-
-// export type TuneInstrumentList = (typeof tuneInstrumentList )[number]
-// export type BeatInstrumentList = typeof tuneInstrumentList[number]
 
 const useAudioContextBody = () => {
   const store = useAudioFilesIndexedDB()
@@ -33,16 +31,6 @@ const useAudioContextBody = () => {
   }
 }
 
-export type UseAudioContextTunes = Omit<
-  ReturnType<typeof useAudioContextBody>,
-  'beatFiles' | 'beatInstruments'
->
-
-export type UseAudioContextBeats = Omit<
-  ReturnType<typeof useAudioContextBody>,
-  'tuneFiles' | 'tuneInstruments'
->
-
 // Context
 
 const AudioContext = createContext<ReturnType<
@@ -55,12 +43,13 @@ export const AudioProvider: FC = ({ children }) => (
   </AudioContext.Provider>
 )
 
-export default function useAudio() {
+function useAudio() {
   const audioContext = useContext(AudioContext)
   if (!audioContext) throw Error('audio files context did not load properly')
   return audioContext
 }
 
+// tailored hooks
 export const useTuneAudio = () => {
   const { tunePlayerAudio, setTunePlayerAudio, tuneFiles, tuneInstruments } =
     useAudio()

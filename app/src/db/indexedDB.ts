@@ -17,11 +17,10 @@ interface AudioFilesSchema extends DBSchema {
 }
 
 export type AudioFileStores = 'tunes' | 'beats'
-// export type AudioFileStores = keyof AudioFilesSchema
 
 export type AudioFilesDB = IDBPDatabase<AudioFilesSchema>
 
-export const openAudioFiles = async () => {
+export const openAudioFilesDB = async () => {
   const db = await openDB<AudioFilesSchema>('audio-files', 1, {
     upgrade(db) {
       const tunesStore = db.createObjectStore('tunes', {

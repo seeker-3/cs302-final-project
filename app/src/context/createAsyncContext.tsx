@@ -6,11 +6,7 @@ export default function createAsyncContext<V>(callback: () => Promise<V>) {
   const ContextProvider: FC = ({ children }) => {
     const [state, setState] = useState<V | null>(null)
 
-    useEffect(
-      () =>
-        void (async () => setState(await callback()))().catch(console.error),
-      []
-    )
+    useEffect(() => void (async () => setState(await callback()))(), [])
 
     if (!state) return null
 

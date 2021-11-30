@@ -10,7 +10,7 @@ export type UseSelector<T> = {
 export default function useSelector<T>(list: T[]): UseSelector<T> {
   const [selected, setSelected] = useState<T | null>(list[0] ?? null)
 
-  // reset the input of the list changes
+  // reset the input if the list changes
   useEffect(() => {
     setSelected(list[0] ?? null)
   }, [list])

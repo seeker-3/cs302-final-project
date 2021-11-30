@@ -7,7 +7,7 @@ import {
   type FC,
 } from 'react'
 import {
-  openAudioFiles,
+  openAudioFilesDB,
   type AudioFilesDB,
   type AudioFileStores,
   type BeatStoreFields,
@@ -38,7 +38,7 @@ const useContextBody = () => {
 
   useEffect(() => {
     void (async () => {
-      const db = (ref.current = await openAudioFiles())
+      const db = (ref.current = await openAudioFilesDB())
 
       const [tunes, beats] = await Promise.all([
         db.getAll('tunes'),
@@ -51,7 +51,7 @@ const useContextBody = () => {
       })
 
       return () => db.close()
-    })().catch(console.error)
+    })()
   }, [])
 
   if (!ref.current) return null

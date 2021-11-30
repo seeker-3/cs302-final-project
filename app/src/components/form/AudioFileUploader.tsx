@@ -1,7 +1,7 @@
 import { useState, type ChangeEventHandler, type FC } from 'react'
 import { type FileSaverForm } from './AudioFileSaverForm'
 
-const audioMIMETypeRegex = /^audio\/.+$/
+const AUDIO_MIME_TYPE_REGEX = /^audio\/.+$/
 
 export const useAudioFileUploader = () => {
   const [audioUpload, setAudioUpload] = useState<File | null>(null)
@@ -33,7 +33,7 @@ export default (function AudioFileUploader({
           onChange: ({ target }) => {
             const file = target?.files[0]
             if (!file) return
-            const validMIMETypes = file.type.match(audioMIMETypeRegex)
+            const validMIMETypes = file.type.match(AUDIO_MIME_TYPE_REGEX)
 
             if (!validMIMETypes) {
               target.files = new DataTransfer().files
@@ -53,7 +53,9 @@ export default (function AudioFileUploader({
 
             setValue('filename', file.name)
           },
-          validate: ([file]) => !!(file && file.type.match(audioMIMETypeRegex)),
+          // this probably isn't necessary with the error handlers in the onChange event
+          validate: ([file]) =>
+            !!(file && file.type.match(AUDIO_MIME_TYPE_REGEX)),
         })}
       />
     </>

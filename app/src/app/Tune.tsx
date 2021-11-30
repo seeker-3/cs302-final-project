@@ -6,22 +6,23 @@ import { useTuneAudio } from '../context/AudioContext'
 export default (function Tune() {
   const { tunePlayerAudio, setTunePlayerAudio, tuneFiles, tuneInstruments } =
     useTuneAudio()
+  const instrument = tuneInstruments.selected
 
+  // disables buttons during certain actions
   const [loading, setLoading] = useState(false)
 
-  const instrument = tuneInstruments.selected
   const { file: audioFile = null, notes = null } = tuneFiles.selected ?? {}
 
   const isOriginalAudio = instrument === 'original'
 
+  // if original audio set the audioPlayer track right away
   useEffect(() => {
-    if (!audioFile) return
-    setTunePlayerAudio(isOriginalAudio ? audioFile : null)
+    if (audioFile) setTunePlayerAudio(isOriginalAudio ? audioFile : null)
   }, [isOriginalAudio, audioFile, setTunePlayerAudio])
 
   const processHandler = async () => {
     if (!instrument || !audioFile) return
-    if (!notes) throw Error('tune was not saved properly')
+    if (!notes) throw Error('tune was not saved to indexedDB properly')
     setTunePlayerAudio(null)
     switch (instrument) {
       case 'piano':
@@ -54,7 +55,7 @@ export default (function Tune() {
         callback: () => setTunePlayerAudio(null),
       }}
       instrumentSelector={{
-        disabled: loading,
+        disabled: !audioFile || loading,
       }}
     >
       {notes && (

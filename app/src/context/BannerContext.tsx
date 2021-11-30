@@ -7,6 +7,8 @@ interface BannerContextValue {
   setMessage: React.Dispatch<React.SetStateAction<string>>
 }
 
+const BANNER_DURATION = 5000
+
 const BannerContext = createContext<BannerContextValue | null>(null)
 
 export const BannerProvider: FC = ({ children }) => {
@@ -21,7 +23,7 @@ export const BannerProvider: FC = ({ children }) => {
       if (event.key === 'Escape') closeBanner()
     }
 
-    const timeout = setTimeout(closeBanner, 5000)
+    const timeout = setTimeout(closeBanner, BANNER_DURATION)
 
     window.addEventListener('keydown', closeEvent)
 

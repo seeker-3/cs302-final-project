@@ -20,6 +20,7 @@ export const usePercussion = (
     () => [...drumArrays],
     drumArrays
   )
+
   const [playing, togglePlayState] = useReducer(state => !state, false)
 
   const loadDrum = async () => {

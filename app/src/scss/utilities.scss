@@ -111,8 +111,8 @@
 
 .two-static-children {
   > * {
-    flex-basis: 50%;
     width: 120ch;
+    flex-basis: 50%;
   }
 }
 

@@ -100,10 +100,7 @@ export default (function AudioFileSaver({ render, children }) {
       <input
         type="text"
         placeholder={errors.filename ? 'please enter a filename' : 'filename'}
-        {...register('filename', {
-          ...registerOptions,
-          // pattern: /.+\.[mp3|wav|ogg|opus]/,
-        })}
+        {...register('filename', registerOptions)}
       />
       <button disabled={registerOptions.disabled}>save</button>
       <label>
