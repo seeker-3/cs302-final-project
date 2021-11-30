@@ -5,7 +5,8 @@ import useSelector, { type UseSelector } from '../hooks/useSelector'
 import useAudioFilesIndexedDB from './AudioFilesIndexedDBContext'
 
 const tuneInstrumentList = ['original', 'piano']
-const beatInstrumentsList = ['original', 'recording']
+// const beatInstrumentsList = ['original', 'recording']
+const beatInstrumentsList = ['hiHat', 'snare', 'kick']
 
 const useAudioContextBody = () => {
   const store = useAudioFilesIndexedDB()

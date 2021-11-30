@@ -6,7 +6,6 @@ const PLACEHOLDER = 'select instrument'
 export default (function InstrumentSelector() {
   const {
     storeName,
-    audioFile,
     instruments: { index, list, handleSelect },
     instrumentSelector: { disabled } = {},
   } = useEditor()
@@ -15,7 +14,7 @@ export default (function InstrumentSelector() {
     <select
       className="width2"
       name={`${storeName}-instrument`}
-      disabled={disabled || !audioFile || !list.length}
+      disabled={disabled || !list.length}
       value={index ?? PLACEHOLDER}
       onChange={handleSelect}
     >
