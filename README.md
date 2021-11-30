@@ -1,6 +1,6 @@
 # .hum Website
 
-## [dothum.app](https://dothum.netlify.app/)
+## [dothum.app](https://dothum.app/)
 
 ## Usage
 
@@ -104,10 +104,6 @@ start the app in development mode:
 build the app:
 
 `pnpm build`
-
-to publish the app to GitHub pages:
-
-`pnpm publish`
 
 ## helpful resources
 
