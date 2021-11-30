@@ -1,17 +1,25 @@
 import {
   createContext,
-  FC,
   useContext,
   useEffect,
   useReducer,
   useRef,
+  type FC,
 } from 'react'
-import { AudioFilesDB, AudioFileStores, openAudioFiles } from '../db/indexedDB'
+import {
+  openAudioFiles,
+  type AudioFilesDB,
+  type AudioFileStores,
+  type BeatStoreFields,
+  type FileStoreFields,
+  type TuneStoreFields,
+} from '../db/indexedDB'
 
 type AudioFilesReducerState = {
-  tunes: File[]
-  beats: File[]
+  tunes: TuneStoreFields[]
+  beats: BeatStoreFields[]
 }
+
 const audioFilesReducer = (
   state: AudioFilesReducerState,
   update: Partial<AudioFilesReducerState>
@@ -50,10 +58,13 @@ const useContextBody = () => {
 
   const db = ref.current
 
-  const saveAudioFile = async (storeName: AudioFileStores, audioFile: File) => {
+  const saveAudioFile = async <T extends FileStoreFields>(
+    storeName: AudioFileStores,
+    fields: T
+  ) => {
     const transaction = db.transaction(storeName, 'readwrite')
     const { store } = transaction
-    const fileExists = await store.get(audioFile.name)
+    const fileExists = await store.get(fields.file.name)
 
     // this should display an error to the user
     if (fileExists) {
@@ -61,11 +72,11 @@ const useContextBody = () => {
       return null
     }
 
-    const result = await store.add(audioFile)
-    const files = await store.getAll()
+    const result = await store.add(fields)
+    const storeContents = await store.getAll()
     await transaction.done
 
-    dispatch({ [storeName]: files })
+    dispatch({ [storeName]: storeContents })
     return result
   }
 

@@ -1,5 +1,5 @@
 import init, { Counter } from '@dothum/wasm'
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState, type FC } from 'react'
 
 export default (function Count() {
   const [count, setCount] = useState(0)

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { type FC } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import Banner from '../components/Banner'
 import AudioFileRecorder from '../components/form/AudioFileRecorder'

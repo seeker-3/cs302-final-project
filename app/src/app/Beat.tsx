@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { useEffect, type FC } from 'react'
 import Editor from '../components/editor'
 import Percussion from '../components/Percussion'
 import { useBeatAudio } from '../context/AudioContext'
@@ -8,14 +8,14 @@ export default (function Beat() {
     useBeatAudio()
 
   const selectedInstrument = beatInstruments.selected
-  const selectedFile = beatFiles.selected
+  const audioFile = beatFiles.selected?.file ?? null
 
   useEffect(() => {
-    if (!selectedInstrument || !selectedFile) return
+    if (!selectedInstrument || !audioFile) return
     void (async () => {
       switch (selectedInstrument) {
         case 'original':
-          setBeatPlayerAudio(selectedFile)
+          setBeatPlayerAudio(audioFile)
           return
         case 'piano':
           return
@@ -23,16 +23,22 @@ export default (function Beat() {
           throw Error(`unrecognized instrument: ${selectedInstrument}`)
       }
     })().catch(console.error)
-  }, [selectedInstrument, selectedFile, setBeatPlayerAudio])
+  }, [selectedInstrument, audioFile, setBeatPlayerAudio])
 
   return (
     <Editor
       title="Beat"
       storeName="beats"
       playerAudio={beatPlayerAudio}
+      audioFile={audioFile}
       files={beatFiles}
       instruments={beatInstruments}
-      handleProcess={() => alert('analyze this')}
+      fileDeleter={{
+        callback: () => setBeatPlayerAudio(null),
+      }}
+      fileProcessor={{
+        handler: () => alert('analyze this'),
+      }}
       render={props => <Percussion {...props} />}
     />
   )

@@ -1,5 +1,5 @@
-import { ChangeEventHandler, FC, useState } from 'react'
-import { FileSaverForm } from './AudioFileSaverForm'
+import { useState, type ChangeEventHandler, type FC } from 'react'
+import { type FileSaverForm } from './AudioFileSaverForm'
 
 const audioMIMETypeRegex = /^audio\/.+$/
 

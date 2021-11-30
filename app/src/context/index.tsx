@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { type FC } from 'react'
 import { AudioProvider } from './AudioContext'
 import { AudioFilesIndexedDBProvider } from './AudioFilesIndexedDBContext'
 import { BannerProvider } from './BannerContext'

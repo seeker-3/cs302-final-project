@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react'
+import { useEffect, useRef, type FC } from 'react'
 
 // React Component
 // Simple example of increasing the volume of an audio source with a gain node

@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useEffect, useState } from 'react'
+import { useEffect, useState, type ChangeEventHandler } from 'react'
 
 export type UseSelector<T> = {
   selected: T | null

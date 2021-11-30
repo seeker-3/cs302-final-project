@@ -1,9 +1,15 @@
-import { createContext, FC, useContext, useState } from 'react'
-import useSelector, { UseSelector } from '../hooks/useSelector'
+import { createContext, useContext, useState, type FC } from 'react'
+import { type FileStoreFields } from '../db/indexedDB'
+import useSelector, { type UseSelector } from '../hooks/useSelector'
 import useAudioFilesIndexedDB from './AudioFilesIndexedDBContext'
 
-const tuneInstrumentList = ['original', 'piano', 'fish']
-const beatInstrumentList = ['original', 'drum']
+const tuneInstrumentList = ['original', 'piano']
+const beatInstrumentList: string[] = [
+  // 'original', 'drum'
+]
+
+// export type TuneInstrumentList = (typeof tuneInstrumentList )[number]
+// export type BeatInstrumentList = typeof tuneInstrumentList[number]
 
 const useAudioContextBody = () => {
   const store = useAudioFilesIndexedDB()
@@ -67,5 +73,6 @@ export const useBeatAudio = () => {
   return { beatPlayerAudio, setBeatPlayerAudio, beatFiles, beatInstruments }
 }
 
-export type UseFileSelector = UseSelector<File>
+// this does not need generic type information because it's only used as a common interface in deeply nested components
+export type UseFileSelector = UseSelector<FileStoreFields>
 export type UseInstrumentSelector = UseSelector<string>

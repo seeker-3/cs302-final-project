@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { type FC } from 'react'
 import useBanner from '../context/BannerContext'
 
 export default (function Banner() {

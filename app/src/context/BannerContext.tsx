@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, type FC } from 'react'
 
 interface BannerContextValue {
   mounted: boolean

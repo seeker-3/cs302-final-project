@@ -1,17 +1,23 @@
-import { DBSchema, IDBPDatabase, openDB } from 'idb/with-async-ittr'
+import { openDB, type DBSchema, type IDBPDatabase } from 'idb/with-async-ittr'
+
+export type FileStoreFields<T extends object = object> = { file: File } & T
+
+export type TuneStoreFields = FileStoreFields<{ notes: string[] }>
+export type BeatStoreFields = FileStoreFields
 
 interface FileStore<T extends object = object> {
   key: string
-  value: File & T
+  value: FileStoreFields<T>
   indexes: { lastModified: number }
 }
 
-export type AudioFileStores = 'tunes' | 'beats'
-
-export interface AudioFilesSchema extends DBSchema {
-  tunes: FileStore<{ notes: string[] }>
+interface AudioFilesSchema extends DBSchema {
+  tunes: FileStore<TuneStoreFields>
   beats: FileStore
 }
+
+export type AudioFileStores = 'tunes' | 'beats'
+// export type AudioFileStores = keyof AudioFilesSchema
 
 export type AudioFilesDB = IDBPDatabase<AudioFilesSchema>
 
@@ -19,48 +25,21 @@ export const openAudioFiles = async () => {
   const db = await openDB<AudioFilesSchema>('audio-files', 1, {
     upgrade(db) {
       const tunesStore = db.createObjectStore('tunes', {
-        keyPath: 'name',
+        keyPath: 'file.name',
       })
 
       const beatsStore = db.createObjectStore('beats', {
-        keyPath: 'name',
+        keyPath: 'file.name',
       })
 
-      tunesStore.createIndex('lastModified', 'lastModified')
-      beatsStore.createIndex('lastModified', 'lastModified')
+      tunesStore.createIndex('lastModified', 'file.lastModified', {
+        unique: false,
+      })
+      beatsStore.createIndex('lastModified', 'file.lastModified', {
+        unique: false,
+      })
     },
   })
 
   return db
 }
-
-// export const addAudioFile = async (store: AudioFileStores, audioFile: File) => {
-//   const db = await openAudioFiles()
-//   const result = await db.add(store, audioFile)
-//   return result
-// }
-
-// export const getAudioFile = async (store: AudioFileStores, audioFile: File) => {
-//   const db = await openAudioFiles()
-//   const file = await db.get(store, audioFile.lastModified)
-//   return file
-// }
-
-// export const getAllAudioFiles = async (store: AudioFileStores) => {
-//   const db = await openAudioFiles()
-//   const files = await db.getAll(store)
-//   return files
-// }
-
-// export const useAudioFiles = (store: AudioFileStores) => {
-//   const [audioFiles, setAudioFiles] = useState<File[] | null>(null)
-
-//   useEffect(() => {
-//     void (async () => {
-//       const audioFiles = await getAllAudioFiles(store)
-//       setAudioFiles(audioFiles)
-//     })().catch(console.error)
-//   }, [store])
-
-//   return audioFiles
-// }

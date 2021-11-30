@@ -1,6 +1,6 @@
-import { convertBufferToNotes, Notes } from '@dothum/pitch-finder'
+import { convertBufferToNotes, type Notes } from '@dothum/pitch-finder'
 import { pianoSynth } from '@dothum/synth'
-import { FC, useState } from 'react'
+import { useState, type FC } from 'react'
 
 const wait = (time = 1000) => new Promise(resolve => setTimeout(resolve, time))
 
@@ -42,7 +42,6 @@ export default (function ({ audioFile }) {
           onClick={async () => {
             if (!notes) return
             const blob = await pianoSynth(notes)
-            console.log(blob)
           }}
         >
           play synth

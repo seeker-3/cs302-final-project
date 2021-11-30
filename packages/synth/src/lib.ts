@@ -15,6 +15,8 @@ export async function pianoSynth(musicalNotes: string[]) {
     velocities: 5,
   })
 
+  piano.toDestination()
+
   // create all dependencies to be able to record piano audio
   const pianoContext = piano.context
   const mediaStreamDestination = pianoContext.createMediaStreamDestination()

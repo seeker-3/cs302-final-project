@@ -1,17 +1,17 @@
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState, type FC } from 'react'
+import { useEditor } from '.'
 
-export default (function ({ audioFile }) {
-  const [audioFileURL, setAudioFileURL] = useState('')
+export default (function () // { audioFile }
+{
+  const { playerAudio } = useEditor()
+  const [audioURL, setAudioURL] = useState('')
 
   useEffect(() => {
-    if (!audioFile) return setAudioFileURL('')
-
-    const url = URL.createObjectURL(audioFile)
-    setAudioFileURL(url)
+    if (!playerAudio) return setAudioURL('')
+    const url = URL.createObjectURL(playerAudio)
+    setAudioURL(url)
     return () => URL.revokeObjectURL(url)
-  }, [audioFile])
+  }, [playerAudio])
 
-  return <audio controls src={audioFileURL} />
-} as FC<{
-  audioFile: Blob | null
-}>)
+  return <audio controls src={audioURL} />
+} as FC)

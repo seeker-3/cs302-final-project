@@ -1,21 +1,20 @@
-import { FC } from 'react'
-import { UseInstrumentSelector } from '../../context/AudioContext'
+import { type FC } from 'react'
+import { useEditor } from '.'
 
-export default (function InstrumentSelector({
-  index,
-  list,
-  storeName,
-  handleSelect,
-}) {
-  const placeholder = list.length
-    ? 'select instrument'
-    : `no ${storeName} exist`
+export default (function InstrumentSelector() {
+  const {
+    storeName,
+    audioFile,
+    instruments: { index, list, handleSelect },
+    instrumentSelector: { disabled } = {},
+  } = useEditor()
+  const placeholder = 'select instrument'
 
   return (
     <select
       className="width2"
       name={`${storeName}-instrument`}
-      disabled={!list.length}
+      disabled={disabled || !audioFile || !list.length}
       value={index ?? placeholder}
       onChange={handleSelect}
     >
@@ -31,4 +30,4 @@ export default (function InstrumentSelector({
       </>
     </select>
   )
-} as FC<UseInstrumentSelector & { storeName: string }>)
+} as FC)

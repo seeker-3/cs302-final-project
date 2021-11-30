@@ -1,4 +1,4 @@
-import init, { InitOutput } from '@dothum/wasm'
+import init, { type InitOutput } from '@dothum/wasm'
 import createAsyncContext from './createAsyncContext'
 
 const [WasmRuntimeProvider, useWasmRuntime] =

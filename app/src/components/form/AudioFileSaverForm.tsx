@@ -1,5 +1,6 @@
-import { FC, useEffect } from 'react'
-import { useForm, UseFormReturn } from 'react-hook-form'
+import { useEffect, type FC } from 'react'
+import { useForm, type UseFormReturn } from 'react-hook-form'
+import { convertBufferToNotes } from '../../../../packages/pitch-finder/src/primitive'
 import useAudioFilesIndexedDB from '../../context/AudioFilesIndexedDBContext'
 import useBanner from '../../context/BannerContext'
 
@@ -35,23 +36,33 @@ export default (function AudioFileSaver({ render, children }) {
   const { setMessage } = useBanner()
 
   const onSubmit = handleSubmit(async ({ filename, filetype, fileData }) => {
-    const file = fileData[0]
+    const [fileInput] = fileData
 
-    if (!file) throw Error('received empty file')
+    // these shouldn't happen but in case the uncontrolled components get out of sync
+    if (!fileInput) throw Error('received empty file')
 
-    const tuneOrBeat =
+    const storeName =
       filetype === 'tune' ? 'tunes' : filetype === 'beat' ? 'beats' : null
 
-    if (!tuneOrBeat) throw Error('received invalid filetype')
+    if (!storeName) throw Error('received invalid filetype')
 
-    const result = await saveAudioFile(
-      tuneOrBeat,
-      file.name === filename
-        ? file
-        : new File([file], filename, {
-            type: file.type,
-          })
-    )
+    // rename file
+    const file = new File([fileInput], filename, {
+      type: fileInput.type,
+    })
+
+    const isTune = filetype === 'tune'
+
+    if (isTune) setMessage('processing tune. this may take a minute')
+
+    const fields = isTune
+      ? { notes: await convertBufferToNotes(await file.arrayBuffer()) }
+      : {}
+
+    const result = await saveAudioFile(storeName, {
+      ...fields,
+      file,
+    })
 
     // success
     if (result) return reset()

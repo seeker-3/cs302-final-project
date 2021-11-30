@@ -1,6 +1,6 @@
-import { FC, useEffect } from 'react'
+import { useEffect, type FC } from 'react'
 import useAudioRecording from '../../hooks/useAudioRecording'
-import { FileSaverForm } from './AudioFileSaverForm'
+import { type FileSaverForm } from './AudioFileSaverForm'
 
 export default (function AudioFileRecorder({ setValue, resetField, reset }) {
   const {
@@ -13,6 +13,7 @@ export default (function AudioFileRecorder({ setValue, resetField, reset }) {
     handleDeleteRecording,
   } = useAudioRecording()
 
+  // fileData field for this form never gets registered to an input and is controlled with this effect
   useEffect(() => {
     if (!audioRecording) return resetField('fileData')
 
@@ -52,11 +53,6 @@ export default (function AudioFileRecorder({ setValue, resetField, reset }) {
       >
         delete
       </button>
-      {/* <input
-        style={{ display: 'none' }}
-        type="file"
-        {...register('fileData', { required: true })}
-      /> */}
     </div>
   )
 } as FC<FileSaverForm>)

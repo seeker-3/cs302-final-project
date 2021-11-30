@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, type FC } from 'react'
 
 export default function createAsyncContext<V>(callback: () => Promise<V>) {
   const Context = createContext<V | null>(null)
