@@ -23,9 +23,8 @@ const whisper = 0.02
 
 export let minInterval = 250 // smallest interval between beats in milliseconds
 
-export const drumArrays: (0 | 1)[][] = [] // holds drum patters
+export const drumArrays: {label: string, beats: (0|1)[] }[] = []// holds drum patters and instrument labels
 
-export const instrumentSelection: Array<number> = []
 
 //used to leave time inbetween beats
 export const sleepFor = (delay: number) =>
@@ -85,7 +84,7 @@ export function getCommonInterval(intervals: Array<number>) {
   
 //This function takes in a vector of raw audio data and turns it into a drum pattern.
 //This drum pattern is then added to the drum machine
-export function audioToDrum(audioData: Float32Array) {
+export function audioToDrum(audioData: Float32Array, instrumentLabel: string) {
     const length = audioData.length
     const beats = []
   
@@ -148,12 +147,12 @@ export function audioToDrum(audioData: Float32Array) {
       //This if else statement determines if the newDrum pattern is longer than the current
       //drum patterns. If it is then the current drum patterns have to be extended with 0s.
       //Else if the newDrum pattern is shorter then it has to be extended with 0s
-      const currLength = drumArrays[0].length
+      const currLength = drumArrays[0].beats.length
       const newLength = newDrum.length
       if (newLength > currLength) {
         for (let i = 0; i < newLength -currLength; i++) {
           for (let j = 0; j < drumArrays.length; j++) {
-            drumArrays[j].push(0)
+            drumArrays[j].beats.push(0)
           }
         }
       } else if (newLength < currLength) {
@@ -164,7 +163,7 @@ export function audioToDrum(audioData: Float32Array) {
       }
     }
     
-    drumArrays.push(newDrum)
+    drumArrays.push({label: instrumentLabel, beats: newDrum})
   
 }
 
@@ -180,9 +179,9 @@ export function resetDrums(interval: number) {
     //our ability to iterate through the current drum pattern. At each tile it adds
     //beatMultiplier-1 number of tiles infront of the current one.
     for (let i = 0; i < drumArrays.length; i++) {
-      for (let j = drumArrays[0].length; j > 0; j--) {
+      for (let j = drumArrays[0].beats.length; j > 0; j--) {
         for (let add = 0; add < beatMultiplier - 1; add++) {
-          drumArrays[i].splice(j, 0, 0)
+          drumArrays[i].beats.splice(j, 0, 0)
         }
       }
     }
@@ -204,7 +203,7 @@ export async function playBeat(beatIndex: number) {
     //This for loop iterates through each drum pattern at
     //a given beatIndex
     for (let i = 0; i < drumArrays.length; i++) {
-      const tile = drumArrays[i][beatIndex]
+      const tile = drumArrays[i].beats[beatIndex]
 
       //This if statement determines if the tile says play
       //or not and then plays the appropiot sound
@@ -213,13 +212,13 @@ export async function playBeat(beatIndex: number) {
         //This if else statement determines which sound to play 
         //given the collumn index of drumArray. The first drum is 
         //allways a hihat, the second a snare, and the third a kick
-        if (instrumentSelection[i] == 1) {
+        if (drumArrays[i].label == "hihat") {
           playHiHat()
         }
-        else if (instrumentSelection[i] == 2) {
+        else if (drumArrays[i].label == "snare") {
           playSnare()
         }
-        else if (instrumentSelection[i] == 3) {
+        else if (drumArrays[i].label == "kick") {
           playKick()
         }
       }

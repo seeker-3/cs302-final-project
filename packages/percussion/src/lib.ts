@@ -8,7 +8,6 @@ import {
   primaryGainControl,
   audioDestination,
   audioOut,
-  instrumentSelection
 } from './helper'
 
 
@@ -18,7 +17,7 @@ const audioContext = new AudioContext()
 
 // This event listener waits for a file to uploaded and then it determines the tempo of that audio file.
 // It also converts the beats in that audio file into a patter than is pushed into drumArrays
-export const inputAudioFile = async (file: File, instrumentIndex: number) => {
+export const inputAudioFile = async (file: File, instrumentLabel: string) => {
   const soundBuffer = await file.arrayBuffer()
 
   // pass buffer to the audioContext function decodeAudioData to get usable data
@@ -29,8 +28,7 @@ export const inputAudioFile = async (file: File, instrumentIndex: number) => {
   const audioData = dataBuffer.getChannelData(0)
 
 
-  instrumentSelection.push(instrumentIndex)
-  audioToDrum(audioData)
+  audioToDrum(audioData, instrumentLabel)
 
 }
 
@@ -47,7 +45,7 @@ export function getDrumBPM() {
   let intCount = 1
   let count = 0
   for (let i = 0; i < drumArrays.length; i++) {
-    for (let j = 1; j < drumArrays[0].length; j++) {
+    for (let j = 1; j < drumArrays[0].beats.length; j++) {
       if (drumArrays[i][j] == 1 && count == 1) {
         intervals.push(intCount)
         intCount = 0
@@ -69,42 +67,40 @@ export function getDrumBPM() {
 }
 
 //adds a new drum line to the drumArrays that has no beats in it
-export function addDrum(instrumentIndex: number) {
-  const drumPattern = new Array(drumArrays[0].length).fill(0)
-  instrumentSelection.push(instrumentIndex)
-  drumArrays.push(drumPattern)
+export function addDrum(instrumentLabel: string) {
+  const drumPattern = new Array(drumArrays[0].beats.length).fill(0)
+  drumArrays.push({label: instrumentLabel, beats: drumPattern})
 }
 
 //removes a specific drum line from the drum machine
 export function removeDrum(drumIndex: number) {
-  instrumentSelection.splice(drumIndex, 1)
   drumArrays.splice(drumIndex, 1)
 }
 
 //adds 1 beat to the end of every drum line
 export function addBeat() {
   for (let i = 0; i < drumArrays.length; i++) {
-    drumArrays[i].push(0)
+    drumArrays[i].beats.push(0)
   }
 }
 
 //removes 1 beat from the end of every drum line
 export function removeBeat() {
   for (let i = 0; i < drumArrays.length; i++) {
-    drumArrays[i].pop()
+    drumArrays[i].beats.pop()
   }
 }
 
 //shifts the pattern right
 export function shiftRight(drumIndex: number) {
-  drumArrays[drumIndex].unshift(0)
-  drumArrays[drumIndex].pop()
+  drumArrays[drumIndex].beats.unshift(0)
+  drumArrays[drumIndex].beats.pop()
 }
 
 //shifts the pattern left
 export function shiftLeft(drumIndex: number) {
-  drumArrays[drumIndex].shift()
-  drumArrays[drumIndex].push(0)
+  drumArrays[drumIndex].beats.shift()
+  drumArrays[drumIndex].beats.push(0)
 }
 
 //used to determine if the drum machine should be playing
@@ -118,7 +114,7 @@ export async function playTrack() {
   //This while loop tells each beat in the drum macine to play in order and 
   //wait for the correct amount of time before playing the next
   while (run) {
-    for (let i = 0; i < drumArrays[0].length; i++) {
+    for (let i = 0; i < drumArrays[0].beats.length; i++) {
       if (!run) {
         break
       }
@@ -135,7 +131,7 @@ export function pauseTrack() {
 //This function returns a blob containing the a .wav file of the drum machine
 export async function getWAV() {
 
-  const trackDuration = drumArrays[0].length * minInterval
+  const trackDuration = drumArrays[0].beats.length * minInterval
   const chunks = []
 
   //create a meadia recorder and set it to listen the final stop of the audio
