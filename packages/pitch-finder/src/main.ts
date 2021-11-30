@@ -15,7 +15,7 @@ const getAudioBuffer = async () => {
 }
 
 var convert = function (frequencies: (number | null)[]) {
-  var musicalNotes
+  var musicalNotes = []
   for (let tone of frequencies) {
     if (tone === null) {
       continue;

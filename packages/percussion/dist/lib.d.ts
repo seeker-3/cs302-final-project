@@ -1,0 +1,15 @@
+export declare const drumArrays: (0 | 1)[][];
+export declare const inputAudioFile: (file: File) => Promise<void>;
+export declare function getDrumBPM(): void;
+export declare function addDrum(): void;
+export declare function removeDrum(drumIndex: number): void;
+export declare function addBeat(): void;
+export declare function removeBeat(): void;
+export declare function shiftRight(drumIndex: number): void;
+export declare function shiftLeft(drumIndex: number): void;
+export declare function playTrack(): Promise<void>;
+export declare function pauseTrack(): void;
+export declare function playSound(setting: any): void;
+export declare function playSnare(): void;
+export declare function playKick(): void;
+export declare function playHiHat(): void;
