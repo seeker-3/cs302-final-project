@@ -32,9 +32,7 @@ export const inputAudioFile = async (file: File, instrumentLabel: string) => {
   // That function return a vector of audio data
   const audioData = dataBuffer.getChannelData(0)
 
-
   audioToDrum(audioData, instrumentLabel)
-
 }
 
 // This function returns the BPM of the current drum machine recordings
@@ -50,10 +48,10 @@ export function getDrumBPM() {
   let count = 0
   for (let i = 0; i < drumArrays.length; i++) {
     for (let j = 1; j < drumArrays[0].beats.length; j++) {
-      if (drumArrays[i][j] == 1 && count == 1) {
+      if (drumArrays[i].beats[j] == 1 && count == 1) {
         intervals.push(intCount)
         intCount = 0
-      } else if (drumArrays[i][j] == 1 && count == 0) {
+      } else if (drumArrays[i].beats[j] == 1 && count == 0) {
         count = 1
         intCount = 0
       }
@@ -72,8 +70,8 @@ export function getDrumBPM() {
 
 //adds a new drum line to the drumArrays that has no beats in it
 export function addDrum(instrumentLabel: string) {
-  const drumPattern = new Array(drumArrays[0].beats.length).fill(0)
-  drumArrays.push({label: instrumentLabel, beats: drumPattern})
+  const drumPattern = new Array(drumArrays[0]?.beats.length ?? 0).fill(0)
+  drumArrays.push({ label: instrumentLabel, beats: drumPattern })
 }
 
 //removes a specific drum line from the drum machine
@@ -117,8 +115,8 @@ export async function playTrack() {
 
   //This while loop tells each beat in the drum machine to play in order and
   //wait for the correct amount of time before playing the next
-  while (run) {
-    for (let i = 0; i < drumArrays[0].beats.length; i++) {
+  while (run && (drumArrays[0]?.beats.length ?? 0) > 0) {
+    for (let i = 0; i < drumArrays[0]?.beats.length ?? 0; i++) {
       if (!run) {
         break
       }
@@ -134,8 +132,7 @@ export function pauseTrack() {
 
 //This function returns a blob containing the a .wav file of the drum machine
 export async function getWAV() {
-
-  const trackDuration = drumArrays[0].beats.length * minInterval
+  const trackDuration = (drumArrays[0]?.beats.length ?? 0) * minInterval
   const chunks = []
 
   //create a media recorder and set it to listen the final stop of the audio

@@ -10,26 +10,19 @@ import {
   shiftRight,
 } from './src/lib'
 
-import {
-  drumArrays,
-  playHiHat,
-  playKick,
-  playSnare,
-} from './src/helper'
+import { drumArrays, playHiHat, playKick, playSnare } from './src/helper'
 
 const recorder = document.getElementById('recorder') as HTMLInputElement
 
 recorder.onchange = async ({ target }) => {
   const file = (target as HTMLInputElement).files[0]
-  let label = ""
+  let label = ''
   if (drumArrays.length == 0) {
-    label = "hihat"
-  }
-  else if (drumArrays.length == 1) {
-    label = "snare"
-  }
-  else {
-    label = "kick"
+    label = 'hihat'
+  } else if (drumArrays.length == 1) {
+    label = 'snare'
+  } else {
+    label = 'kick'
   }
   await inputAudioFile(file, label)
 }
@@ -53,15 +46,13 @@ remBeatButton.onclick = () => {
 
 const addDrumButton = document.getElementById('addDrum')
 addDrumButton.onclick = () => {
-  let label = ""
+  let label = ''
   if (drumArrays.length == 0) {
-    label = "hihat"
-  }
-  else if (drumArrays.length == 1) {
-    label = "snare"
-  }
-  else {
-    label = "kick"
+    label = 'hihat'
+  } else if (drumArrays.length == 1) {
+    label = 'snare'
+  } else {
+    label = 'kick'
   }
   addDrum(label)
   makeDrumMachine()
@@ -125,7 +116,7 @@ function newDrumMachine(index) {
   this.newDrumMachine.setAttribute('id', 'drum' + index)
   machineContainer.appendChild(this.newDrumMachine)
 
-  for (let i = 0; i < drumArrays[0].beats.length; i++) {
+  for (let i = 0; i < drumArrays[0]?.beats.length ?? 0; i++) {
     new newDrum(this.newDrumMachine, i, index)
   }
 
