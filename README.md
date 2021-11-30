@@ -26,9 +26,9 @@
 5. Beat:
 
 - Once you "record" and "save" a tapping beat, you can push "load beat" and your audio tapping turns into an editable percussion tool.
-  ![I7](/images/Orginal7.0.png)
+  ![I7](/images/Original7.0.png)
 - You can also add an editable drum by clicking "add drum"
-  ![I8](/images/Orginal8.0.png)
+  ![I8](/images/Original8.0.png)
 - You can add as many drums and beats as you want
 - To play the beat you created click "play"
 
