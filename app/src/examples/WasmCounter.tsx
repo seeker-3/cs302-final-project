@@ -13,7 +13,7 @@ export default (function Count() {
       counter = Counter.new()
       setCounter(counter)
       setCount(counter.get_count())
-    })().catch(console.error)
+    })()
 
     return () => counter?.free()
   }, [setCounter])

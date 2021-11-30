@@ -1,35 +1,19 @@
-// mod utils;
-
 use wasm_bindgen::prelude::*;
-
-// #[cfg(feature = "wee_alloc")]
-// #[global_allocator]
-// static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
-// #[wasm_bindgen]
-// extern {
-//     fn alert(s: &str);
-// }
-
-// #[wasm_bindgen]
-// pub fn greet() {
-//     alert("Hello, wasm!");
-// }
 
 #[wasm_bindgen]
 pub struct Counter {
-    count: u8,
+  count: u8,
 }
 
 #[wasm_bindgen]
 impl Counter {
-    pub fn new() -> Self {
-        Counter { count: 0 }
-    }
-    pub fn increment(&mut self) {
-        self.count += 1;
-    }
-    pub fn get_count(&self) -> u8 {
-        return self.count;
-    }
+  pub fn new() -> Self {
+    Counter { count: 0 }
+  }
+  pub fn increment(&mut self) {
+    self.count += 1;
+  }
+  pub fn get_count(&self) -> u8 {
+    return self.count;
+  }
 }

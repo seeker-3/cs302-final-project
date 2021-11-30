@@ -31,11 +31,14 @@
 
 .drum-beats {
   @extend %row, %wrap;
+
   max-width: 80ch;
 
   button {
     @extend %button-square;
+
     background: list.nth($gray-scale, 5);
+
     &.selected {
       background: green;
       background: list.nth($gray-scale, 3);

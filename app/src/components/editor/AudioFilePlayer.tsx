@@ -1,8 +1,7 @@
 import { useEffect, useState, type FC } from 'react'
 import { useEditor } from '.'
 
-export default (function () // { audioFile }
-{
+export default (function AudioFilePlayer() {
   const { playerAudio } = useEditor()
   const [audioURL, setAudioURL] = useState('')
 

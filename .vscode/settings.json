@@ -1,4 +1,5 @@
 {
   "cSpell.words": ["AMDF", "dothum", "pitchfinder", "tonejs"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true
 }
