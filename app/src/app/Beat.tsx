@@ -1,45 +1,38 @@
-import { useEffect, type FC } from 'react'
+import { type FC } from 'react'
 import Editor from '../components/editor'
-import Percussion from '../components/Percussion'
+import Percussion, { usePercussion } from '../components/Percussion'
 import { useBeatAudio } from '../context/AudioContext'
 
 export default (function Beat() {
-  const { beatPlayerAudio, setBeatPlayerAudio, beatFiles, beatInstruments } =
-    useBeatAudio()
+  const {
+    instrumentIndex,
+    beatAudioFile,
+    setBeatPlayerAudio,
+    beatFiles,
+    beatInstruments,
+  } = useBeatAudio()
 
-  const selectedInstrument = beatInstruments.selected
-  const audioFile = beatFiles.selected?.file ?? null
+  const percussion = usePercussion(beatAudioFile, instrumentIndex)
 
-  useEffect(() => {
-    if (!selectedInstrument || !audioFile) return
-    void (async () => {
-      switch (selectedInstrument) {
-        case 'original':
-          setBeatPlayerAudio(audioFile)
-          return
-        case 'piano':
-          return
-        default:
-          throw Error(`unrecognized instrument: ${selectedInstrument}`)
-      }
-    })().catch(console.error)
-  }, [selectedInstrument, audioFile, setBeatPlayerAudio])
+  const disabled = !beatAudioFile
 
   return (
     <Editor
       title="Beat"
       storeName="beats"
-      playerAudio={beatPlayerAudio}
-      audioFile={audioFile}
+      playerAudio={beatAudioFile}
+      audioFile={beatAudioFile}
       files={beatFiles}
       instruments={beatInstruments}
       fileDeleter={{
         callback: () => setBeatPlayerAudio(null),
       }}
       fileProcessor={{
-        handler: () => alert('analyze this'),
+        disabled,
+        handler: percussion.loadDrum,
       }}
-      render={props => <Percussion {...props} />}
-    />
+    >
+      <Percussion {...percussion} />
+    </Editor>
   )
 } as FC)

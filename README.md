@@ -1,6 +1,6 @@
 # .hum Website
 
-## [dothum.app](https://dothum.app/)
+## [dothum.app](https://dothum.netlify.app/)
 
 ## Usage
 
