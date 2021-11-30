@@ -12,25 +12,27 @@ export default (function Tune() {
   const instrument = tuneInstruments.selected
   const { file: audioFile = null, notes = null } = tuneFiles.selected ?? {}
 
+  const isOriginalAudio = instrument === 'original'
+
   useEffect(() => {
-    void (async () => {
-      if (!instrument || !audioFile) return
-      if (!notes) throw Error('tune was not saved properly')
-      console.log(instrument)
-      switch (instrument) {
-        case 'original':
-          setTunePlayerAudio(audioFile)
-          return
-        case 'piano':
-          setLoading(true)
-          setTunePlayerAudio(await pianoSynth(notes))
-          setLoading(false)
-          return
-        default:
-          throw Error(`unrecognized instrument: ${instrument}`)
-      }
-    })().catch(console.error)
-  }, [instrument, audioFile, notes, setTunePlayerAudio])
+    if (!audioFile) return
+    setTunePlayerAudio(isOriginalAudio ? audioFile : null)
+  }, [isOriginalAudio, audioFile, setTunePlayerAudio])
+
+  const processHandler = async () => {
+    if (!instrument || !audioFile) return
+    if (!notes) throw Error('tune was not saved properly')
+    setTunePlayerAudio(null)
+    switch (instrument) {
+      case 'piano':
+        setLoading(true)
+        setTunePlayerAudio(await pianoSynth(notes))
+        setLoading(false)
+        return
+      default:
+        throw Error(`unrecognized instrument: ${instrument}`)
+    }
+  }
 
   return (
     <Editor
@@ -41,8 +43,8 @@ export default (function Tune() {
       files={tuneFiles}
       instruments={tuneInstruments}
       fileProcessor={{
-        disabled: loading,
-        // handler: handleProcess,
+        disabled: loading || !!tunePlayerAudio,
+        handler: processHandler,
       }}
       fileSelector={{
         disabled: loading,
@@ -54,7 +56,6 @@ export default (function Tune() {
       instrumentSelector={{
         disabled: loading,
       }}
-      // render={props => <PitchFinder {...props} />}
     >
       {notes && (
         <ul className="row">
