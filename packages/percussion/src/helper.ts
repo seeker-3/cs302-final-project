@@ -1,5 +1,11 @@
 const audioContext = new AudioContext()
 
+export enum PercussionInstruments {
+  hiHat = 'hi-hat',
+  snare = 'snare',
+  kick = 'kick',
+}
+
 //This is used to hold the settings for one of the audio nodes
 //used to generate drum sounds
 interface AudioNodeConfig {
@@ -29,7 +35,7 @@ export const sleepFor = (delay: number) =>
 
 //This function takes in an array of intervals between beats and returns the most common one.
 //The intervals are measured in how many multiples of minInterval they are.
-export function getCommonInterval(intervals: Array<number>) {
+export function getCommonInterval(intervals: number[]) {
   const intervalCats = [] //this will hold the catagories of interval length
   const intervalRanks = [] //this will hold the number of occurrences for each category
 
@@ -80,9 +86,12 @@ export function getCommonInterval(intervals: Array<number>) {
 
 //This function takes in a vector of raw audio data and turns it into a drum pattern.
 //This drum pattern is then added to the drum machine
-export function audioToDrum(audioData: Float32Array, instrumentLabel: string) {
+export function audioToDrum(
+  audioData: Float32Array,
+  label: PercussionInstruments
+) {
   const length = audioData.length
-  const beats = []
+  const detectedBeats = []
 
   // This for loop iterate through the raw audio data looking
   // for the start of beat by searching for volume value greater
@@ -90,15 +99,15 @@ export function audioToDrum(audioData: Float32Array, instrumentLabel: string) {
   let i
   for (i = 0; i < length; i++) {
     if (audioData[i] > whisper) {
-      beats.push(i)
+      detectedBeats.push(i)
       //this jumps 1/16 of a second forward to jump over the rest of the beat
       i += parseInt((audioContext.sampleRate / 8).toFixed())
     }
   }
 
   const intervals = []
-  for (i = 0; i < beats.length - 1; i++) {
-    intervals.push(beats[i + 1] - beats[i])
+  for (i = 0; i < detectedBeats.length - 1; i++) {
+    intervals.push(detectedBeats[i + 1] - detectedBeats[i])
   }
 
   // minInterval is used to set the amount of time between playing each
@@ -122,9 +131,9 @@ export function audioToDrum(audioData: Float32Array, instrumentLabel: string) {
   //beat in the audioData, so for each beat it adds a 1 to the new
   //drum pattern and then it adds the appropriate number of 0s after it
   //to match the number of minIntervals before the next beat.
-  const newDrum = []
-  for (let b = 0; b < beats.length - 1; b++) {
-    newDrum.push(1)
+  const beats = []
+  for (let b = 0; b < detectedBeats.length - 1; b++) {
+    beats.push(1)
     const space = parseInt(
       (
         intervals[b] /
@@ -132,7 +141,7 @@ export function audioToDrum(audioData: Float32Array, instrumentLabel: string) {
       ).toFixed()
     )
     for (let i = 0; i < space - 1; i++) {
-      newDrum.push(0)
+      beats.push(0)
     }
 
     //This if statement stops the program from running this next bit
@@ -142,7 +151,7 @@ export function audioToDrum(audioData: Float32Array, instrumentLabel: string) {
       //drum patterns. If it is then the current drum patterns have to be extended with 0s.
       //Else if the newDrum pattern is shorter then it has to be extended with 0s
       const currLength = drumArrays[0]?.beats.length ?? 0
-      const newLength = newDrum.length
+      const newLength = beats.length
       if (newLength > currLength) {
         for (let i = 0; i < newLength - currLength; i++) {
           for (let j = 0; j < drumArrays.length; j++) {
@@ -152,12 +161,12 @@ export function audioToDrum(audioData: Float32Array, instrumentLabel: string) {
       } else if (newLength < currLength) {
         const diff = currLength - newLength
         for (let i = 0; i < diff; i++) {
-          newDrum.push(0)
+          beats.push(0)
         }
       }
     }
   }
-  drumArrays.push({ label: instrumentLabel, beats: newDrum })
+  drumArrays.push({ label, beats })
 }
 
 //This function stretches the current drum patterns to match a faster rhythm of a newDrum.
@@ -196,13 +205,13 @@ export async function playBeat(beatIndex: number) {
       //This if else statement determines which sound to play
       //given the collumn index of drumArray. The first drum is
       //allways a hihat, the second a snare, and the third a kick
-      if (drumArrays[i]?.label == 'hihat') {
-        playHiHat()
-      } else if (drumArrays[i]?.label == 'snare') {
-        playSnare()
-      } else if (drumArrays[i]?.label == 'kick') {
-        playKick()
-      }
+      const label = drumArrays[i]?.label
+
+      if (label == PercussionInstruments.hiHat) return playHiHat()
+      if (label == PercussionInstruments.snare) return playSnare()
+      if (label == PercussionInstruments.kick) return playKick()
+
+      throw Error('unrecognized drum label')
     }
   }
 }
