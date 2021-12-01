@@ -4,8 +4,8 @@ import useAudioFilesIndexedDB from '../../context/AudioFilesIndexedDBContext'
 
 export default (function AudioFileDeleter() {
   const {
-    storeName,
     audioFile,
+    storeName,
     fileDeleter: { disabled, callback } = {},
   } = useEditor()
   const { deleteAudioFile } = useAudioFilesIndexedDB()

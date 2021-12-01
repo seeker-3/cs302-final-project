@@ -4,15 +4,10 @@ import Percussion, { usePercussion } from '../components/Percussion'
 import { useBeatAudio } from '../context/AudioContext'
 
 export default (function Beat() {
-  const {
-    instrumentIndex,
-    beatAudioFile,
-    setBeatPlayerAudio,
-    beatFiles,
-    beatInstruments,
-  } = useBeatAudio()
+  const { beatAudioFile, setBeatPlayerAudio, beatFiles, beatInstruments } =
+    useBeatAudio()
 
-  const percussion = usePercussion(beatAudioFile, instrumentIndex)
+  const percussion = usePercussion(beatAudioFile)
 
   const disabled = !beatAudioFile
 
@@ -27,12 +22,9 @@ export default (function Beat() {
       fileDeleter={{
         callback: () => setBeatPlayerAudio(null),
       }}
-      fileProcessor={{
-        disabled,
-        handler: percussion.loadDrum,
-      }}
+      fileSelector={{ disabled }}
     >
-      <Percussion {...percussion} />
+      <Percussion {...percussion} loadDrumsDisabled={disabled} />
     </AudioEditor>
   )
 } as FC)

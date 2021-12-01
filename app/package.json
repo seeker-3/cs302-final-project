@@ -1,6 +1,7 @@
 {
   "name": "@dothum/app",
   "homepage": "https://dothum.app/",
+  "author": "Abram Bradley",
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite",

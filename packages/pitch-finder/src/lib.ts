@@ -1,2 +1,2 @@
-export { convertBufferToNotes } from './primitive'
+export { convertBlobToNotes } from './primitive'
 export type { Notes } from './primitive'

@@ -1,6 +1,5 @@
 import { useEffect, type FC } from 'react'
 import { useForm, type UseFormReturn } from 'react-hook-form'
-import { convertBufferToNotes } from '../../../packages/pitch-finder/src/primitive'
 import useAudioFilesIndexedDB from '../context/AudioFilesIndexedDBContext'
 import useBanner from '../context/BannerContext'
 
@@ -51,24 +50,21 @@ export default (function AudioFileSaver({ render, children }) {
       type: fileInput.type,
     })
 
-    const fields =
-      filetype === 'tune'
-        ? (setMessage('processing tune. this may take a minute.'),
-          { notes: await convertBufferToNotes(await file.arrayBuffer()) })
-        : {}
+    if (filetype === 'tune')
+      setMessage('processing tune. this may take a minute.')
 
-    const result = await saveAudioFile(storeName, {
-      ...fields,
-      file,
-    })
+    const { error, incorrectField } = await saveAudioFile(storeName, file)
 
-    // success
-    if (result) return reset()
+    if (!error) return reset()
+
+    setMessage(error)
+
+    if (!incorrectField) return
 
     setError(
-      'filename',
+      incorrectField,
       {
-        message: `error: ${filetype} with that name already exists`,
+        message: error,
       },
       {
         shouldFocus: true,

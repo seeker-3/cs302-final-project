@@ -1,18 +1,18 @@
 import { type FC } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import AudioFileSaver from '../components/AudioFileSaverForm'
 import Banner from '../components/Banner'
 import AudioFileRecorder from './AudioFileRecorder'
-import AudioFileSaver from '../components/AudioFileSaverForm'
 import AudioFileUploader from './AudioFileUploader'
-import Beat from './BeatEditor'
-import Tune from './TuneEditor'
+import BeatEditor from './BeatEditor'
+import TuneEditor from './TuneEditor'
 
 export default (function App() {
   return (
-    <main className="column">
-      <div className="column align-items-end">
+    <main className="column-stretch">
+      <div className="column-center">
         <ErrorBoundary
-          fallback={<p className="center">audio file recorder crashed</p>}
+          fallback={<p className="text-center">audio file recorder crashed</p>}
         >
           <AudioFileSaver
             action="recording"
@@ -20,7 +20,7 @@ export default (function App() {
           />
         </ErrorBoundary>
         <ErrorBoundary
-          fallback={<p className="center">audio file uploader crashed</p>}
+          fallback={<p className="text-center">audio file uploader crashed</p>}
         >
           <AudioFileSaver
             action="upload"
@@ -28,12 +28,16 @@ export default (function App() {
           />
         </ErrorBoundary>
       </div>
-      <div className="column grow two-static-children">
-        <ErrorBoundary fallback={<p className="center">tune editor crashed</p>}>
-          <Tune />
+      <div className="audio-editor">
+        <ErrorBoundary
+          fallback={<p className="text-center">tune editor crashed</p>}
+        >
+          <TuneEditor />
         </ErrorBoundary>
-        <ErrorBoundary fallback={<p className="center">beat editor crashed</p>}>
-          <Beat />
+        <ErrorBoundary
+          fallback={<p className="text-center">beat editor crashed</p>}
+        >
+          <BeatEditor />
         </ErrorBoundary>
       </div>
       <Banner />

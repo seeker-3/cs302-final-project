@@ -54,34 +54,44 @@ export const useEditor = (): EditorContextValue => {
 export default (function AudioEditor({ title, render, children, ...props }) {
   return (
     <EditorContext.Provider value={props}>
-      <div className="column grow">
-        <p>{title}</p>
-        <div className="column align-items-start">
+      <div className="column-stretch grow">
+        <p className="text-center">{title}</p>
+        <div className="column-center">
           <div className="row">
             <ErrorBoundary
-              fallback={<p className="center">audio file selector crashed</p>}
+              fallback={
+                <p className="text-center">audio file selector crashed</p>
+              }
             >
               <AudioFileSelector />
             </ErrorBoundary>
             <ErrorBoundary
-              fallback={<p className="center">audio file processor crashed</p>}
+              fallback={
+                <p className="text-center">audio file processor crashed</p>
+              }
             >
               <AudioFileProcessor />
             </ErrorBoundary>
             <ErrorBoundary
-              fallback={<p className="center">audio file deleter crashed</p>}
+              fallback={
+                <p className="text-center">audio file deleter crashed</p>
+              }
             >
               <AudioFileDeleter />
             </ErrorBoundary>
           </div>
           <div className="row">
             <ErrorBoundary
-              fallback={<p className="center">audio file player crashed</p>}
+              fallback={
+                <p className="text-center">audio file player crashed</p>
+              }
             >
               <AudioFilePlayer />
             </ErrorBoundary>
             <ErrorBoundary
-              fallback={<p className="center">instrument selector crashed</p>}
+              fallback={
+                <p className="text-center">instrument selector crashed</p>
+              }
             >
               <InstrumentSelector />
             </ErrorBoundary>
@@ -89,7 +99,7 @@ export default (function AudioEditor({ title, render, children, ...props }) {
         </div>
         <div className="grow">
           <ErrorBoundary
-            fallback={<p className="center">editor body crashed</p>}
+            fallback={<p className="text-center">editor body crashed</p>}
           >
             {render && render(props)}
             {children}

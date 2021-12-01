@@ -1,18 +1,18 @@
 import { useEffect, useState, type ChangeEventHandler } from 'react'
 
 export type UseSelector<T> = {
-  selected: T | null
-  index: number | null
+  selected?: T
+  index?: number
   list: T[]
   handleSelect: ChangeEventHandler<HTMLSelectElement>
 }
 
 export default function useSelector<T>(list: T[]): UseSelector<T> {
-  const [selected, setSelected] = useState<T | null>(list[0] ?? null)
+  const [selected, setSelected] = useState<T | undefined>(list[0])
 
   // reset the input if the list changes
   useEffect(() => {
-    setSelected(list[0] ?? null)
+    setSelected(list[0])
   }, [list])
 
   const handleSelect: ChangeEventHandler<HTMLSelectElement> = ({ target }) => {

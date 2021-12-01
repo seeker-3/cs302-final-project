@@ -1,3 +1,4 @@
+import { convertBlobToNotes } from '@dothum/pitch-finder'
 import {
   createContext,
   useContext,
@@ -11,7 +12,6 @@ import {
   type AudioFilesDB,
   type AudioFileStores,
   type BeatStoreFields,
-  type StoreFields,
   type TuneStoreFields,
 } from '../db/indexedDB'
 
@@ -58,26 +58,45 @@ const useContextBody = () => {
 
   const db = ref.current
 
-  const saveAudioFile = async (
-    storeName: AudioFileStores,
-    fields: StoreFields
-  ) => {
-    const transaction = db.transaction(storeName, 'readwrite')
-    const { store } = transaction
-    const fileExists = await store.get(fields.file.name)
+  const saveAudioFile = async (storeName: AudioFileStores, file: File) => {
+    let gotNotes = false
+    try {
+      const fields =
+        storeName === 'tunes'
+          ? {
+              notes: await convertBlobToNotes(file),
+            }
+          : {}
+      gotNotes = true
 
-    // this should display an error to the user
-    if (fileExists) {
+      const transaction = db.transaction(storeName, 'readwrite')
+      const { store } = transaction
+      const fileExists = await store.get(file.name)
+
+      // this should display an error to the user
+      if (fileExists) {
+        await transaction.done
+        return {
+          incorrectField: 'filename' as const,
+          error: `error: file named "${file.name}" already exists in ${storeName}`,
+        }
+      }
+
+      const result = await store.add({
+        ...fields,
+        file,
+      })
+      const storeContents = await store.getAll()
       await transaction.done
-      return null
+
+      dispatch({ [storeName]: storeContents })
+      return { result }
+    } catch (error) {
+      console.error(error)
+      return {
+        error: !gotNotes ? 'tune conversion failed' : 'an error occurred',
+      }
     }
-
-    const result = await store.add(fields)
-    const storeContents = await store.getAll()
-    await transaction.done
-
-    dispatch({ [storeName]: storeContents })
-    return result
   }
 
   const deleteAudioFile = async (

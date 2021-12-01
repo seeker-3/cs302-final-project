@@ -217,7 +217,7 @@ export type Notes = ReturnType<typeof frequencyToNote>
 /////////////////////////////////////////////////////////////////////////////////////
 // Converts a list of frequencies to their musical note equivalent and returns it //
 ///////////////////////////////////////////////////////////////////////////////////
-export const convertBufferToNotes = async (buffer: ArrayBuffer) => {
+export const convertBlobToNotes = async (blob: Blob) => {
   // Establish an AudioContext
   // Retrieve audio buffer from buffer argument
   // Convert audio to "melody" e.g. find its tempo/quantization
@@ -225,6 +225,7 @@ export const convertBufferToNotes = async (buffer: ArrayBuffer) => {
 
   try {
     const audioContext = new AudioContext()
+    const buffer = await blob.arrayBuffer()
 
     const audioChannel0 = (
       await audioContext.decodeAudioData(buffer)
@@ -245,6 +246,6 @@ export const convertBufferToNotes = async (buffer: ArrayBuffer) => {
     )
   } catch (error) {
     console.error(error)
-    throw Error('pitch-finder: Failed to convert notes.')
+    throw Error('pitch-finder failed to convert notes.')
   }
 }

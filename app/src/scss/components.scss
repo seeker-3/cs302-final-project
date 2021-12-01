@@ -6,7 +6,8 @@
 
 .banner {
   @extend %focus-within;
-  @extend %row;
+  @extend %row-left;
+  align-items: center;
 
   position: absolute;
   bottom: list.nth($sizing, 2);
@@ -30,17 +31,19 @@
 }
 
 .drum-beats {
-  @extend %row, %wrap;
-
-  max-width: 80ch;
-
   button {
     @extend %button-square;
-
     background: list.nth($gray-scale, 3);
-
     &.selected {
       background: list.nth($gray-scale, 5);
     }
+  }
+}
+
+.audio-editor {
+  @extend %column, %grow;
+  > * {
+    // width: 120ch;
+    flex-basis: 50%;
   }
 }

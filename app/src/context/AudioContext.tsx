@@ -1,4 +1,3 @@
-import { PercussionInstruments } from '@dothum/percussion'
 import { createContext, useContext, useState, type FC } from 'react'
 import { type FileStoreFields } from '../db/indexedDB'
 import useSelector, { type UseSelector } from '../hooks/useSelector'
@@ -6,7 +5,7 @@ import useAudioFilesIndexedDB from './AudioFilesIndexedDBContext'
 
 const tuneInstrumentList = ['original', 'piano']
 // const beatInstrumentsList = ['original', 'recording']
-const beatInstrumentsList = ['hiHat', 'snare', 'kick']
+const beatInstrumentsList = ['original', 'recorded']
 
 const useAudioContextBody = () => {
   const store = useAudioFilesIndexedDB()
@@ -64,19 +63,6 @@ export const useTuneAudio = () => {
 export const useBeatAudio = () => {
   const { beatPlayerAudio, setBeatPlayerAudio, beatFiles, beatInstruments } =
     useAudio()
-  const instrument = beatInstruments.selected
-
-  const instrumentIndex =
-    instrument === 'hiHat'
-      ? PercussionInstruments.hiHat
-      : instrument === 'snare'
-      ? PercussionInstruments.snare
-      : instrument === 'kick'
-      ? PercussionInstruments.kick
-      : null
-
-  if (instrumentIndex === null)
-    throw Error('invalid instrument. could not convert to index')
 
   return {
     beatAudioFile: beatFiles.selected?.file ?? null,
@@ -84,7 +70,6 @@ export const useBeatAudio = () => {
     setBeatPlayerAudio,
     beatFiles,
     beatInstruments,
-    instrumentIndex,
   }
 }
 

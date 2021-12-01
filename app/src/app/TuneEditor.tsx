@@ -55,7 +55,7 @@ export default (function Tune() {
         callback: () => setTunePlayerAudio(null),
       }}
       instrumentSelector={{
-        disabled: !audioFile || loading,
+        disabled: loading,
       }}
     >
       {notes && (

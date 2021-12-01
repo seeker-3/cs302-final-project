@@ -11,21 +11,41 @@ import {
 } from '@dothum/percussion'
 import classNames from 'classnames'
 import { useReducer, type FC } from 'react'
+import useSelector from '../hooks/useSelector'
 
-export const usePercussion = (
-  audioFile: File | null,
-  percussionIndex: PercussionInstruments
-) => {
+const PERCUSSION_INSTRUMENTS = ['hi-hat', 'snare', 'kick']
+
+const castInstrumentToLiteral = (instrument?: string) => {
+  const literal =
+    instrument === 'hi-hat'
+      ? PercussionInstruments.hiHat
+      : instrument === 'snare'
+      ? PercussionInstruments.snare
+      : instrument === 'kick'
+      ? PercussionInstruments.kick
+      : null
+  if (!literal)
+    throw Error(`unrecognized drum label ${instrument} when casting to literal`)
+  return literal
+}
+
+export const usePercussion = (audioFile: File | null) => {
   const [drums, updateLocalDrumState] = useReducer(
     () => [...drumArrays],
     drumArrays
+  )
+
+  const instrumentSelector = useSelector(PERCUSSION_INSTRUMENTS)
+
+  const percussionInstrument = castInstrumentToLiteral(
+    instrumentSelector.selected
   )
 
   const [playing, togglePlayState] = useReducer(state => !state, false)
 
   const loadDrum = async () => {
     if (!audioFile) return
-    await inputAudioFile(audioFile, percussionIndex)
+    await inputAudioFile(audioFile, percussionInstrument)
     updateLocalDrumState()
   }
 
@@ -36,7 +56,7 @@ export const usePercussion = (
   }
 
   const handleAddDrum = () => {
-    addDrum(percussionIndex)
+    addDrum(percussionInstrument)
     updateLocalDrumState()
   }
 
@@ -56,11 +76,12 @@ export const usePercussion = (
   }
 
   const toggleBeat = (index1: number, index2: number) => {
-    drumArrays[index1][index2] = drumArrays[index1][index2] ? 0 : 1
+    drumArrays[index1].beats[index2] = drumArrays[index1].beats[index2] ? 0 : 1
     updateLocalDrumState()
   }
 
   return {
+    instrumentSelector,
     drums,
     playing,
     loadDrum,
@@ -73,7 +94,8 @@ export const usePercussion = (
   }
 }
 
-export default (function percussion({
+export default (function Percussion({
+  instrumentSelector: { index, list, handleSelect },
   drums,
   playing,
   handlePlayState,
@@ -82,24 +104,44 @@ export default (function percussion({
   handleAddBeat,
   handleRemoveBeat,
   toggleBeat,
+  loadDrum,
+  loadDrumsDisabled,
 }) {
-  const isDrums = !!drums.length
-  const isBeats = isDrums && !!drums[0].length
+  const isDrum = !!drums[0]
+  const numberOfBeats = drums[0]?.beats.length
+  const isBeats = !!numberOfBeats
 
   return (
     <div className="column">
-      <div className="row">
-        {/* <button className="width2" disabled={disabled} onClick={loadDrum}>
-          load beat
-        </button> */}
+      <div className="row-center">
+        <select
+          name="drum-selector"
+          className="width2"
+          value={index}
+          onChange={handleSelect}
+        >
+          {list.map((instrument, i) => (
+            <option key={instrument} value={i}>
+              {instrument}
+            </option>
+          ))}
+        </select>
+        <button className="width2" onClick={handleAddDrum}>
+          add drum
+        </button>
         <button
           className="width2"
-          disabled={!isDrums}
-          onClick={handlePlayState}
+          disabled={loadDrumsDisabled}
+          onClick={loadDrum}
         >
+          load file
+        </button>
+      </div>
+      <div className="row-center">
+        <button className="width2" onClick={handlePlayState}>
           {playing ? 'pause' : 'play'}
         </button>
-        <button className="width2" disabled={!isDrums} onClick={handleAddBeat}>
+        <button className="width2" disabled={!isDrum} onClick={handleAddBeat}>
           add beat
         </button>
         <button
@@ -109,20 +151,20 @@ export default (function percussion({
         >
           remove beat
         </button>
-        <button className="width2" onClick={handleAddDrum}>
-          add drum
-        </button>
       </div>
-      <div className="column">
-        {drums.map((beats, i) => (
-          <div className="row align-items-start" key={i}>
+      <div className="column-stretch">
+        {numberOfBeats !== undefined && (
+          <p className="text-center">beats: {numberOfBeats}</p>
+        )}
+        {drums.map(({ label, beats }, i) => (
+          <div className="row-left contain" key={i}>
             <button
-              disabled={drums.length === 1 && playing}
+              className="width2 no-shrink"
               onClick={() => handleRemoveDrum(i)}
             >
-              remove
+              remove{` ${label}`}
             </button>
-            <div className="drum-beats">
+            <div className="drum-beats row-left wrap">
               {beats.map((beat, j) => (
                 <button
                   className={classNames({ selected: beat })}
@@ -136,4 +178,4 @@ export default (function percussion({
       </div>
     </div>
   )
-} as FC<ReturnType<typeof usePercussion>>)
+} as FC<ReturnType<typeof usePercussion> & { loadDrumsDisabled?: boolean }>)
