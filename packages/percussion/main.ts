@@ -8,6 +8,7 @@ import {
   removeDrum,
   shiftLeft,
   shiftRight,
+  PercussionInstruments,
 } from './src/lib'
 
 import { drumArrays, playHiHat, playKick, playSnare } from './src/helper'
@@ -16,13 +17,13 @@ const recorder = document.getElementById('recorder') as HTMLInputElement
 
 recorder.onchange = async ({ target }) => {
   const file = (target as HTMLInputElement).files[0]
-  let label = ''
+  let label: PercussionInstruments
   if (drumArrays.length == 0) {
-    label = 'hihat'
+    label = PercussionInstruments.hiHat
   } else if (drumArrays.length == 1) {
-    label = 'snare'
+    label = PercussionInstruments.snare
   } else {
-    label = 'kick'
+    label = PercussionInstruments.kick
   }
   await inputAudioFile(file, label)
 }
@@ -46,13 +47,13 @@ remBeatButton.onclick = () => {
 
 const addDrumButton = document.getElementById('addDrum')
 addDrumButton.onclick = () => {
-  let label = ''
+  let label: PercussionInstruments
   if (drumArrays.length == 0) {
-    label = 'hihat'
+    label = PercussionInstruments.hiHat
   } else if (drumArrays.length == 1) {
-    label = 'snare'
+    label = PercussionInstruments.snare
   } else {
-    label = 'kick'
+    label = PercussionInstruments.kick
   }
   addDrum(label)
   makeDrumMachine()
