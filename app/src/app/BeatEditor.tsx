@@ -1,5 +1,5 @@
 import { type FC } from 'react'
-import Editor from '../components/editor'
+import AudioEditor from '../components/editor'
 import Percussion, { usePercussion } from '../components/Percussion'
 import { useBeatAudio } from '../context/AudioContext'
 
@@ -17,7 +17,7 @@ export default (function Beat() {
   const disabled = !beatAudioFile
 
   return (
-    <Editor
+    <AudioEditor
       title="Beat"
       storeName="beats"
       playerAudio={beatAudioFile}
@@ -33,6 +33,6 @@ export default (function Beat() {
       }}
     >
       <Percussion {...percussion} />
-    </Editor>
+    </AudioEditor>
   )
 } as FC)

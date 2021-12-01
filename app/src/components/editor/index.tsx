@@ -51,7 +51,7 @@ export const useEditor = (): EditorContextValue => {
   return editorContext
 }
 
-export default (function Editor({ title, render, children, ...props }) {
+export default (function AudioEditor({ title, render, children, ...props }) {
   return (
     <EditorContext.Provider value={props}>
       <div className="column grow">

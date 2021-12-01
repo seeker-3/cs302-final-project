@@ -37,11 +37,10 @@
   button {
     @extend %button-square;
 
-    background: list.nth($gray-scale, 5);
+    background: list.nth($gray-scale, 3);
 
     &.selected {
-      background: green;
-      background: list.nth($gray-scale, 3);
+      background: list.nth($gray-scale, 5);
     }
   }
 }
