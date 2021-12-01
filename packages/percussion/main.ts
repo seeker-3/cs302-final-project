@@ -1,8 +1,10 @@
+import { drumArrays, playHiHat, playKick, playSnare } from './src/helper'
 import {
   addBeat,
   addDrum,
   inputAudioFile,
   pauseTrack,
+  PercussionInstruments,
   playTrack,
   removeBeat,
   removeDrum,
@@ -10,21 +12,18 @@ import {
   shiftRight,
 } from './src/lib'
 
-import { drumArrays, playHiHat, playKick, playSnare } from './src/helper'
+const getDrumLabel = (length: number) =>
+  length === 0
+    ? PercussionInstruments.hiHat
+    : length === 1
+    ? PercussionInstruments.snare
+    : PercussionInstruments.kick
 
 const recorder = document.getElementById('recorder') as HTMLInputElement
 
 recorder.onchange = async ({ target }) => {
   const file = (target as HTMLInputElement).files[0]
-  let label = ''
-  if (drumArrays.length == 0) {
-    label = 'hihat'
-  } else if (drumArrays.length == 1) {
-    label = 'snare'
-  } else {
-    label = 'kick'
-  }
-  await inputAudioFile(file, label)
+  await inputAudioFile(file, getDrumLabel(drumArrays.length))
 }
 
 const addToMachineButton = document.getElementById('addToMachine')
@@ -46,15 +45,7 @@ remBeatButton.onclick = () => {
 
 const addDrumButton = document.getElementById('addDrum')
 addDrumButton.onclick = () => {
-  let label = ''
-  if (drumArrays.length == 0) {
-    label = 'hihat'
-  } else if (drumArrays.length == 1) {
-    label = 'snare'
-  } else {
-    label = 'kick'
-  }
-  addDrum(label)
+  addDrum(getDrumLabel(drumArrays.length))
   makeDrumMachine()
 }
 
@@ -132,7 +123,7 @@ function newDrum(drum, beatIndex, drumIndex) {
 
   // This if statement loads whatever is in the drumArrays onto the
   // drum machine visualizer.
-  if (drumArrays[drumIndex].beats[beatIndex] == 1) {
+  if (drumArrays[drumIndex].beats[beatIndex] === 1) {
     this.newDrum.classList.add('beat-selected')
     this.newDrum.clicked = true
   }
@@ -156,7 +147,7 @@ function newDrum(drum, beatIndex, drumIndex) {
 
 const play = document.getElementById('play')
 const pause = document.getElementById('pause')
-play.onclick = () => playTrack(true)
+play.onclick = () => playTrack()
 pause.onclick = pauseTrack
 
 // __Snare__

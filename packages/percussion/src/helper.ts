@@ -52,7 +52,7 @@ export function getCommonInterval(intervals: number[]) {
     for (; i < intervalCats.length; i++) {
       //if a match is found then pop that interval off the intervals vector
       //and add one to its category rank. Then break to stop the search
-      if (intervalCats[i] == intervals[intervals.length - 1]) {
+      if (intervalCats[i] === intervals[intervals.length - 1]) {
         intervalRanks[i]++
         intervals.pop()
         break
@@ -62,7 +62,7 @@ export function getCommonInterval(intervals: number[]) {
     //if no match was found then pop off the interval from the intervals vector
     //and add it to the intervalCats to make a new category of interval. set its
     //rank to 1
-    if (i == intervalCats.length) {
+    if (i === intervalCats.length) {
       intervalCats.push(intervals.pop())
       intervalRanks.push(1)
     }
@@ -122,7 +122,7 @@ export function audioToDrum(
   if (interval < minInterval && drumArrays.length > 0) {
     resetDrums(interval)
     minInterval = interval
-  } else if (drumArrays.length == 0) {
+  } else if (drumArrays.length === 0) {
     minInterval = interval
   }
 
@@ -179,7 +179,7 @@ export function resetDrums(interval: number) {
   //These for loops iterate through each of the drum patterns starting at the end.
   //It starts at the end of each drum pattern so the newly added beat wont effect
   //our ability to iterate through the current drum pattern. At each tile it adds
-  //beatMultiplier-1 number of tiles infront of the current one.
+  //beatMultiplier-1 number of tiles in front of the current one.
   for (let i = 0; i < drumArrays.length; i++) {
     for (let j = drumArrays[0]?.beats.length ?? 0; j > 0; j--) {
       for (let add = 0; add < beatMultiplier - 1; add++) {
@@ -194,24 +194,24 @@ export function resetDrums(interval: number) {
 
 //This function plays one column of drumArrays by iterating through
 //each row at a given beatIndex.
-export async function playBeat(beatIndex: number) {
+export function playBeat(beatIndex: number) {
   //This for loop iterates through each drum pattern at
   //a given beatIndex
   for (let i = 0; i < drumArrays.length; i++) {
     const tile = drumArrays[i]?.beats[beatIndex] ?? 0
     //This if statement determines if the tile says play
-    //or not and then plays the appropiot sound
-    if (tile != 0) {
+    //or not and then plays the appropriate sound
+    if (tile !== 0) {
       //This if else statement determines which sound to play
-      //given the collumn index of drumArray. The first drum is
-      //allways a hihat, the second a snare, and the third a kick
+      //given the column index of drumArray. The first drum is
+      //always a hi-hat, the second a snare, and the third a kick
       const label = drumArrays[i]?.label
 
-      if (label == PercussionInstruments.hiHat) return playHiHat()
-      if (label == PercussionInstruments.snare) return playSnare()
-      if (label == PercussionInstruments.kick) return playKick()
+      if (label === PercussionInstruments.hiHat) return playHiHat()
+      if (label === PercussionInstruments.snare) return playSnare()
+      if (label === PercussionInstruments.kick) return playKick()
 
-      throw Error('unrecognized drum label')
+      throw Error(`unrecognized drum label: ${label}`)
     }
   }
 }
@@ -316,7 +316,7 @@ export const playHiHat = () => playSound(hiHatSound)
 
 //This function takes in a SoundSetting object and uses its
 //values to play the desired sound
-export async function playSound(sound: SoundSettings) {
+export function playSound(sound: SoundSettings) {
   //Here we are making a highpass filter that filters out
   //frequencies below a certain threshold. This filter is used to make
   //the resulting sound from white noise and oscillator less chaotic

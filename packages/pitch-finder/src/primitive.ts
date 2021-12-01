@@ -25,7 +25,7 @@ function getCommonInterval(intervals: number[]) {
     for (; i < intervalCats.length; i++) {
       //if a match is found then pop that interval off the intervals vector
       //and add one to its category rank. Then break to stop the search
-      if (intervalCats[i] == intervals[intervals.length - 1]) {
+      if (intervalCats[i] === intervals[intervals.length - 1]) {
         intervalRanks[i]++
         intervals.pop()
         break
@@ -35,7 +35,7 @@ function getCommonInterval(intervals: number[]) {
     //if no match was found then pop off the interval from the intervals vector
     //and add it to the intervalCats to make a new category of interval. set its
     //rank to 1
-    if (i == intervalCats.length) {
+    if (i === intervalCats.length) {
       intervalCats.push(intervals.pop())
       intervalRanks.push(1)
     }
@@ -184,7 +184,7 @@ const frequencyToNote = (input: number) => {
     if (cent_index > 50) {
       r_index++
       cent_index = 100 - cent_index
-      if (cent_index != 0) side = MINUS
+      if (cent_index !== 0) side = MINUS
       else side = PLUS
     } else side = PLUS
   } else {
@@ -202,7 +202,7 @@ const frequencyToNote = (input: number) => {
       cent_index = 100 - cent_index
       side = PLUS
     } else {
-      if (cent_index != 0) side = MINUS
+      if (cent_index !== 0) side = MINUS
       else side = PLUS
     }
   }

@@ -48,10 +48,10 @@ export function getDrumBPM() {
   let count = 0
   for (let i = 0; i < drumArrays.length; i++) {
     for (let j = 1; j < drumArrays[0].beats.length; j++) {
-      if (drumArrays[i].beats[j] == 1 && count == 1) {
+      if (drumArrays[i].beats[j] === 1 && count === 1) {
         intervals.push(intCount)
         intCount = 0
-      } else if (drumArrays[i].beats[j] == 1 && count == 0) {
+      } else if (drumArrays[i].beats[j] === 1 && count === 0) {
         count = 1
         intCount = 0
       }
@@ -110,7 +110,7 @@ let run = false
 
 //This starts the drum machine loop playing until it is told
 //otherwise
-export async function playTrack(repeat: boolean) {
+export async function playTrack(repeat = true) {
   run = true
 
   //This while loop tells each beat in the drum machine to play in order and
