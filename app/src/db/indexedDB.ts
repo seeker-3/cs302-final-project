@@ -4,6 +4,7 @@ export type FileStoreFields<T extends object = object> = { file: File } & T
 
 export type TuneStoreFields = FileStoreFields<{ notes: string[] }>
 export type BeatStoreFields = FileStoreFields
+export type StoreFields = TuneStoreFields | BeatStoreFields
 
 interface FileStore<T extends object = object> {
   key: string

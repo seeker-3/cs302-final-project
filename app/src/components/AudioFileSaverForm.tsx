@@ -1,8 +1,8 @@
 import { useEffect, type FC } from 'react'
 import { useForm, type UseFormReturn } from 'react-hook-form'
-import { convertBufferToNotes } from '../../../../packages/pitch-finder/src/primitive'
-import useAudioFilesIndexedDB from '../../context/AudioFilesIndexedDBContext'
-import useBanner from '../../context/BannerContext'
+import { convertBufferToNotes } from '../../../packages/pitch-finder/src/primitive'
+import useAudioFilesIndexedDB from '../context/AudioFilesIndexedDBContext'
+import useBanner from '../context/BannerContext'
 
 export interface FileSaverFormInterface {
   filename: string
@@ -51,13 +51,11 @@ export default (function AudioFileSaver({ render, children }) {
       type: fileInput.type,
     })
 
-    const isTune = filetype === 'tune'
-
-    if (isTune) setMessage('processing tune. this may take a minute')
-
-    const fields = isTune
-      ? { notes: await convertBufferToNotes(await file.arrayBuffer()) }
-      : {}
+    const fields =
+      filetype === 'tune'
+        ? (setMessage('processing tune. this may take a minute.'),
+          { notes: await convertBufferToNotes(await file.arrayBuffer()) })
+        : {}
 
     const result = await saveAudioFile(storeName, {
       ...fields,

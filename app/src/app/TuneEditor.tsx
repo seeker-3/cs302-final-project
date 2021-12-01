@@ -1,6 +1,6 @@
 import { pianoSynth } from '@dothum/synth'
 import { useEffect, useState, type FC } from 'react'
-import Editor from '../components/editor'
+import AudioEditor from '../components/editor'
 import { useTuneAudio } from '../context/AudioContext'
 
 export default (function Tune() {
@@ -36,7 +36,7 @@ export default (function Tune() {
   }
 
   return (
-    <Editor
+    <AudioEditor
       title="Tune"
       storeName="tunes"
       playerAudio={tunePlayerAudio}
@@ -66,6 +66,6 @@ export default (function Tune() {
           ))}
         </ul>
       )}
-    </Editor>
+    </AudioEditor>
   )
 } as FC)

@@ -1,11 +1,11 @@
 import { type FC } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import Banner from '../components/Banner'
-import AudioFileRecorder from '../components/form/AudioFileRecorder'
-import AudioFileSaver from '../components/form/AudioFileSaverForm'
-import AudioFileUploader from '../components/form/AudioFileUploader'
-import Beat from './Beat'
-import Tune from './Tune'
+import AudioFileRecorder from './AudioFileRecorder'
+import AudioFileSaver from '../components/AudioFileSaverForm'
+import AudioFileUploader from './AudioFileUploader'
+import Beat from './BeatEditor'
+import Tune from './TuneEditor'
 
 export default (function App() {
   return (

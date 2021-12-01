@@ -1,20 +1,17 @@
 import {
+  audioDestination,
+  audioOut,
   audioToDrum,
   drumArrays,
   getCommonInterval,
-  sleepFor,
   minInterval,
+  PercussionInstruments,
   playBeat,
   primaryGainControl,
-  audioDestination,
-  audioOut,
+  sleepFor,
 } from './helper'
 
-export enum PercussionInstruments {
-  hiHat = 1,
-  snare = 2,
-  kick = 3,
-}
+export { drumArrays, PercussionInstruments }
 
 const audioContext = new AudioContext()
 
@@ -22,7 +19,10 @@ const audioContext = new AudioContext()
 
 // This event listener waits for a file to uploaded and then it determines the tempo of that audio file.
 // It also converts the beats in that audio file into a patter than is pushed into drumArrays
-export const inputAudioFile = async (file: File, instrumentLabel: string) => {
+export const inputAudioFile = async (
+  file: File,
+  instrumentLabel: PercussionInstruments
+) => {
   const soundBuffer = await file.arrayBuffer()
 
   // pass buffer to the audioContext function decodeAudioData to get usable data
@@ -69,9 +69,9 @@ export function getDrumBPM() {
 }
 
 //adds a new drum line to the drumArrays that has no beats in it
-export function addDrum(instrumentLabel: string) {
-  const drumPattern = new Array(drumArrays[0]?.beats.length ?? 0).fill(0)
-  drumArrays.push({ label: instrumentLabel, beats: drumPattern })
+export function addDrum(label: PercussionInstruments) {
+  const beats = new Array(drumArrays[0]?.beats.length ?? 0).fill(0)
+  drumArrays.push({ label, beats })
 }
 
 //removes a specific drum line from the drum machine
@@ -166,5 +166,3 @@ export async function getWAV() {
 
   return trackCompletePromise
 }
-
-export { drumArrays }
