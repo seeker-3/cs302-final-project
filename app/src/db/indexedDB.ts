@@ -4,6 +4,7 @@ export type FileStoreFields<T extends object = object> = { file: File } & T
 
 export type TuneStoreFields = FileStoreFields<{ notes: string[] }>
 export type BeatStoreFields = FileStoreFields
+export type StoreFields = TuneStoreFields | BeatStoreFields
 
 interface FileStore<T extends object = object> {
   key: string
@@ -17,11 +18,10 @@ interface AudioFilesSchema extends DBSchema {
 }
 
 export type AudioFileStores = 'tunes' | 'beats'
-// export type AudioFileStores = keyof AudioFilesSchema
 
 export type AudioFilesDB = IDBPDatabase<AudioFilesSchema>
 
-export const openAudioFiles = async () => {
+export const openAudioFilesDB = async () => {
   const db = await openDB<AudioFilesSchema>('audio-files', 1, {
     upgrade(db) {
       const tunesStore = db.createObjectStore('tunes', {

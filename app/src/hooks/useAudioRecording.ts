@@ -18,10 +18,8 @@ export default function useAudioRecording() {
         setAudioRecording(new Blob([data], { type: 'audio/wav' }))
 
       setMediaRecorder(mediaRecorder)
-    })().catch(console.error)
+    })()
   }, [])
-
-  // if (!mediaRecorder) return { loading: true } as { loading: true }
 
   const handleStartAndStopRecording = () => {
     if (!mediaRecorder)

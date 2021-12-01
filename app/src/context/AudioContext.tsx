@@ -1,15 +1,12 @@
+import { PercussionInstruments } from '@dothum/percussion'
 import { createContext, useContext, useState, type FC } from 'react'
 import { type FileStoreFields } from '../db/indexedDB'
 import useSelector, { type UseSelector } from '../hooks/useSelector'
 import useAudioFilesIndexedDB from './AudioFilesIndexedDBContext'
 
 const tuneInstrumentList = ['original', 'piano']
-const beatInstrumentList: string[] = [
-  // 'original', 'drum'
-]
-
-// export type TuneInstrumentList = (typeof tuneInstrumentList )[number]
-// export type BeatInstrumentList = typeof tuneInstrumentList[number]
+// const beatInstrumentsList = ['original', 'recording']
+const beatInstrumentsList = ['hiHat', 'snare', 'kick']
 
 const useAudioContextBody = () => {
   const store = useAudioFilesIndexedDB()
@@ -20,7 +17,7 @@ const useAudioContextBody = () => {
   const tuneFiles = useSelector(store.tunes)
   const beatFiles = useSelector(store.beats)
   const tuneInstruments = useSelector(tuneInstrumentList)
-  const beatInstruments = useSelector(beatInstrumentList)
+  const beatInstruments = useSelector(beatInstrumentsList)
 
   return {
     tunePlayerAudio,
@@ -34,16 +31,6 @@ const useAudioContextBody = () => {
   }
 }
 
-export type UseAudioContextTunes = Omit<
-  ReturnType<typeof useAudioContextBody>,
-  'beatFiles' | 'beatInstruments'
->
-
-export type UseAudioContextBeats = Omit<
-  ReturnType<typeof useAudioContextBody>,
-  'tuneFiles' | 'tuneInstruments'
->
-
 // Context
 
 const AudioContext = createContext<ReturnType<
@@ -56,21 +43,49 @@ export const AudioProvider: FC = ({ children }) => (
   </AudioContext.Provider>
 )
 
-export default function useAudio() {
+function useAudio() {
   const audioContext = useContext(AudioContext)
   if (!audioContext) throw Error('audio files context did not load properly')
   return audioContext
 }
 
+// tailored hooks
 export const useTuneAudio = () => {
   const { tunePlayerAudio, setTunePlayerAudio, tuneFiles, tuneInstruments } =
     useAudio()
-  return { tunePlayerAudio, setTunePlayerAudio, tuneFiles, tuneInstruments }
+  return {
+    tuneAudioFile: tuneFiles.selected?.file ?? null,
+    tunePlayerAudio,
+    setTunePlayerAudio,
+    tuneFiles,
+    tuneInstruments,
+  }
 }
 export const useBeatAudio = () => {
   const { beatPlayerAudio, setBeatPlayerAudio, beatFiles, beatInstruments } =
     useAudio()
-  return { beatPlayerAudio, setBeatPlayerAudio, beatFiles, beatInstruments }
+  const instrument = beatInstruments.selected
+
+  const instrumentIndex =
+    instrument === 'hiHat'
+      ? PercussionInstruments.hiHat
+      : instrument === 'snare'
+      ? PercussionInstruments.snare
+      : instrument === 'kick'
+      ? PercussionInstruments.kick
+      : null
+
+  if (instrumentIndex === null)
+    throw Error('invalid instrument. could not convert to index')
+
+  return {
+    beatAudioFile: beatFiles.selected?.file ?? null,
+    beatPlayerAudio,
+    setBeatPlayerAudio,
+    beatFiles,
+    beatInstruments,
+    instrumentIndex,
+  }
 }
 
 // this does not need generic type information because it's only used as a common interface in deeply nested components

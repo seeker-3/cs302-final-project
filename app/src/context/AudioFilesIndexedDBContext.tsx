@@ -7,11 +7,11 @@ import {
   type FC,
 } from 'react'
 import {
-  openAudioFiles,
+  openAudioFilesDB,
   type AudioFilesDB,
   type AudioFileStores,
   type BeatStoreFields,
-  type FileStoreFields,
+  type StoreFields,
   type TuneStoreFields,
 } from '../db/indexedDB'
 
@@ -38,7 +38,7 @@ const useContextBody = () => {
 
   useEffect(() => {
     void (async () => {
-      const db = (ref.current = await openAudioFiles())
+      const db = (ref.current = await openAudioFilesDB())
 
       const [tunes, beats] = await Promise.all([
         db.getAll('tunes'),
@@ -51,16 +51,16 @@ const useContextBody = () => {
       })
 
       return () => db.close()
-    })().catch(console.error)
+    })()
   }, [])
 
   if (!ref.current) return null
 
   const db = ref.current
 
-  const saveAudioFile = async <T extends FileStoreFields>(
+  const saveAudioFile = async (
     storeName: AudioFileStores,
-    fields: T
+    fields: StoreFields
   ) => {
     const transaction = db.transaction(storeName, 'readwrite')
     const { store } = transaction

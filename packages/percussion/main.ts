@@ -10,18 +10,21 @@ import {
   shiftRight,
 } from './src/lib'
 
-import {
-  drumArrays,
-  playHiHat,
-  playKick,
-  playSnare,
-} from './src/helper'
+import { drumArrays, playHiHat, playKick, playSnare } from './src/helper'
 
 const recorder = document.getElementById('recorder') as HTMLInputElement
 
 recorder.onchange = async ({ target }) => {
   const file = (target as HTMLInputElement).files[0]
-  await inputAudioFile(file, drumArrays.length+1)
+  let label = ''
+  if (drumArrays.length == 0) {
+    label = 'hihat'
+  } else if (drumArrays.length == 1) {
+    label = 'snare'
+  } else {
+    label = 'kick'
+  }
+  await inputAudioFile(file, label)
 }
 
 const addToMachineButton = document.getElementById('addToMachine')
@@ -43,7 +46,15 @@ remBeatButton.onclick = () => {
 
 const addDrumButton = document.getElementById('addDrum')
 addDrumButton.onclick = () => {
-  addDrum(drumArrays.length+1)
+  let label = ''
+  if (drumArrays.length == 0) {
+    label = 'hihat'
+  } else if (drumArrays.length == 1) {
+    label = 'snare'
+  } else {
+    label = 'kick'
+  }
+  addDrum(label)
   makeDrumMachine()
 }
 
@@ -105,7 +116,7 @@ function newDrumMachine(index) {
   this.newDrumMachine.setAttribute('id', 'drum' + index)
   machineContainer.appendChild(this.newDrumMachine)
 
-  for (let i = 0; i < drumArrays[0].length; i++) {
+  for (let i = 0; i < drumArrays[0]?.beats.length ?? 0; i++) {
     new newDrum(this.newDrumMachine, i, index)
   }
 
@@ -121,7 +132,7 @@ function newDrum(drum, beatIndex, drumIndex) {
 
   // This if statement loads whatever is in the drumArrays onto the
   // drum machine visualizer.
-  if (drumArrays[drumIndex][beatIndex] == 1) {
+  if (drumArrays[drumIndex].beats[beatIndex] == 1) {
     this.newDrum.classList.add('beat-selected')
     this.newDrum.clicked = true
   }
@@ -132,18 +143,16 @@ function newDrum(drum, beatIndex, drumIndex) {
     if (!this.newDrum.clicked) {
       this.newDrum.classList.add('beat-selected')
       this.newDrum.clicked = true
-      drumArrays[drumIndex][beatIndex] = 1 // This makes it so the buttons on the website can edit the drum machine pattern
+      drumArrays[drumIndex].beats[beatIndex] = 1 // This makes it so the buttons on the website can edit the drum machine pattern
     } else {
       this.newDrum.classList.remove('beat-selected')
       this.newDrum.clicked = false
-      drumArrays[drumIndex][beatIndex] = 0 // Same here
+      drumArrays[drumIndex].beats[beatIndex] = 0 // Same here
     }
   }
 }
 
 // ________Loop Section ______________
-
-// const sleepFor = delay => new Promise(resolve => setTimeout(resolve, delay))
 
 const play = document.getElementById('play')
 const pause = document.getElementById('pause')

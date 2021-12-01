@@ -1,11 +1,6 @@
 {
   "name": "dothum",
   "private": true,
-  "workspaces": [
-    "app/",
-    "packages/*",
-    "packages/wasm/pkg"
-  ],
   "repository": {
     "type": "github",
     "url": "https://github.com/seeker-3/dothum.git/"
@@ -14,10 +9,12 @@
     "preinstall": "npx only-allow pnpm",
     "uninstall": "rm -rf **/node_modules",
     "build:packages": "pnpm build -r --filter {./packages}",
-    "build:wasm": "wasm-pack build packages/wasm -s dothum --target web",
     "build:complementary-chords": "cd packages/complementary-chords && pnpm build",
+    "build:merge": "cd packages/merge && pnpm build",
     "build:percussion": "cd packages/percussion && pnpm build",
     "build:pitch-finder": "cd packages/pitch-finder && pnpm build",
+    "build:synth": "cd packages/synth && pnpm build",
+    "build:wasm": "wasm-pack build packages/wasm -s dothum --target web",
     "clean:wasm": "rm -rf packages/wasm/pkg",
     "clean": "pnpm clean -r",
     "lint": "eslint .",
