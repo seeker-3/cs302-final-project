@@ -1,11 +1,6 @@
 {
   "name": "dothum",
   "private": true,
-  "workspaces": [
-    "app/",
-    "packages/*",
-    "packages/wasm/pkg"
-  ],
   "repository": {
     "type": "github",
     "url": "https://github.com/seeker-3/dothum.git/"

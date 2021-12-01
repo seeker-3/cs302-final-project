@@ -1,6 +1,10 @@
-# .hum Website
+# .hum
 
-## [dothum.app](https://dothum.app/)
+## links
+
+[website](https://dothum.app/)
+
+[repository](https://github.com/seeker-3/dothum/)
 
 ## Usage
 
@@ -32,7 +36,11 @@
 - You can add as many drums and beats as you want
 - To play the beat you created click "play"
 
-## Installation for Beginners
+## About The Project
+
+We divided up our project into multiple node packages using the very popular monorepo system. The configuration can be seen in `pnpm-workspace.yaml`. This was very useful for a group project so we could each implement our own features without interfering with each other too much. All packages are in the packages folder. The packages are imported by the app in the app folder for the final product. We used [pnpm](https://pnpm.io/) as our package manager instead of npm because it manages node_modules more efficiently and has a lot more features for working with monorepos. We used [vite](https://vitejs.dev/) as our primary build tool for building both packages and the app. Vite is great because it is incredibly beginner friendly and extremely efficient, while still having a robust set of features. We used [prettier](https://prettier.io/) the code formatter and [eslint](https://eslint.org/) and [stylelint](https://stylelint.io/) the linters for better code quality. We used [TypeScript](https://www.typescriptlang.org/) cause it's awesome. It provides tons of quality of life advantages to the developer and makes working with bigger code bases not a headache as your project grows. Finally we used [react](https://reactjs.org/) for the frontend to build a reactive and responsive user interface for a better "app like" experience.
+
+## Installation
 
 ### make sure you have the latest version of node installed
 
@@ -75,23 +83,21 @@ install wasm-pack:
 
 ### set up the project
 
-build the rust packages:
+build the wasm package:
 
 `pnpm build:wasm`
 
-install:
+install project dependencies:
 
 `pnpm i`
 
 build packages:
 
-`pnpm build`
+`pnpm build:packages`
 
 link packages:
 
 `pnpm i`
-
-start the app in development mode:
 
 ## The App
 
