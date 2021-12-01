@@ -110,7 +110,7 @@ let run = false
 
 //This starts the drum machine loop playing until it is told
 //otherwise
-export async function playTrack() {
+export async function playTrack(repeat: boolean) {
   run = true
 
   //This while loop tells each beat in the drum machine to play in order and
@@ -123,6 +123,9 @@ export async function playTrack() {
       await sleepFor(minInterval)
       playBeat(i)
     }
+    if (!repeat) {
+      break
+    }
   }
 }
 
@@ -132,7 +135,6 @@ export function pauseTrack() {
 
 //This function returns a blob containing the a .wav file of the drum machine
 export async function getWAV() {
-  const trackDuration = (drumArrays[0]?.beats.length ?? 0) * minInterval
   const chunks = []
 
   //create a media recorder and set it to listen the final stop of the audio
@@ -141,14 +143,10 @@ export async function getWAV() {
   primaryGainControl.disconnect(audioOut) //disconnect from the audioOut destination so it does play out loud
   primaryGainControl.connect(audioDestination)
 
-  //start recording and play the track
+  //await and record track
   mediaRecorder.start()
-  playTrack()
-
-  //wait for the track to end and stop both
-  await sleepFor(trackDuration)
+  await playTrack(false)
   mediaRecorder.stop()
-  pauseTrack()
 
   //when the data available event happens it adds the most recent blob piece to chunk
   mediaRecorder.ondataavailable = function (aud) {
