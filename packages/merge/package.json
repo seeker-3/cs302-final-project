@@ -1,5 +1,6 @@
 {
   "name": "@dothum/merge",
+  "author": "Ethan Rickert",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
