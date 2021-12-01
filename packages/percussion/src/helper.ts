@@ -27,7 +27,8 @@ const whisper = 0.02
 
 export let minInterval = 250 // smallest interval between beats in milliseconds
 
-export const drumArrays: { label: string; beats: (0 | 1)[] }[] = [] // holds drum patters and instrument labels
+export const drumArrays: { label: PercussionInstruments; beats: (0 | 1)[] }[] =
+  [] // holds drum patters and instrument labels
 
 //used to leave time in between beats
 export const sleepFor = (delay: number) =>
