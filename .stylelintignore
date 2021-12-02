@@ -1,1 +1,3 @@
 *.pcss
+dist/
+node_modules/

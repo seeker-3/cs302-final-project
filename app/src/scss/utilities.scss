@@ -75,6 +75,7 @@
 %flex {
   // @extend %outline;
   display: flex;
+
   // align-items: stretch;
   justify-content: center;
   gap: list.nth($sizing, 2);
@@ -83,47 +84,56 @@
 .row,
 %row {
   @extend %flex;
+
   flex-direction: row;
 }
 
 .row-left,
 %row-left {
   @extend %row;
+
   justify-content: left;
 }
 
 .row-center,
 %row-center {
   @extend %row;
+
   justify-content: center;
 }
+
 .row-right,
 %row-right {
   @extend %row;
+
   justify-content: right;
 }
 
 .column,
 %column {
   @extend %flex;
+
   flex-direction: column;
 }
 
 .column-start,
 %column-start {
   @extend %column;
+
   align-items: start;
 }
 
 .column-center,
 %column-center {
   @extend %column;
+
   align-items: center;
 }
 
 .column-stretch,
 %column-stretch {
   @extend %column;
+
   align-items: stretch;
 }
 
@@ -170,7 +180,7 @@
 .contain {
   @media (min-width: 80ch) {
     width: 80ch;
-    margin-left: auto;
     margin-right: auto;
+    margin-left: auto;
   }
 }

@@ -7,13 +7,13 @@
 .banner {
   @extend %focus-within;
   @extend %row-left;
-  align-items: center;
 
   position: absolute;
   bottom: list.nth($sizing, 2);
   left: 0;
   min-width: list.nth($text-width, 2);
   height: list.nth($sizing, 4);
+  align-items: center;
   padding-left: list.nth($sizing, 1);
   margin: list.nth($sizing, 3);
   background: list.nth($gray-scale, 4);
@@ -33,7 +33,9 @@
 .drum-beats {
   button {
     @extend %button-square;
+
     background: list.nth($gray-scale, 3);
+
     &.selected {
       background: list.nth($gray-scale, 5);
     }
@@ -42,6 +44,7 @@
 
 .audio-editor {
   @extend %column, %grow;
+
   > * {
     // width: 120ch;
     flex-basis: 50%;
