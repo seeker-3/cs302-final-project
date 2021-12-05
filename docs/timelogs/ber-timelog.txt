@@ -1,11 +1,11 @@
-10/04/21 | Learning Javascript/Typescript basics            | 3 hrs
-10/06/21 | Researching pitch-finding algorithms             | 2 hrs
-10/15/21 | Implementing pitch-finding module                | 4 hrs
-10/19/21 | Implementing pitch-finding module                | 6 hrs
-11/01/21 | Implementing pitch-finding module                | 2 hrs
-11/12/21 | Researching alternative pitch-finding algorithms | 3 hrs
-11/15/21 | Researching alternative pitch-finding algorithms | 1 hrs
-11/25/21 | Combining group member modules                   | 1 hrs
-11/29/21 | Implementing audio file merging module           | 2 hrs
----------------------------------------------------------------------------------
-11/30/21 | Project completed                                | 24 cumulative hours
+10/04/21 | Learning Javascript/Typescript basics                                                  | 3 hrs
+10/06/21 | Researching pitch-finding algorithms - finding pre-existing libraries for JS           | 2 hrs
+10/15/21 | Implementing pitch-finding module - learning chord detector library                    | 4 hrs
+10/19/21 | Implementing pitch-finding module - learning pitchfidner library                       | 6 hrs
+11/01/21 | Implementing pitch-finding module - converting found frequencies to notes              | 2 hrs
+11/12/21 | Researching alternative pitch-finding algorithms - testing aubio library               | 3 hrs
+11/15/21 | Researching alternative pitch-finding algorithms - testing python aubio library        | 1 hrs
+11/25/21 | Combining group member modules - creating final project                                | 1 hrs
+11/29/21 | Implementing audio file merging module - implementing Crunker library for file merging | 2 hrs
+------------------------------------------------------------------------------------------------------------------------
+11/30/21 | Project completed                                                                      | 24 cumulative hours
