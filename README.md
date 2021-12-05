@@ -6,6 +6,10 @@
 
 [repository](https://github.com/seeker-3/dothum/)
 
+## Documentation
+
+All project documents are contained in the docs folder: time logs, milestones, and updates. Code specific documentation is contained in the README.md files in each package (folder that contains a package.json).
+
 ## Usage
 
 1. Open dothum website in another tab
