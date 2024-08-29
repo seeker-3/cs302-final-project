@@ -1,5 +1,7 @@
 # .hum
 
+Hum to your heart's content.
+
 ## links
 
 [website](https://dothum.netlify.app/)
