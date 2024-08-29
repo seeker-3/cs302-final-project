@@ -2,7 +2,7 @@
 
 ## links
 
-[website](https://dothum.app/)
+[website](https://dothum.netlify.app/)
 
 [repository](https://github.com/seeker-3/dothum/)
 
